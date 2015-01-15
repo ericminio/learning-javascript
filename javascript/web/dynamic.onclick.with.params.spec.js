@@ -1,8 +1,8 @@
-CustomIpWidget = function() {
+CustomWidget = function() {
     this.useTemplate('<button id="save-button">Save</button>"');
 };
 
-CustomIpWidget.prototype = {
+CustomWidget.prototype = {
     useTemplate: function(template) {
         this.template = template;
     },
@@ -52,13 +52,13 @@ describe('Exploration:', function() {
     var secondSaveButton;
     
     beforeEach(function() {
-        var first = new CustomIpWidget();
+        var first = new CustomWidget();
         first.setData({ id: 1, value:'192.168.0.10' });
         first.setSaveStrategy( updateExistingRuleStrategy(ajax) );
         first.renderIn(document.getElementById('this-container')); 
         firstSaveButton = container.querySelector('#save-button-1');
 
-        var second = new CustomIpWidget();
+        var second = new CustomWidget();
         second.setData({ id: 2, value:'127.0.0.1' });
         second.setSaveStrategy( createNewRuleStrategy(ajax) );
         second.renderIn(document.getElementById('this-container')); 
