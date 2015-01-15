@@ -1,10 +1,10 @@
 describe('Bind', function() {
    
-    it('offers a way to impostarize this', function() {
-        var listener = { notify: function() {} };
-        spyOn(listener, 'notify');
-        (function() { this.notify() }).bind(listener)();
+    it('offers a way to imposterize this', function() {
+        var bound;
+        var subject = {};
+        (function() { bound = this; }).bind(subject)();
         
-        expect(listener.notify).toHaveBeenCalled();
+        expect(bound).toEqual(subject);
     });
 });
