@@ -9,7 +9,8 @@
     "jsdom": "latest",
     "jshint": "latest",
     "request": "latest",
-    "zombie": "latest"
+    "zombie": "latest",
+    "crypto": "latest"
   },
   "engines": {
     "node": "0.10.28",
