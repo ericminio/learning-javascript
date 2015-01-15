@@ -22,21 +22,21 @@ CustomWidget.prototype = {
     }
 };
 
-updateExistingRuleStrategy = function(ajax) {
+sendAllFieldsStrategy = function(ajax) {
     
     return function(id, value) {
         ajax.send('id=' + id + '&value=' + value);
     };
 };
 
-createNewRuleStrategy = function(ajax) {
+sendOnlyTheValueStrategy = function(ajax) {
     
     return function(id, value) {
         ajax.send('value=' + value);
     };
 };
 
-describe('Exploration:', function() {
+describe('Dynamic onclick event', function() {
 
     var ajax = {
         send: function() {  }
@@ -54,20 +54,20 @@ describe('Exploration:', function() {
     beforeEach(function() {
         var first = new CustomWidget();
         first.setData({ id: 1, value:'192.168.0.10' });
-        first.setSaveStrategy( updateExistingRuleStrategy(ajax) );
+        first.setSaveStrategy( sendAllFieldsStrategy(ajax) );
         first.renderIn(document.getElementById('this-container')); 
         firstSaveButton = container.querySelector('#save-button-1');
 
         var second = new CustomWidget();
         second.setData({ id: 2, value:'127.0.0.1' });
-        second.setSaveStrategy( createNewRuleStrategy(ajax) );
+        second.setSaveStrategy( sendOnlyTheValueStrategy(ajax) );
         second.renderIn(document.getElementById('this-container')); 
         secondSaveButton = container.querySelector('#save-button-2');
 
         spyOn(ajax, 'send');
     });
     
-    it('sends the ruleId when updating an existing rule', function() {
+    it('can be configured with a specific strategy', function() {
         var click = document.createEvent('Event');
         click.initEvent('click', true, true);
         firstSaveButton.dispatchEvent(click);
@@ -75,7 +75,7 @@ describe('Exploration:', function() {
         expect(ajax.send).toHaveBeenCalledWith('id=1&value=192.168.0.10');
     });
 
-    it('sends only the ipAddress when creating a new rule', function() {
+    it('can be configured with another strategy', function() {
         var click = document.createEvent('Event');
         click.initEvent('click', true, true);
         secondSaveButton.dispatchEvent(click);
