@@ -3,14 +3,10 @@
   "version": "1.0.0",
   "devDependencies": {
     "cheerio": "latest",
+    "crypto": "latest",
     "deep-equal": "latest",
-    "istanbul": "latest",
     "jasmine-node": "latest",
-    "jsdom": "latest",
-    "jshint": "latest",
-    "request": "latest",
-    "zombie": "latest",
-    "crypto": "latest"
+    "jsdom": "latest"
   },
   "engines": {
     "node": "0.10.28",
