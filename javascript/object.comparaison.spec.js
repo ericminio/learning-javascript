@@ -8,11 +8,11 @@ describe('Object comparaison', function() {
 		expect({ field: 'one' } == { field: 'two' }).toEqual(false);
 	});
 		
-	it('considers equal two objects with one field and same value', function() {
-		expect({ field: 'one' }).toEqual({ field: 'one' });
+	it('considers different two objects with one field and same value', function() {
+		expect({ field: 'one' } == { field: 'one' }).toEqual(false);
 	});
 		
-	it('considers equal objects with two fields and same values', function() {
+	it('considers different objects with two fields and same values', function() {
 		expect({ one: 'one', two: 'two' }).toEqual({ one: 'one', two: 'two' });
 	});
 		
