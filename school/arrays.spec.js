@@ -116,4 +116,11 @@ describe("Arrays", function() {
         });
     
     });
+    
+    describe('Join', function() {
+        
+        it('accepts a separator as parameter', function() {
+            expect(['A', 'B B'].join('\n')).toEqual('A\nB B');
+        });
+    });
 });
