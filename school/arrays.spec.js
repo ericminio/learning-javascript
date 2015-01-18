@@ -56,6 +56,13 @@ describe("Arrays", function() {
 			expect(array[0]).toBe(one);
 		});
 		
+		it("'pop' returns the last element", function() {
+			array.push(one);
+			array.push(two);
+			
+            expect(array.pop()).toEqual(two);
+		});
+
 		it("'shift' removes the first element", function() {
 			array.push(one);
 			array.push(two);
@@ -121,6 +128,31 @@ describe("Arrays", function() {
         
         it('accepts a separator as parameter', function() {
             expect(['A', 'B B'].join('\n')).toEqual('A\nB B');
+        });
+    });
+    
+    describe('Reverse', function() {
+
+        it('modifies the original array', function() {
+            var letters = ['a', 'b', 'c'];
+            letters.reverse();
+            
+            expect(letters).toEqual(['c', 'b', 'a']);
+        });
+        
+        it('also returns the reverted array', function() {
+            expect(['a', 'b', 'c'].reverse()).toEqual(['c', 'b', 'a']);
+        });
+    });
+    
+    describe('Concat', function() {
+    
+        it('concatenates the two given arrays', function() {
+            expect([1, 2].concat([3, 4])).toEqual([1, 2, 3, 4]);
+        });
+
+        it('concatenates the three given arrays', function() {
+            expect([1, 2].concat([3, 4], [5, 6])).toEqual([1, 2, 3, 4, 5, 6]);
         });
     });
 });
