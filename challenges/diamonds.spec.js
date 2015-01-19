@@ -1,12 +1,11 @@
 var diamond = function(size) {
 };
 
-var he = it;
 describe('Diamond creator', function() {
    
     describe('objective', function() {
         
-        he('is to be able to create a diamond', function() {
+        it('is to be able to create a diamond', function() {
             expect(diamond(4)).toEqual([
                 '   A',
                 '  B B',
