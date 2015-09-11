@@ -6,7 +6,8 @@
     "crypto": "latest",
     "deep-equal": "latest",
     "jasmine-node": "latest",
-    "jsdom": "latest"
+    "jsdom": "latest",
+    "zombie": "^4.1.0"
   },
   "engines": {
     "node": "0.10.28",
