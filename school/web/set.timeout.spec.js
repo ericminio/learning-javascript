@@ -14,8 +14,8 @@ describe('setTimeout in a web page', function() {
             var page = '<html>' +
             '<body>'+
                 '<script>' +
-                    'function delayShowMessage() {' +
-                        'setTimeout(showMessage, 100);' +
+                    'function delayShowMessage(delay) {' +
+                        'setTimeout(showMessage, delay);' +
                     '}' +
                     'function showMessage() {' +
                         'document.getElementById("message").style.display = "block";' +
@@ -23,7 +23,7 @@ describe('setTimeout in a web page', function() {
                 '</script>' +
 
                 '<label id="message">May the joy be in the hearts</label>'+
-                '<button id="show" onmouseup="delayShowMessage();">show message</button>'+
+                '<button id="show" onmouseup="delayShowMessage(100);">show message</button>'+
 
                 '<script>' +
                     'setTimeout(function() {' +
@@ -72,13 +72,13 @@ describe('setTimeout in a web page', function() {
     it('can be triggered programmaticaly', function(done) {
         browser.visit('http://localhost:' + port)
             .then(function() {
-                browser.window.delayShowMessage();
+                browser.window.delayShowMessage(100);
             })
             .then(function() {
-                setTimeout(function() {
+                browser.wait(200, function() {
                     expect(browser.document.getElementById('message').style.display).toEqual('block');
                     done();
-                }, 500);
+                });
             });
     });
 });
