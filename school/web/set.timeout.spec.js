@@ -14,15 +14,16 @@ describe('setTimeout in a web page', function() {
             var page = '<html>' +
             '<body>'+
                 '<script>' +
+                    'function delayShowMessage() {' +
+                        'setTimeout(showMessage, 100);' +
+                    '}' +
                     'function showMessage() {' +
-                        'setTimeout(function() {' +
-                            'document.getElementById("message").style.display = "block";' +
-                        '}, 300);' +
+                        'document.getElementById("message").style.display = "block";' +
                     '}' +
                 '</script>' +
 
                 '<label id="message">May the joy be in the hearts</label>'+
-                '<button id="show" onmouseup="showMessage();">show message</button>'+
+                '<button id="show" onmouseup="delayShowMessage();">show message</button>'+
 
                 '<script>' +
                     'setTimeout(function() {' +
@@ -43,28 +44,41 @@ describe('setTimeout in a web page', function() {
         app.close();
     });
 
-    it('is considered in the event loop by zombie even when started at page load', function(done) {
+    it('is considered in the event loop', function(done) {
         browser.visit('http://localhost:' + port)
             .then(function() {
-                browser.assert.style('#message', 'display', 'none', 'starting from none');
+                expect(browser.document.getElementById('message').style.display).toEqual('none');
             })
-            .then(done, function(error) {
-                expect(error.message).toEqual(null);
-                done();
-            });
+            .then(done);
     });
 
     it('allows to postpone a treatment', function(done) {
         browser.visit('http://localhost:' + port)
+            .then(function() {
+                browser.fire('#show', 'mouseup');
+            })
+            .then(function() {
+                expect(browser.document.getElementById('message').style.display).toEqual('none');
+            })
             .then(function() {
                 return browser.fire('#show', 'mouseup');
             })
             .then(function() {
                 expect(browser.document.getElementById('message').style.display).toEqual('block');
             })
-            .then(done, function(error) {
-                expect(error.message).toEqual(null);
-                done();
+            .then(done);
+    });
+
+    it('can be triggered programmaticaly', function(done) {
+        browser.visit('http://localhost:' + port)
+            .then(function() {
+                browser.window.delayShowMessage();
+            })
+            .then(function() {
+                setTimeout(function() {
+                    expect(browser.document.getElementById('message').style.display).toEqual('block');
+                    done();
+                }, 500);
             });
     });
 });
