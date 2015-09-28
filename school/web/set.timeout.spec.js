@@ -1,3 +1,4 @@
+var expect = require('chai').expect;
 const Browser = require('zombie');
 const browser = new Browser();
 
@@ -47,7 +48,7 @@ describe('setTimeout in a web page', function() {
     it('is considered in the event loop', function(done) {
         browser.visit('http://localhost:' + port)
             .then(function() {
-                expect(browser.document.getElementById('message').style.display).toEqual('none');
+                expect(browser.document.getElementById('message').style.display).to.equal('none');
             })
             .then(done);
     });
@@ -58,13 +59,13 @@ describe('setTimeout in a web page', function() {
                 browser.fire('#show', 'mouseup');
             })
             .then(function() {
-                expect(browser.document.getElementById('message').style.display).toEqual('none');
+                expect(browser.document.getElementById('message').style.display).to.equal('none');
             })
             .then(function() {
                 return browser.fire('#show', 'mouseup');
             })
             .then(function() {
-                expect(browser.document.getElementById('message').style.display).toEqual('block');
+                expect(browser.document.getElementById('message').style.display).to.equal('block');
             })
             .then(done);
     });
@@ -76,7 +77,7 @@ describe('setTimeout in a web page', function() {
             })
             .then(function() {
                 browser.wait(200, function() {
-                    expect(browser.document.getElementById('message').style.display).toEqual('block');
+                    expect(browser.document.getElementById('message').style.display).to.equal('block');
                     done();
                 });
             });

@@ -1,7 +1,9 @@
+var expect = require('chai').expect;
+
 describe('Jsdom', function() {
 
     var server;
-    
+
     beforeEach(function() {
         server = require('http').createServer(function(request, response) {
             var index = '' +
@@ -26,27 +28,27 @@ describe('Jsdom', function() {
             '   <body>' +
             '   </body>' +
             '</html>';
-            
+
             if (request.url == '/') {
                 response.writeHead(200, { 'content-type':'text/html' });
                 response.end(index);
-            }            
+            }
             if (request.url == '/title.js') {
                 response.writeHead(200, { 'content-type':'application/javascript' });
                 response.end(script);
                 return;
-            } 
+            }
             if (request.url == '/next.html') {
                 response.writeHead(200, { 'content-type':'text/html' });
                 response.end(next);
-            }            
+            }
         }).listen(5000);
     });
-    
+
     afterEach(function() {
         server.close();
     });
-    
+
     it('can download and execute a script', function(exit) {
         require("jsdom").env({
           url: "http://localhost:5000/",
@@ -55,15 +57,15 @@ describe('Jsdom', function() {
               ProcessExternalResources: ["script"]
           },
           done: function (errors, window) {
-              expect(window.document.title).toEqual('modified title');
+              expect(window.document.title).to.equal('modified title');
               exit();
           }
-        });        
+        });
     });
-    
+
     it('can be used to follow a link by hand', function(exit) {
         var jsdom = require("jsdom");
-        
+
         jsdom.env({
           url: "http://localhost:5000/",
           features: {
@@ -79,11 +81,11 @@ describe('Jsdom', function() {
                     ProcessExternalResources: ["script"]
                 },
                 done: function (errors, window) {
-                    expect(window.document.title).toEqual('next page');              
+                    expect(window.document.title).to.equal('next page');
                     exit();
                 }
-              });        
+              });
           }
-        });        
+        });
     });
 });

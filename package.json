@@ -2,11 +2,15 @@
   "name": "learning-javascript",
   "version": "1.0.0",
   "devDependencies": {
+    "chai": "^3.3.0",
     "cheerio": "latest",
     "crypto": "latest",
     "deep-equal": "latest",
     "jasmine-node": "latest",
     "jsdom": "latest",
+    "mocha": "^2.3.3",
+    "sinon": "^1.17.1",
+    "sinon-chai": "^2.8.0",
     "zombie": "^4.1.0"
   },
   "engines": {
@@ -14,6 +18,6 @@
     "npm": "1.3.11"
   },
   "scripts": {
-    "test": "./node_modules/.bin/jasmine-node school"
+    "test": "./node_modules/.bin/mocha school --recursive"
   }
 }
