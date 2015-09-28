@@ -1,4 +1,7 @@
 var expect = require('chai').expect;
+var sinon = require('sinon');
+require('chai').use(require('sinon-chai'));
+var jsdom = require("jsdom");
 
 describe('Jsdom', function() {
 
@@ -50,7 +53,7 @@ describe('Jsdom', function() {
     });
 
     it('can download and execute a script', function(exit) {
-        require("jsdom").env({
+        jsdom.env({
           url: "http://localhost:5000/",
           features: {
               FetchExternalResources: ["script"],
@@ -64,8 +67,6 @@ describe('Jsdom', function() {
     });
 
     it('can be used to follow a link by hand', function(exit) {
-        var jsdom = require("jsdom");
-
         jsdom.env({
           url: "http://localhost:5000/",
           features: {
@@ -87,5 +88,17 @@ describe('Jsdom', function() {
               });
           }
         });
+    });
+
+    it('handles events on dom elements', function() {
+        var listener = { notify: sinon.spy() };
+        var document = jsdom.jsdom('<button id="this-button"></button>');
+        var button = document.querySelector('#this-button');
+        button.onclick = function() { listener.notify(); }
+        var click = document.createEvent('Event');
+        click.initEvent('click', true, true);
+        button.dispatchEvent(click);
+
+        expect(listener.notify).to.have.been.called;
     });
 });
