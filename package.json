@@ -6,7 +6,6 @@
     "cheerio": "latest",
     "crypto": "latest",
     "deep-equal": "latest",
-    "jasmine-node": "latest",
     "jsdom": "latest",
     "mocha": "^2.3.3",
     "sinon": "^1.17.1",
