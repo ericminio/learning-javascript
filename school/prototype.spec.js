@@ -24,18 +24,25 @@ describe("Prototype", function() {
 			expect("Me".greaterThan("You")).to.equal(true);
 		});
 
-		it("works even on custom objects", function() {
+		describe('on custom objects', function() {
 
-			Object.prototype.greaterThan = function(other) {
-				return this.field > other.field;
-			};
+			beforeEach(function() {
+				Object.prototype.isStrictlyGreaterThan = function(other) {
+					return this.field > other.field;
+				};
+			});
 
-			var one = { field: 1};
-			var two = { field: 2};
+			afterEach(function() {
+				Object.prototype.isStrictlyGreaterThan = undefined;
+			});
 
-			expect(one.greaterThan(two)).to.equal(false);
+			it("works", function() {
+				var one = { field: 1};
+				var two = { field: 2};
+
+				expect(one.isStrictlyGreaterThan(two)).to.equal(false);
+			});
 		});
-
 	});
 
 });
