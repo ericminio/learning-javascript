@@ -101,4 +101,10 @@ describe('Jsdom', function() {
 
         expect(listener.notify).to.have.been.called;
     });
+
+    it('can be used to create a document element', function() {
+        var document = jsdom.jsdom('<html><body><div id="message">Hello world!</div></body></html>');
+
+        expect(document.getElementById('message').innerHTML).to.equal('Hello world!');
+    });
 });
