@@ -8,8 +8,6 @@ chrome.setDefaultService(service);
 
 var expect = require('chai').expect;
 
-
-
 describe('Selenium', function() {
 
     var server;
@@ -32,13 +30,9 @@ describe('Selenium', function() {
     afterEach(function() {
         server.close();
         driver.quit();
-        // .then(function(){ exit(); }, function(error) {
-        //     expect(JSON.stringify(error)).to.equal(undefined);
-        //     exit();
-        // });
     });
 
-    it.skip('can be used to inspect the computed width of an element', function(done) {
+    it('can be used to inspect the computed width of an element', function(done) {
         this.timeout(5000);
         driver = new webdriver.Builder().withCapabilities(webdriver.Capabilities.chrome()).build();
         driver.get('http://localhost:5000/').then(
