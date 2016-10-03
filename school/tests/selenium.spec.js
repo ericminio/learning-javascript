@@ -1,12 +1,10 @@
-var webdriver = require('selenium-webdriver'),
-    By = webdriver.By,
-    until = webdriver.until;
-var chrome = require('selenium-webdriver/chrome');
-var path = require('chromedriver').path;
-var service = new chrome.ServiceBuilder(path).build();
-chrome.setDefaultService(service);
-
 var expect = require('chai').expect;
+
+var webdriver = require('selenium-webdriver'),
+    By = webdriver.By;
+var Capabilities = require('selenium-webdriver/lib/capabilities').Capabilities;
+var capabilities = Capabilities.firefox();
+capabilities.set('marionette', false);
 
 describe('Selenium', function() {
 
@@ -34,7 +32,7 @@ describe('Selenium', function() {
 
     it('can be used to inspect the computed width of an element', function(done) {
         this.timeout(5000);
-        driver = new webdriver.Builder().withCapabilities(webdriver.Capabilities.chrome()).build();
+        driver = new webdriver.Builder().withCapabilities(capabilities).build();
         driver.get('http://localhost:5000/').then(
             function() {
                 var element = driver.findElement(By.id('greetings'));
