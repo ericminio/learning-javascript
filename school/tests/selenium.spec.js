@@ -6,7 +6,9 @@ var webdriver = require('selenium-webdriver'),
     By = webdriver.By;
 var Capabilities = require('selenium-webdriver/lib/capabilities').Capabilities;
 var capabilities = Capabilities.firefox();
-capabilities.set('marionette', false);
+capabilities.set('marionette', true);
+var path = require('path');
+process.env.PATH += path.delimiter + path.dirname(require('geckodriver').path);
 
 describe('Selenium', function() {
 
