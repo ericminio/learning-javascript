@@ -38,7 +38,7 @@ describe('Selenium', function() {
         // });
     });
 
-    it('can be used to inspect the computed width of an element', function(done) {
+    it.skip('can be used to inspect the computed width of an element', function(done) {
         this.timeout(5000);
         driver = new webdriver.Builder().withCapabilities(webdriver.Capabilities.chrome()).build();
         driver.get('http://localhost:5000/').then(
