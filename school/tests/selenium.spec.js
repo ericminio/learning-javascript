@@ -1,4 +1,6 @@
-var expect = require('chai').expect;
+var chai = require('chai');
+chai.use(require('chai-string'));
+var expect = chai.expect;
 
 var webdriver = require('selenium-webdriver'),
     By = webdriver.By;
@@ -38,7 +40,7 @@ describe('Selenium', function() {
                 var element = driver.findElement(By.id('greetings'));
                 element.getCssValue('width').then(
                     function(value) {
-                        expect(value).to.equal('57.75px');
+                        expect(value).to.endWith('px');
                         done();
                     },
                     function(error) {
