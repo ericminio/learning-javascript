@@ -107,4 +107,26 @@ describe('Jsdom', function() {
 
         expect(document.getElementById('message').innerHTML).to.equal('Hello world!');
     });
+
+    it('can be used to inspect computed color', function() {
+        var document = jsdom.jsdom('<html><head><style>span { color:red }</style></head><body><span id="message">Hello world!</span></body></html>');
+        var element = document.getElementById("message");
+        var style = document.defaultView.getComputedStyle(element, null);
+
+        expect(style.color).to.equal('red');
+    });
+
+    it('can be used to inspect window size', function(exit) {
+        jsdom.env({
+          url: "http://localhost:5000/",
+          features: {
+              FetchExternalResources: ["script"],
+              ProcessExternalResources: ["script"]
+          },
+          done: function (errors, window) {
+              expect(window.innerWidth).to.equal(1024);
+              exit();
+          }
+        });
+    });
 });
