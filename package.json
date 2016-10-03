@@ -4,11 +4,13 @@
   "devDependencies": {
     "chai": "^3.3.0",
     "cheerio": "latest",
+    "chromedriver": "^2.24.1",
     "crypto": "latest",
     "deep-equal": "latest",
     "jsdom": "latest",
     "log4js": "^0.6.27",
     "mocha": "^2.3.3",
+    "selenium-webdriver": "^3.0.0-beta-3",
     "sinon": "^1.17.1",
     "sinon-chai": "^2.8.0",
     "zombie": "^4.1.0"
