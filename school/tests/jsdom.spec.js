@@ -45,6 +45,10 @@ describe('Jsdom', function() {
                 response.writeHead(200, { 'content-type':'text/html' });
                 response.end(next);
             }
+            if (request.url == '/ping') {
+                response.writeHead(200, { 'content-type':'text/plain' });
+                response.end('pong');
+            }
         }).listen(5000);
     });
 
@@ -126,6 +130,32 @@ describe('Jsdom', function() {
           done: function (errors, window) {
               expect(window.innerWidth).to.equal(1024);
               exit();
+          }
+        });
+    });
+
+    it('offers a XMLHttpRequest implementation', function(exit) {
+        jsdom.env({
+          url: "http://localhost:5000/",
+          features: {
+              FetchExternalResources: ["script"],
+              ProcessExternalResources: ["script"]
+          },
+          done: function (errors, window) {
+              var xhr = new window.XMLHttpRequest();
+              xhr.onreadystatechange = function() {
+                  if (xhr.readyState == xhr.DONE && xhr.status == 200) {
+                      try {
+                          expect(xhr.responseText).to.equal('pong');
+                          exit();
+                      }
+                      catch (error) {
+                          exit(error);
+                      }
+                  }
+              };
+              xhr.open("GET", "http://localhost:5000/ping", true);
+              xhr.send();
           }
         });
     });
