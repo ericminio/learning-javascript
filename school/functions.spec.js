@@ -32,4 +32,19 @@ describe("Functions", function() {
 			expect(sequence.next()).to.equal(2);
 		});
 	});
+
+	describe('runtime creation', function() {
+
+		it('can be done from a string', function() {
+			var service = new Function('return "hello";');
+
+			expect(service()).to.equal('hello');
+		});
+		it('is a way to expose an api that is not a node module', function() {
+			var externalApi = 'var greetings = function() { return "hello"; };';
+			var service = (new Function( externalApi + 'return greetings;'))();
+
+			expect(service()).to.equal('hello');
+		});
+	});
 });
