@@ -22,6 +22,6 @@
     "npm": "3.10.8"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha school --recursive"
+    "test": "./node_modules/.bin/mocha school/**/*.spec.js --recursive"
   }
 }
