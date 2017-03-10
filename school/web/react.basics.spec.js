@@ -1,7 +1,7 @@
 const Browser = require('zombie');
 var browser = new Browser();
 
-describe.only('React HelloWorld', function() {
+describe('React HelloWorld', function() {
 
     var app;
     var server;
@@ -30,8 +30,8 @@ describe.only('React HelloWorld', function() {
         };
 
         var send = function(file, response) {
-            var angular = require('path').join(__dirname, '/lib/' + file);
-            var content = require('fs').readFileSync(angular).toString();
+            var path = require('path').join(__dirname, '/lib/' + file);
+            var content = require('fs').readFileSync(path).toString();
             response.setHeader('Content-Type', 'text/plain');
             response.write(content);
         };
