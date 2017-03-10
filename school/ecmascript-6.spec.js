@@ -68,4 +68,19 @@ describe('ECMAScript 6', function() {
             '}';
         yes(sir);
     });
+    it('introduces classes', function(sir) {
+        script = '' +
+            'class Greeting {'+
+            '   constructor(value) {'+
+            '       this.value = value;'+
+            '   }'+
+            '   message() {'+
+            '       return this.value;'+
+            '   }'+
+            '}'+
+            'var output = () => { ' +
+            '   return new Greeting("hello").message();' +
+            '}';
+        yes(sir);
+    });
 });
