@@ -9,9 +9,8 @@ describe('React HelloWorld', function() {
 
     beforeEach(function(done) {
 
-        var sendPage = function(response) {
-            response.setHeader('Content-Type', 'text/html');
-            var page = '<html>' +
+        var page = '' +
+        '<html>' +
             '<head>' +
                 '<script src="react-15.3.1.min.js"></script>' +
                 '<script src="react-dom-15.3.1.min.js"></script>' +
@@ -25,30 +24,23 @@ describe('React HelloWorld', function() {
                     ');' +
                 '</script>'+
             '</body>'+
-            '</html>';
-            response.write(page);
-        };
+        '</html>';
 
-        var send = function(file, response) {
-            var path = require('path').join(__dirname, '/lib/' + file);
-            var content = require('fs').readFileSync(path).toString();
-            response.setHeader('Content-Type', 'text/plain');
-            response.write(content);
-        };
-
-        var handler = function(request, response) {
+        app = require('http').createServer(function(request, response) {
             var url = require('url');
             var parsed = url.parse(request.url, true);
             if (parsed.pathname.endsWith('.js')) {
-                send(parsed.pathname, response);
+                var path = require('path').join(__dirname, '/lib/' + parsed.pathname);
+                var content = require('fs').readFileSync(path).toString();
+                response.setHeader('Content-Type', 'application/javascript');
+                response.write(content);
             }
             else {
-                sendPage(response);
+                response.setHeader('Content-Type', 'text/html');
+                response.write(page);
             }
             response.end();
-        };
-
-        app = require('http').createServer(handler);
+        });
         app.listen(port, done);
     });
 
