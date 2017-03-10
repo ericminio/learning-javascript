@@ -44,17 +44,28 @@ describe('ECMAScript 6', function() {
         app.close();
     });
 
-    it('introduces destructuring', function(done) {
+    var yes = function(done) {
+        browser.visit('http://localhost:' + port)
+            .then(function() {
+                browser.assert.text('#root', 'hello');
+            })
+            .then(done, done);
+    };
+
+    it('introduces destructuring', function(sir) {
         script = '' +
             'var output = function() { ' +
             '   let options = { message:"hello", source:"a friend" };' +
             '   let {message, source} = options;' +
             '   return message;' +
             '}';
-        browser.visit('http://localhost:' + port)
-            .then(function() {
-                browser.assert.text('#root', 'hello');
-            })
-            .then(done, done);
+        yes(sir);
+    });
+    it('introduces arrow functions', function(sir) {
+        script = '' +
+            'var output = () => { ' +
+            '   return "hello";' +
+            '}';
+        yes(sir);
     });
 });
