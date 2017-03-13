@@ -1,7 +1,7 @@
 const Browser = require('zombie');
 var browser = new Browser();
 
-describe('ECMAScript 6', function() {
+describe.only('ECMAScript 6', function() {
 
     var app;
     var server;
@@ -47,7 +47,7 @@ describe('ECMAScript 6', function() {
     var yes = function(done) {
         browser.visit('http://localhost:' + port)
             .then(function() {
-                browser.assert.text('#root', 'hello');
+                browser.assert.text('#root', 'hello world');
             })
             .then(done, done);
     };
@@ -55,7 +55,7 @@ describe('ECMAScript 6', function() {
     it('introduces destructuring', function(sir) {
         script = '' +
             'var output = function() { ' +
-            '   let options = { message:"hello", source:"a friend" };' +
+            '   let options = { message:"hello world", source:"a friend" };' +
             '   let {message, source} = options;' +
             '   return message;' +
             '}';
@@ -64,7 +64,7 @@ describe('ECMAScript 6', function() {
     it('introduces arrow functions', function(sir) {
         script = '' +
             'var output = () => { ' +
-            '   return "hello";' +
+            '   return "hello world";' +
             '}';
         yes(sir);
     });
@@ -79,7 +79,23 @@ describe('ECMAScript 6', function() {
             '   }'+
             '}'+
             'var output = () => { ' +
-            '   return new Greeting("hello").message();' +
+            '   return new Greeting("hello world").message();' +
+            '}';
+        yes(sir);
+    });
+    it('introduces template literals', function(sir) {
+        script = '' +
+            'var output = () => { ' +
+            '   let a = "hello world";' +
+            '   return `${a}`' +
+            '}';
+        yes(sir);
+    });
+    it('introduces multi-line strings', function(sir) {
+        script = '' +
+            'var output = () => { ' +
+            '   return `hello' +
+            '   world`;' +
             '}';
         yes(sir);
     });
