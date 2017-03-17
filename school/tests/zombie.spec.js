@@ -16,14 +16,10 @@ describe('Zombie', function() {
             '</head>' +
             '<body>'+
                 '<div id="greetings"></div>' +
-                '<div id="message"></div>' +
                 '<script>'+
-                    '$( "#message" ).on("this-event", function() {'+
-                    '   document.getElementById("message").innerHTML = "I see you";'+
-                    '});' +
                     '$( document ).ready(function() {'+
                     '   document.getElementById("greetings").innerHTML = "hello world";'+
-                    '   document.getElementById("message").dispatchEvent(new Event("this-event"));'+
+                    '   document.dispatchEvent(new Event("this-event"));'+
                     '});' +
                 '</script>'+
             '</body>'+
