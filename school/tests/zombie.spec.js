@@ -16,9 +16,14 @@ describe('Zombie', function() {
             '</head>' +
             '<body>'+
                 '<div id="greetings"></div>' +
+                '<div id="message"></div>' +
                 '<script>'+
+                    '$( "#message" ).on("this-event", function() {'+
+                    '   document.getElementById("message").innerHTML = "I see you";'+
+                    '});' +
                     '$( document ).ready(function() {'+
                     '   document.getElementById("greetings").innerHTML = "hello world";'+
+                    '   document.getElementById("message").dispatchEvent(new Event("this-event"));'+
                     '});' +
                 '</script>'+
             '</body>'+
@@ -52,5 +57,18 @@ describe('Zombie', function() {
                 browser.assert.text('#greetings', 'hello world');
             })
             .then(done, done);
+    });
+
+    it('can spy custom events', function(done) {
+        browser.on('event', function(e) {
+            if (e.type == 'this-event') {
+                done();
+            }
+        });
+        browser.visit('http://localhost:' + port)
+        .then(function() {
+            browser.assert.text('#message', 'I see you');
+        })
+        .then(function(){}, done);
     });
 });
