@@ -66,9 +66,6 @@ describe('Zombie', function() {
             }
         });
         browser.visit('http://localhost:' + port)
-        .then(function() {
-            browser.assert.text('#message', 'I see you');
-        })
-        .then(function(){}, done);
+            .then(function(){}, done);
     });
 });
