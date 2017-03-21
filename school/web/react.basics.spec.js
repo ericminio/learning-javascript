@@ -1,15 +1,14 @@
 const Browser = require('zombie');
 var browser = new Browser();
+var server = require('./lib/server');
 
 describe('React HelloWorld', function() {
 
     var app;
-    var server;
     var port = 5000;
 
     beforeEach(function(done) {
-
-        var page = '' +
+        app = server({ index:'' +
         '<html>' +
             '<head>' +
                 '<script src="react-15.3.1.min.js"></script>' +
@@ -24,24 +23,7 @@ describe('React HelloWorld', function() {
                     ');' +
                 '</script>'+
             '</body>'+
-        '</html>';
-
-        app = require('http').createServer(function(request, response) {
-            var url = require('url');
-            var parsed = url.parse(request.url, true);
-            if (parsed.pathname.endsWith('.js')) {
-                var path = require('path').join(__dirname, '/lib/' + parsed.pathname);
-                var content = require('fs').readFileSync(path).toString();
-                response.setHeader('Content-Type', 'application/javascript');
-                response.write(content);
-            }
-            else {
-                response.setHeader('Content-Type', 'text/html');
-                response.write(page);
-            }
-            response.end();
-        });
-        app.listen(port, done);
+        '</html>' }).listen(port, done);
     });
 
     afterEach(function() {

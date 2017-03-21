@@ -15,6 +15,23 @@ describe('Regexp', function() {
 		});
 	});
 
+	describe('matching extension', function() {
+
+		var pattern = /\.js$/;
+
+		it('passes with a matching filename', function() {
+			expect(pattern.test('any-file.js')).to.equal(true);
+		});
+
+		it('fails with a non-matching extension', function() {
+			expect(pattern.test('another.extension')).to.equal(false);
+		});
+
+		it('fails with a mal-formed extension', function() {
+			expect(pattern.test('hiddenjs')).to.equal(false);
+		});
+	});
+
 	describe('matching /players', function() {
 
 		var pattern = /^\/players/;

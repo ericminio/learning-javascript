@@ -1,7 +1,7 @@
 const Browser = require('zombie');
 var browser = new Browser();
 
-describe.only('ECMAScript 6', function() {
+describe('ECMAScript 6', function() {
 
     var app;
     var server;
