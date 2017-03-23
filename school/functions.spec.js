@@ -46,5 +46,11 @@ describe("Functions", function() {
 
 			expect(service()).to.equal('hello');
 		});
+		it('can digest parameters', function() {
+			var api = 'var greetings = function(name) { return "hello " + name; };';
+			var service = (new Function( api + 'return greetings;'))();
+
+			expect(service('Joe')).to.equal('hello Joe');
+		});
 	});
 });
