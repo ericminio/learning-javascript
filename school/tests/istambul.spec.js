@@ -27,10 +27,15 @@ describe('Istanbul', function() {
 
         expect(coverageData().f).to.deep.equal({ '1':0, '2':1, '3':0 });
     });
-    it('detects branch coverage as expected', function() {
+    it('detects branch-if as expected', function() {
         meaningOfLife(true);
 
         expect(coverageData().b).to.deep.equal({ '1': [1, 0] });
+    });
+    it('detects branch-else as expected', function() {
+        meaningOfLife(false);
+
+        expect(coverageData().b).to.deep.equal({ '1': [0, 1] });
     });
     it('defaults function declaration with 1 in line coverage', function() {
         expect(coverageData().s).to.deep.equal({ '1':1, '2':1, '3':0, '4':0, '5':0, '6':1 });
