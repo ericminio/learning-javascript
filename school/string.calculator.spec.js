@@ -18,16 +18,12 @@ describe('string calculator', function() {
     expect(eval('x*(y+z)', { x:5, y:6, z:2 })).to.equal(40);
   });
 
-  it('supports float numbers', function() {
-    expect(eval('x+y', { x:5, y:2.3 })).to.equal(7.3);
+  it('supports spaces in expression', function() {
+    expect(eval(' x + y + 1', { x:5, y:4 })).to.equal(10);
   });
 
   it('supports expression with static values', function() {
     expect(eval('x+2.3+1.7', { x:5 })).to.equal(9);
-  });
-
-  it('supports spaces in expression', function() {
-    expect(eval(' x +y + 1.2', { x:5, y:4 })).to.equal(10.2);
   });
 
 });
@@ -37,10 +33,6 @@ var operations = [
   { code: '*', call: function(a, b) { return a*b; } }
 ];
 
-var valueFromMap = function(variable, map) {
-  return map[variable.trim()];
-};
-
 var eval = function(expression, map) {
 
   var indexOfClosingParenthesis = expression.indexOf(')');
@@ -48,21 +40,19 @@ var eval = function(expression, map) {
     var indexOfOpeningParenthesis = expression.substring(0, indexOfClosingParenthesis).lastIndexOf('(');
     var subExpression = expression.substring(indexOfOpeningParenthesis+1, indexOfClosingParenthesis);
     var value = eval(subExpression, map);
-    return eval(expression.substring(0, indexOfOpeningParenthesis) + value + expression.substring(indexOfClosingParenthesis+1), map);
+    var reducedExpression = expression.substring(0, indexOfOpeningParenthesis)
+                            + value
+                            + expression.substring(indexOfClosingParenthesis+1)
+    return eval(reducedExpression, map);
   }
-
   for (var index = 0; index<operations.length; index++) {
-    indexOfOperation = expression.indexOf(operations[index].code);
-    if(indexOfOperation != -1) {
-      var left = expression.substring(0, indexOfOperation);
-      var right = expression.substring(indexOfOperation + 1);
+    indexOfOperator = expression.indexOf(operations[index].code);
+    if(indexOfOperator != -1) {
+      var left = expression.substring(0, indexOfOperator);
+      var right = expression.substring(indexOfOperator + 1);
       return operations[index].call(eval(left, map), eval(right, map));
     }
   }
-
-  var value = valueFromMap(expression, map);
-  if (value === undefined) {
-      return parseFloat(expression);
-  }
-  return parseFloat(value);
+  var value = map[expression.trim()];
+  return value !== undefined ? value : parseFloat(expression);
 };
