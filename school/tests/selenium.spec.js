@@ -8,7 +8,7 @@ var Capabilities = require('selenium-webdriver/lib/capabilities').Capabilities;
 var capabilities = Capabilities.firefox();
 capabilities.set('marionette', false);
 
-describe('Selenium', function() {
+xdescribe('Selenium', function() {
 
     var server;
     var driver;
