@@ -18,6 +18,18 @@ describe('string calculator', function() {
     expect(eval('x*(y+z)', { x:5, y:6, z:2 })).to.equal(40);
   });
 
+  it('supports float numbers', function() {
+    expect(eval('x+y', { x:5, y:2.3 })).to.equal(7.3);
+  });
+
+  it('supports expression with static values', function() {
+    expect(eval('x+2.3+1.7', { x:5 })).to.equal(9);
+  });
+
+  it('supports spaces in expression', function() {
+    expect(eval(' x +y + 1.2', { x:5, y:4 })).to.equal(10.2);
+  });
+
 });
 
 var operations = [
@@ -26,7 +38,7 @@ var operations = [
 ];
 
 var valueFromMap = function(variable, map) {
-  return map[variable];
+  return map[variable.trim()];
 };
 
 var eval = function(expression, map) {
@@ -50,7 +62,7 @@ var eval = function(expression, map) {
 
   var value = valueFromMap(expression, map);
   if (value === undefined) {
-      return parseInt(expression);
+      return parseFloat(expression);
   }
-  return parseInt(value);
+  return parseFloat(value);
 };
