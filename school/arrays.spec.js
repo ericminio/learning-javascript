@@ -62,7 +62,7 @@ describe("Arrays", function() {
 			array.push(one);
 			array.push(two);
 
-            expect(array.pop()).to.equal(two);
+      expect(array.pop()).to.equal(two);
 		});
 
 		it("'shift' removes the first element", function() {
@@ -81,6 +81,34 @@ describe("Arrays", function() {
 
 			expect(array.length).to.equal(1);
 			expect(array[0]).to.equal(two);
+		});
+
+	});
+
+	describe("extracting elements", function() {
+
+		it("'slice' can extract the beginning of an array", function() {
+			array = ['one', 'two', 'three', 'four', 'five'];
+
+			expect(array.slice(0, 2)).to.deep.equal(['one', 'two']);
+		});
+
+		it("'slice' can extract the end of an array", function() {
+			array = ['one', 'two', 'three', 'four', 'five'];
+
+			expect(array.slice(2)).to.deep.equal(['three', 'four', 'five']);
+		});
+
+		it("'slice' actually extract [start, end[", function() {
+			array = ['one', 'two', 'three', 'four', 'five'];
+
+			expect(array.slice(1, 4)).to.deep.equal(['two', 'three', 'four']);
+		});
+
+		it("'slice' accepts negative end index", function() {
+			array = ['one', 'two', 'three', 'four', 'five'];
+
+			expect(array.slice(1, -2)).to.deep.equal(['two', 'three']);
 		});
 
 	});
