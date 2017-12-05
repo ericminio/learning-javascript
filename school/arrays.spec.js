@@ -111,6 +111,12 @@ describe("Arrays", function() {
 			expect(array.slice(1, -2)).to.deep.equal(['two', 'three']);
 		});
 
+		it("'slice' resists short array", function() {
+			array = ['one', 'two', 'three'];
+
+			expect(array.slice(0, 5)).to.deep.equal(['one', 'two', 'three']);
+		});
+
 	});
 
 	describe("2D", function() {
