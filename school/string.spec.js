@@ -24,4 +24,11 @@ describe('string', function() {
             expect('  ***  '.replace(/^(\s*)(\*)(\**)(\*)(\s*)$/, '$1B$3B$5')).to.equal('  B*B  ');
         });
     });
+    
+    describe('repetition of same character', function() {
+
+        it('can be done with array', function() {
+            expect(Array(3).join('A')).to.equal('AA');
+        });
+    });
 });
