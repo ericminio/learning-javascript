@@ -20,7 +20,7 @@ describe("Functions", function() {
 	describe("nested functions", function() {
 
 		it("can access fields of the outer function", function() {
-			sequence = function() {
+			var sequence = function() {
 				var n = 0;
 
                 return {

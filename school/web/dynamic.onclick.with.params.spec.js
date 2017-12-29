@@ -2,7 +2,7 @@ var expect = require('chai').expect;
 var sinon = require('sinon');
 require('chai').use(require('sinon-chai'));
 
-CustomWidget = function() {
+var CustomWidget = function() {
     this.useTemplate('<button id="save-button">Save</button>"');
 };
 
@@ -26,14 +26,14 @@ CustomWidget.prototype = {
     }
 };
 
-sendAllFieldsStrategy = function(ajax) {
+var sendAllFieldsStrategy = function(ajax) {
 
     return function(id, value) {
         ajax.send('id=' + id + '&value=' + value);
     };
 };
 
-sendOnlyTheValueStrategy = function(ajax) {
+var sendOnlyTheValueStrategy = function(ajax) {
 
     return function(id, value) {
         ajax.send('value=' + value);

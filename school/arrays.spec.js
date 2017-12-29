@@ -29,7 +29,7 @@ describe("Arrays", function() {
 		it("'splice' offers insertion", function() {
 			array.push(one);
 			array.push(two);
-			bird = { value : "bird" };
+			var bird = { value : "bird" };
 			array.splice(0, 1, bird);
 
 			expect(array[0]).to.equal(bird);
@@ -38,8 +38,8 @@ describe("Arrays", function() {
 		it("'splice' offers multi-insertion", function() {
 			array.push(one);
 			array.push(two);
-			fox = { value : "fox" };
-			cat = { value : "cat" };
+			var fox = { value : "fox" };
+			var cat = { value : "cat" };
 			array.splice(1, 2, fox, cat);
 
 			expect(array[1]).to.equal(fox);

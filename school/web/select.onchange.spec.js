@@ -5,6 +5,7 @@ var jsdom = require("jsdom");
 
 describe('Triggering script via select onchange', function() {
 
+    var server;
     beforeEach(function() {
         server = require('http').createServer(function(request, response) {
             var index = '' +

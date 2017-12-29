@@ -1,6 +1,6 @@
 var expect = require('chai').expect;
 
-describe.only('Object assign', function() {
+describe('Object assign', function() {
 
 	it('can be used to merge two objects', function() {
 		var first = { one: 'one', two: 'two' };
