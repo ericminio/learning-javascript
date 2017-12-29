@@ -2,6 +2,10 @@
   "name": "learning-javascript",
   "version": "1.0.0",
   "devDependencies": {
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-register": "^6.26.0",
     "chai": "^3.3.0",
     "chai-string": "^1.2.0",
     "cheerio": "latest",
@@ -13,6 +17,8 @@
     "jsdom": "9.12",
     "log4js": "^0.6.27",
     "mocha": "^2.3.3",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "selenium-webdriver": "3.0.0-beta-2",
     "sinon": "^1.17.1",
     "sinon-chai": "^2.8.0",
@@ -23,6 +29,6 @@
     "npm": "3.10.8"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha school/**/*.spec.js --recursive"
+    "test": "./node_modules/.bin/mocha --require babel-polyfill --require babel-register school/*.js school/web/*.js"
   }
 }
