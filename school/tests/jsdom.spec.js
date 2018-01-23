@@ -2,6 +2,7 @@ var expect = require('chai').expect;
 var sinon = require('sinon');
 require('chai').use(require('sinon-chai'));
 var jsdom = require("jsdom");
+var canvas = require('canvas');
 
 describe('Jsdom', function() {
 
@@ -151,5 +152,21 @@ describe('Jsdom', function() {
         };
         xhr.open("GET", "http://localhost:5000/ping", true);
         xhr.send();
+    });
+
+    it('can be used to inspect canvas content', function() {
+        var document = jsdom.jsdom('<canvas id="board" width="15", height="15"></canvas>');
+        var canvas = document.getElementById('board');
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#FF0000';
+        ctx.fillRect(1, 1, 1, 1);
+        var img = ctx.getImageData(0, 0, 2, 2);
+
+        expect(img.data).to.deep.equal({
+            '0':0, '1':0, '2':0, '3':0,
+            '4':0, '5':0, '6':0, '7':0,
+            '8':0, '9':0, '10':0, '11':0,
+            '12':255, '13':0, '14':0, '15':255,
+        });
     });
 });
