@@ -67,7 +67,7 @@ describe("Functions", function() {
             expect(things[1].value()).to.equal(2);
         });
 
-        it('can ne worked around', function() {
+        it('can be worked around', function() {
             var createFunction = function(i) { return function() { return i; }};
             var things = [];
             for (var i=0; i<2; i++) {
