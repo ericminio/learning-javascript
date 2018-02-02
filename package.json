@@ -6,7 +6,6 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.26.0",
-    "canvas": "^1.6.9",
     "chai": "^3.3.0",
     "chai-string": "^1.2.0",
     "cheerio": "latest",

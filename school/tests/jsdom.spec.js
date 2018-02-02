@@ -2,7 +2,7 @@ var expect = require('chai').expect;
 var sinon = require('sinon');
 require('chai').use(require('sinon-chai'));
 var jsdom = require("jsdom");
-var canvas = require('canvas');
+//var canvas = require('canvas');
 
 describe('Jsdom', function() {
 
@@ -154,7 +154,7 @@ describe('Jsdom', function() {
         xhr.send();
     });
 
-    it('can be used to inspect canvas content', function() {
+    it.skip('can be used to inspect canvas content', function() {
         var document = jsdom.jsdom('<canvas id="board" width="15", height="15"></canvas>');
         var canvas = document.getElementById('board');
         const ctx = canvas.getContext('2d');
