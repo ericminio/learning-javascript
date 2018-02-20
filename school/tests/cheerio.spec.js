@@ -3,9 +3,13 @@ var expect = require('chai').expect;
 
 describe('cheerio', function() {
 
-    var html =  '<html><body>' +
-                    '<label id="number">42</label>' +
-                '</body></html>';
+    var html = `
+        <html>
+            <body>
+                <label id="number">42</label>
+            </body>
+        </html>
+    `;
     var page;
 
     beforeEach(function() {
