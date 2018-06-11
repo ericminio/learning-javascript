@@ -98,5 +98,16 @@ describe('ECMAScript 6', function() {
             '   world`;' +
             '}';
         yes(sir);
+    });    
+    it('introduces rest operator', function(sir) {
+        script = `
+            var concatenate = (...args)=>{
+                return args.join(' ');
+            }
+            var output = () => {
+                return concatenate('hello', 'world');
+            }
+        `;
+        yes(sir);
     });
 });

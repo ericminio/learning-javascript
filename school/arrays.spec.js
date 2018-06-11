@@ -190,5 +190,16 @@ describe("Arrays", function() {
         it('concatenates the three given arrays', function() {
             expect([1, 2].concat([3, 4], [5, 6])).to.deep.equal([1, 2, 3, 4, 5, 6]);
         });
-    });
+	});
+
+	describe('From', function() {
+
+		it('creates an array', function() {
+			expect(Array.from('hello')).to.deep.equal(['h', 'e', 'l', 'l', 'o']);
+		});
+
+		it('accepts a map function', function() {
+			expect(Array.from('hello', x=> x.toUpperCase() )).to.deep.equal(['H', 'E', 'L', 'L', 'O']);
+		});
+	});
 });
