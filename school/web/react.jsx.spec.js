@@ -1,13 +1,14 @@
 var expect = require('chai').expect;
 import React from 'react';
 import ReactDOM from 'react-dom';
-var jsdom = require("jsdom");
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
 
 describe('React', function() {
 
     var document;
     beforeEach(function() {
-        document = jsdom.jsdom('<div id="root"></div>');
+        document = new JSDOM(`<div id="root"></div>`).window.document;
     });
     it('can render an element', function() {
         const element = <h1 id="greetings">Hello world</h1>;

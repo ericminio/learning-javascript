@@ -1,5 +1,5 @@
 const Browser = require('zombie');
-var browser = new Browser();
+const browser = new Browser();
 
 describe('Angular v1', function() {
 
@@ -56,8 +56,8 @@ describe('Angular v1', function() {
         app.listen(port, done);
     });
 
-    afterEach(function() {
-        app.close();
+    afterEach(function(done) {
+        app.close(done);
     });
 
     it('can make http GET requests', function(done) {

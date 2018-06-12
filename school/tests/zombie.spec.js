@@ -1,35 +1,52 @@
 const Browser = require('zombie');
-var browser = new Browser();
-var server = require('../web/lib/server');
+const browser = new Browser();
+let LocalServer = require('./local.server');
 
 describe('Zombie', function() {
 
-    var app;
-    var port = 5000;
+    var server;
+    var page = `
+        <html>
+            <head>
+                <script src="jquery-2.1.3.min.js"></script>
+            </head>
+            <body>
+                <div id="greetings"></div>
+                <script>
+                    $( document ).ready(function() {
+                        document.getElementById("greetings").innerHTML = "hello world";
+                        document.dispatchEvent(new Event("this-event"));
+                    });
+                </script>
+            </body>
+        </html>
+    `;
 
     beforeEach(function(done) {
-        app = server({ index:'' +
-        '<html>' +
-            '<head>' +
-                '<script src="jquery-2.1.3.min.js"></script>' +
-            '</head>' +
-            '<body>'+
-                '<div id="greetings"></div>' +
-                '<script>'+
-                    '$( document ).ready(function() {'+
-                    '   document.getElementById("greetings").innerHTML = "hello world";'+
-                    '   document.dispatchEvent(new Event("this-event"));'+
-                    '});' +
-                '</script>'+
-            '</body>'+
-        '</html>' }).listen(port, done);
+
+        server = new LocalServer((request, response)=>{
+            var url = require('url');
+            var parsed = url.parse(request.url, true);
+            if (/\.js$/.test(parsed.pathname)) {
+                var path = require('path').join(__dirname, '../web/lib', parsed.pathname);
+                var content = require('fs').readFileSync(path).toString();
+                response.setHeader('Content-Type', 'application/javascript');
+                response.write(content);
+            }
+            else {
+                response.setHeader('Content-Type', 'text/html');
+                response.write(page);
+            }
+            response.end();
+        });
+        server.start(done);
     });
-    afterEach(function() {
-        app.close();
+    afterEach(function(done) {
+        server.stop(done);
     });
 
     it('can digest jquery', function(done) {
-        browser.visit('http://localhost:' + port)
+        browser.visit('http://localhost:' + server.port)
             .then(function() {
                 browser.assert.text('#greetings', 'hello world');
             })
@@ -41,7 +58,7 @@ describe('Zombie', function() {
                 done();
             }
         });
-        browser.visit('http://localhost:' + port)
+        browser.visit('http://localhost:' + server.port)
             .then(function(){}, done);
     });
 });

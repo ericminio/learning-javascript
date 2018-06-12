@@ -61,7 +61,7 @@ describe('CORS', function() {
         };
         browser.visit('http://localhost:' + port, function() {
             browser.click('#go', function() {
-                expect(browser.errors[0].toString()).to.equal('SecurityError');
+                expect(browser.errors[0].toString()).to.equal('Cannot make request to different domain: 18');
                 done();
             });
         });

@@ -46,10 +46,12 @@ describe('Dynamic onclick event', function() {
         send: sinon.spy()
     };
 
-    var document = require('jsdom').jsdom(''+
-        '<div id="this-container">'+
-        '</div>'
-    );
+    const jsdom = require("jsdom");
+    const { JSDOM } = jsdom;
+    var document = new JSDOM(`
+        <div id="this-container">
+        </div>`
+    ).window.document;
 
     var container = document.getElementById('this-container');
     var firstSaveButton;

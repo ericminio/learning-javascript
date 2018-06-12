@@ -1,143 +1,158 @@
 var expect = require('chai').expect;
 var sinon = require('sinon');
 require('chai').use(require('sinon-chai'));
-var jsdom = require("jsdom");
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
 //var canvas = require('canvas');
+let LocalServer = require('./local.server');
 
 describe('Jsdom', function() {
 
     var server;
+    var thirdParty;
 
-    beforeEach(function() {
-        server = require('http').createServer(function(request, response) {
-            var index = '' +
-            '<html>' +
-            '   <head>' +
-            '       <title>initial title</title>' +
-            '       <script src="/title.js"></script>' +
-            '   </head>' +
-            '   <body>' +
-            '       <script>' +
-            '           window.onload = function() { modifyTitle(); }' +
-            '       </script>' +
-            '       <a id="navigate" href="/next.html">go</a>' +
-            '   </body>' +
-            '</html>';
-            var script = 'function modifyTitle() { document.title = "modified title"; }';
-            var next = '' +
-            '<html>' +
-            '   <head>' +
-            '       <title>next page</title>' +
-            '   </head>' +
-            '   <body>' +
-            '   </body>' +
-            '</html>';
-
-            if (request.url == '/') {
-                response.writeHead(200, { 'content-type':'text/html' });
-                response.end(index);
-            }
-            if (request.url == '/title.js') {
-                response.writeHead(200, { 'content-type':'application/javascript' });
-                response.end(script);
-                return;
-            }
-            if (request.url == '/next.html') {
-                response.writeHead(200, { 'content-type':'text/html' });
-                response.end(next);
-            }
-            if (request.url == '/ping') {
-                response.setHeader('Content-Type', 'text/plain');
-                response.setHeader('Access-Control-Allow-Origin', '*');
-                response.end('pong');
-            }
-        }).listen(5000);
-    });
-
-    afterEach(function() {
-        server.close();
-    });
-
-    it('can download and execute a script', function(exit) {
-        jsdom.env({
-          url: "http://localhost:5000/",
-          features: {
-              FetchExternalResources: ["script"],
-              ProcessExternalResources: ["script"]
-          },
-          done: function (errors, window) {
-              expect(window.document.title).to.equal('modified title');
-              exit();
-          }
+    beforeEach(function(done) {
+        thirdParty = new LocalServer(function(request, response) {
+            //response.setHeader('Access-Control-Allow-Origin', '*');
+            response.write('data coming from third party');
+            response.end();
         });
-    });
-
-    it('can be used to follow a link by hand', function(exit) {
-        jsdom.env({
-          url: "http://localhost:5000/",
-          features: {
-              FetchExternalResources: ["script"],
-              ProcessExternalResources: ["script"]
-          },
-          done: function (errors, window) {
-              var link = window.document.querySelector('a#navigate');
-              jsdom.env({
-                url: link.href,
-                features: {
-                    FetchExternalResources: ["script"],
-                    ProcessExternalResources: ["script"]
-                },
-                done: function (errors, window) {
-                    expect(window.document.title).to.equal('next page');
-                    exit();
+        thirdParty.start(function() {
+            server = new LocalServer(function(request, response) {
+                var index = `
+                    <html>
+                        <head>
+                            <title>initial title</title>
+                            <script src="modify-title.js"></script>
+                            <script src="fetch-data.js"></script>
+                        </head>
+                        <body>
+                            <label id="data">waiting...</label>
+                            <button id="modifyTitle" onclick="modifyTitle();">modify Title</button>
+                            <button id="fetchData" onclick="fetchData();">fetch data</button>
+                        </body>
+                    </html>        
+                `;
+                var modifyTitleScript = `function modifyTitle() { document.title = "modified title"; }`;
+                var fetchDataScript = `
+                    function fetchData() {
+                        var xhr = new window.XMLHttpRequest();
+                        xhr.onreadystatechange = function (oEvent) {  
+                            if (xhr.readyState === 4) {  
+                                if (xhr.status === 200) {  
+                                    document.getElementById('data').innerHTML = xhr.responseText;
+                                } else {  
+                                    document.getElementById('data').innerHTML = 'error';
+                                }  
+                            }  
+                        };
+                        xhr.open('GET', 'http://localhost:` + thirdParty.port + `/any', true);
+                        xhr.send();
+                    }
+                `;
+                var next = `
+                    <html>
+                        <head>
+                            <title>next page</title>
+                        </head>
+                    <body>
+                    </body>
+                    </html>
+                `;
+    
+                if (request.url == '/') {
+                    response.writeHead(200, { 'content-type':'text/html' });
+                    response.end(index);
                 }
-              });
-          }
+                if (request.url == '/modify-title.js') {
+                    response.writeHead(200, { 'content-type':'application/javascript' });
+                    response.end(modifyTitleScript);
+                    return;
+                }
+                if (request.url == '/fetch-data.js') {
+                    response.writeHead(200, { 'content-type':'application/javascript' });
+                    response.end(fetchDataScript);
+                    return;
+                }
+                if (request.url == '/next.html') {
+                    response.writeHead(200, { 'content-type':'text/html' });
+                    response.end(next);
+                }
+                if (request.url == '/ping') {
+                    response.setHeader('Content-Type', 'text/plain');
+                    response.setHeader('Access-Control-Allow-Origin', '*');
+                    response.end('pong');
+                }
+                if (request.url == '/any') {
+                    response.setHeader('Content-Type', 'text/plain');
+                    response.end('pong');
+                }
+            });
+            server.start(done);
         });
     });
 
-    it('handles events on dom elements', function() {
-        var listener = { notify: sinon.spy() };
-        var document = jsdom.jsdom('<button id="this-button"></button>');
-        var button = document.querySelector('#this-button');
-        button.onclick = function() { listener.notify(); }
-        var click = document.createEvent('Event');
-        click.initEvent('click', true, true);
-        button.dispatchEvent(click);
+    afterEach(function(done) {
+        thirdParty.stop(()=>{
+            server.stop(done);
+        });        
+    });
 
-        expect(listener.notify).to.have.been.called;
+    it('needs time to load external script', function(done) {
+        JSDOM.fromURL('http://localhost:'+server.port, {
+            runScripts: 'dangerously',
+            resources: 'usable'
+        })
+        .then((dom)=>{
+            expect(dom.window.document.title).to.equal('initial title');
+            setTimeout(() => {
+                let document = dom.window.document;
+                let button = document.getElementById('modifyTitle');
+                button.click();
+
+                expect(dom.window.document.title).to.equal('modified title');
+                done();    
+            }, 100);
+        });            
     });
 
     it('can be used to create a document element', function() {
-        var document = jsdom.jsdom('<html><body><div id="message">Hello world!</div></body></html>');
+        var document = new JSDOM(`<html><body><div id="message">Hello world!</div></body></html>`).window.document;
 
         expect(document.getElementById('message').innerHTML).to.equal('Hello world!');
     });
 
     it('can be used to inspect computed color', function() {
-        var document = jsdom.jsdom('<html><head><style>span { color:red }</style></head><body><span id="message">Hello world!</span></body></html>');
-        var element = document.getElementById("message");
+        var document = new JSDOM(`
+            <html>
+                <head>
+                    <style>span { color:red }</style>
+                </head>
+                <body>
+                    <span id="message">Hello world!</span>
+                </body>
+            </html>`).window.document;
+        var element = document.getElementById('message');
         var style = document.defaultView.getComputedStyle(element, null);
 
         expect(style.color).to.equal('red');
     });
 
-    it('can be used to inspect window size', function(exit) {
-        jsdom.env({
-          url: "http://localhost:5000/",
-          features: {
-              FetchExternalResources: ["script"],
-              ProcessExternalResources: ["script"]
-          },
-          done: function (errors, window) {
-              expect(window.innerWidth).to.equal(1024);
-              exit();
-          }
-        });
+    it('can be used to inspect window size', function(done) {
+        JSDOM.fromURL('http://localhost:'+server.port, {
+            runScripts: 'dangerously',
+            resources: 'usable'
+        })
+        .then((dom)=>{
+            setTimeout(() => {
+                expect(dom.window.innerWidth).to.equal(1024);
+                done();    
+            }, 100);
+        }); 
     });
 
     it('offers a XMLHttpRequest implementation', function(exit) {
-        var window = jsdom.jsdom('<html></html>').defaultView;
+        var window = new JSDOM(`<html></html>`).window;
         var xhr = new window.XMLHttpRequest();
         xhr.onreadystatechange = function() {
             if (xhr.readyState == xhr.DONE && xhr.status == 200) {
@@ -150,12 +165,12 @@ describe('Jsdom', function() {
                 }
             }
         };
-        xhr.open("GET", "http://localhost:5000/ping", true);
+        xhr.open('GET', 'http://localhost:'+server.port + '/ping', true);
         xhr.send();
     });
 
     it.skip('can be used to inspect canvas content', function() {
-        var document = jsdom.jsdom('<canvas id="board" width="15", height="15"></canvas>');
+        var document = new JSDOM(`<canvas id="board" width="15", height="15"></canvas>`).window.document;
         var canvas = document.getElementById('board');
         const ctx = canvas.getContext('2d');
         ctx.fillStyle = '#FF0000';
@@ -169,4 +184,24 @@ describe('Jsdom', function() {
             '12':255, '13':0, '14':0, '15':255,
         });
     });
+
+    it('can be used to detect the need for cors headers', function(done) {
+        const virtualConsole = new jsdom.VirtualConsole();
+        virtualConsole.on("jsdomError", (error) => { 
+            expect(error.message).to.equal('Cross origin http://localhost:' + server.port + ' forbidden');
+            done();
+        });
+        JSDOM.fromURL('http://localhost:'+server.port, {
+            runScripts: 'dangerously',
+            resources: 'usable',
+            virtualConsole: virtualConsole
+        })
+        .then((dom)=>{
+            setTimeout(() => {
+                let document = dom.window.document;
+                let button = document.getElementById('fetchData');
+                button.click();
+            }, 100);
+        }); 
+    });  
 });

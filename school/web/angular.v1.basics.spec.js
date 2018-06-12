@@ -1,37 +1,52 @@
 const Browser = require('zombie');
-var browser = new Browser();
-var server = require('./lib/server');
+const browser = new Browser();
+let LocalServer = require('../tests/local.server');
 
-describe('Angular v1', function() {
+describe.skip('Angular v1', function() {
 
-    var app;
-    var port = 5000;
+    var server;
+    var page = `
+    <html ng-app="testApp">
+        <head>
+            <script src="angular-1.3.0.min.js"></script>
+            <script>
+                var testApp = angular.module("testApp", []);
+
+                testApp.controller("GreetingsController", function GreetingsController($scope, $http) {
+                $scope.greetings = "Welcome Home";
+                });
+            </script>
+        </head>
+        <body ng-controller="GreetingsController">
+            <label id="greetings">{{greetings}}</label>
+        </body>
+    </html>
+    `;
 
     beforeEach(function(done) {
-        app = server({ index:'' +
-        '<html ng-app="testApp">' +
-            '<head>' +
-                '<script src="angular-1.3.0.min.js"></script>' +
-                '<script>'+
-                    'var testApp = angular.module("testApp", []);'+
-
-                    'testApp.controller("GreetingsController", function GreetingsController($scope, $http) {'+
-                      '$scope.greetings = "Welcome Home";'+
-                    '});' +
-                '</script>'+
-            '</head>' +
-            '<body ng-controller="GreetingsController">'+
-                '<label id="greetings">{{greetings}}</label>' +
-            '</body>'+
-        '</html>' }).listen(port, done);
+        server = new LocalServer((request, response)=>{
+            var url = require('url');
+            var parsed = url.parse(request.url, true);
+            if (/\.js$/.test(parsed.pathname)) {
+                var path = require('path').join(__dirname, '../web/lib', parsed.pathname);
+                var content = require('fs').readFileSync(path).toString();
+                response.setHeader('Content-Type', 'application/javascript');
+                response.write(content);
+            }
+            else {
+                response.setHeader('Content-Type', 'text/html');
+                response.write(page);
+            }
+            response.end();
+        });
+        server.start(done);
     });
-
-    afterEach(function() {
-        app.close();
+    afterEach(function(done) {
+        server.stop(done);
     });
 
     it('will eventually replace expressions in curly braces', function(done) {
-        browser.visit('http://localhost:' + port)
+        browser.visit('http://localhost:' + server.port)
             .then(function() {
                 browser.assert.text('#greetings', 'Welcome Home');
             })
