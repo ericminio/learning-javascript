@@ -10,7 +10,38 @@ describe('Jsdom', function() {
 
     var server;
     var thirdParty;
-
+    var index = `
+        <html>
+            <head>
+                <title>initial title</title>
+                <script src="modify-title.js"></script>
+                <script src="fetch-data.js"></script>
+            </head>
+            <body>
+                <label id="data">waiting...</label>
+                <button id="modifyTitle" onclick="modifyTitle();">modify Title</button>
+                <button id="fetchData" onclick="fetchData();">fetch data</button>
+            </body>
+        </html>        
+    `;
+    var modifyTitleScript = `function modifyTitle() { document.title = "modified title"; }`;
+    var fetchDataScript = function() { return `
+        function fetchData() {
+            var xhr = new window.XMLHttpRequest();
+            xhr.onreadystatechange = function (oEvent) {  
+                if (xhr.readyState === 4) {  
+                    if (xhr.status === 200) {  
+                        document.getElementById('data').innerHTML = xhr.responseText;
+                    } else {  
+                        document.getElementById('data').innerHTML = 'error';
+                    }  
+                }  
+            };
+            xhr.open('GET', 'http://localhost:` + thirdParty.port + `/any', true);
+            xhr.send();
+        }
+    `; }
+    
     beforeEach(function(done) {
         thirdParty = new LocalServer(function(request, response) {
             //response.setHeader('Access-Control-Allow-Origin', '*');
@@ -18,75 +49,12 @@ describe('Jsdom', function() {
             response.end();
         });
         thirdParty.start(function() {
-            server = new LocalServer(function(request, response) {
-                var index = `
-                    <html>
-                        <head>
-                            <title>initial title</title>
-                            <script src="modify-title.js"></script>
-                            <script src="fetch-data.js"></script>
-                        </head>
-                        <body>
-                            <label id="data">waiting...</label>
-                            <button id="modifyTitle" onclick="modifyTitle();">modify Title</button>
-                            <button id="fetchData" onclick="fetchData();">fetch data</button>
-                        </body>
-                    </html>        
-                `;
-                var modifyTitleScript = `function modifyTitle() { document.title = "modified title"; }`;
-                var fetchDataScript = `
-                    function fetchData() {
-                        var xhr = new window.XMLHttpRequest();
-                        xhr.onreadystatechange = function (oEvent) {  
-                            if (xhr.readyState === 4) {  
-                                if (xhr.status === 200) {  
-                                    document.getElementById('data').innerHTML = xhr.responseText;
-                                } else {  
-                                    document.getElementById('data').innerHTML = 'error';
-                                }  
-                            }  
-                        };
-                        xhr.open('GET', 'http://localhost:` + thirdParty.port + `/any', true);
-                        xhr.send();
-                    }
-                `;
-                var next = `
-                    <html>
-                        <head>
-                            <title>next page</title>
-                        </head>
-                    <body>
-                    </body>
-                    </html>
-                `;
-    
-                if (request.url == '/') {
-                    response.writeHead(200, { 'content-type':'text/html' });
-                    response.end(index);
-                }
-                if (request.url == '/modify-title.js') {
-                    response.writeHead(200, { 'content-type':'application/javascript' });
-                    response.end(modifyTitleScript);
-                    return;
-                }
-                if (request.url == '/fetch-data.js') {
-                    response.writeHead(200, { 'content-type':'application/javascript' });
-                    response.end(fetchDataScript);
-                    return;
-                }
-                if (request.url == '/next.html') {
-                    response.writeHead(200, { 'content-type':'text/html' });
-                    response.end(next);
-                }
-                if (request.url == '/ping') {
-                    response.setHeader('Content-Type', 'text/plain');
-                    response.setHeader('Access-Control-Allow-Origin', '*');
-                    response.end('pong');
-                }
-                if (request.url == '/any') {
-                    response.setHeader('Content-Type', 'text/plain');
-                    response.end('pong');
-                }
+            server = new LocalServer({
+                '/': index,
+                '/modify-title.js': modifyTitleScript,
+                '/fetch-data.js': fetchDataScript(),
+                '/ping': 'pong',
+                '/any': 'pong'    
             });
             server.start(done);
         });

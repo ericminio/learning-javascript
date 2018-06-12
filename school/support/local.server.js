@@ -12,6 +12,7 @@ LocalServer.prototype.wrapHandler = function() {
     else {        
         let self = this;
         return function(request, response) {   
+            response.setHeader('Access-Control-Allow-Origin', '*');
             var parsed = url.parse(request.url, true);            
             var pattern = /^\/lib\/(.*)\.js$/;
             if (pattern.test(parsed.pathname)) {
