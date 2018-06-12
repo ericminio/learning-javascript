@@ -8,7 +8,7 @@ describe('Zombie', function() {
     var page = `
         <html>
             <head>
-                <script src="jquery-2.1.3.min.js"></script>
+                <script src="/lib/jquery-2.1.3.min.js"></script>
             </head>
             <body>
                 <div id="greetings"></div>
@@ -23,22 +23,7 @@ describe('Zombie', function() {
     `;
 
     beforeEach(function(done) {
-
-        server = new LocalServer((request, response)=>{
-            var url = require('url');
-            var parsed = url.parse(request.url, true);
-            if (/\.js$/.test(parsed.pathname)) {
-                var path = require('path').join(__dirname, '../support', parsed.pathname);
-                var content = require('fs').readFileSync(path).toString();
-                response.setHeader('Content-Type', 'application/javascript');
-                response.write(content);
-            }
-            else {
-                response.setHeader('Content-Type', 'text/html');
-                response.write(page);
-            }
-            response.end();
-        });
+        server = new LocalServer(page);
         server.start(done);
     });
     afterEach(function(done) {
