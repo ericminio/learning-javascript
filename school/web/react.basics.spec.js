@@ -1,6 +1,6 @@
 const Browser = require('zombie');
 var browser = new Browser();
-var server = require('./lib/server');
+var server = require('../support/server');
 
 describe('React HelloWorld', function() {
 

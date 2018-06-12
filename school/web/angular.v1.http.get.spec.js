@@ -30,7 +30,7 @@ describe('Angular v1', function() {
         };
 
         var sendAngular = function(response) {
-            var angular = require('path').join(__dirname, '/lib/angular-1.3.0.min.js');
+            var angular = require('path').join(__dirname, '../support/angular-1.3.0.min.js');
             var content = require('fs').readFileSync(angular).toString();
             response.setHeader('Content-Type', 'text/plain');
             response.write(content);

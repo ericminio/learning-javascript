@@ -40,7 +40,7 @@ describe('Triggering script via select onchange', function() {
             if (request.url == '/jquery.js') {
                 response.writeHead(200, { 'content-type':'application/javascript' });
                 var fs = require('fs');
-                var jqueryLib = require('path').join(__dirname, '/lib/jquery-2.1.3.min.js');
+                var jqueryLib = require('path').join(__dirname, '../support/jquery-2.1.3.min.js');
                 var content = fs.readFileSync(jqueryLib).toString();
                 response.end(content);
                 return;

@@ -2,7 +2,7 @@ const Browser = require('zombie');
 const browser = new Browser();
 let LocalServer = require('../support/local.server');
 
-describe.skip('Angular v1', function() {
+describe('Angular v1', function() {
 
     var server;
     var page = `
@@ -28,7 +28,8 @@ describe.skip('Angular v1', function() {
             var url = require('url');
             var parsed = url.parse(request.url, true);
             if (/\.js$/.test(parsed.pathname)) {
-                var path = require('path').join(__dirname, '../web/lib', parsed.pathname);
+                var path = require('path').join(__dirname, '../support', parsed.pathname);
+                console.log(path);
                 var content = require('fs').readFileSync(path).toString();
                 response.setHeader('Content-Type', 'application/javascript');
                 response.write(content);

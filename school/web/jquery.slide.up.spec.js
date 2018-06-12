@@ -35,7 +35,7 @@ describe('slideUp jquery animation', function() {
 
         var sendJQuery = function(response) {
             var fs = require('fs');
-            var jqueryLib = require('path').join(__dirname, '/lib/jquery-2.1.3.min.js');
+            var jqueryLib = require('path').join(__dirname, '../support/jquery-2.1.3.min.js');
             var content = fs.readFileSync(jqueryLib).toString();
             response.setHeader('Content-Type', 'text/plain');
             response.write(content);

@@ -28,7 +28,7 @@ describe('Zombie', function() {
             var url = require('url');
             var parsed = url.parse(request.url, true);
             if (/\.js$/.test(parsed.pathname)) {
-                var path = require('path').join(__dirname, '../web/lib', parsed.pathname);
+                var path = require('path').join(__dirname, '../support', parsed.pathname);
                 var content = require('fs').readFileSync(path).toString();
                 response.setHeader('Content-Type', 'application/javascript');
                 response.write(content);
