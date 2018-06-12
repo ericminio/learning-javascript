@@ -13,7 +13,7 @@ describe('Angular v1', function() {
                     var testApp = angular.module("testApp", []);
 
                     testApp.controller("GreetingsController", function GreetingsController($scope, $http) {
-                    $scope.greetings = "Welcome Home";
+                        $scope.greetings = "Welcome Home";
                     });
                 </script>
             </head>
