@@ -5,7 +5,7 @@ const Browser = require('zombie');
 const browser = new Browser();
 let request = require('request');
 
-describe.only('Local Server', ()=> {
+describe('Local Server', ()=> {
 
     let server;
     afterEach((done)=>{

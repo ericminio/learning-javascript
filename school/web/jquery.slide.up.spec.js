@@ -1,66 +1,42 @@
 const Browser = require('zombie');
 var browser = new Browser();
+let LocalServer = require('../support/local.server');
 
 describe('slideUp jquery animation', function() {
 
-    var app;
     var server;
-    var port = 5000;
+    var page = `
+        <html>
+            <head>
+                <script src="/lib/jquery-2.1.3.min.js"></script>
+            </head>
+            <body>
+                <script>
+                    function slideUp() {
+                        $("#message").slideUp();
+                    }
+                </script>
 
-    beforeEach(function(done) {
+                <div id="message">May the joy be in the hearts</div>
+                <button id="go">hide div with slideUp</button>
 
-        var sendPage = function(response) {
-            response.setHeader('Content-Type', 'text/html');
-            var page = '<html>' +
-            '<head>' +
-                '<script src="/jquery.js"></script>' +
-            '</head>' +
-            '<body>'+
-                '<script>' +
-                    'function slideUp() {' +
-                        '$("#message").slideUp();' +
-                    '}' +
-                '</script>' +
+                <script>
+                    $("#go").mouseup(slideUp);
+                </script>
+            </body>
+        </html>`;
 
-                '<div id="message">May the joy be in the hearts</div>'+
-                '<button id="go">hide div with slideUp</button>'+
-
-                '<script>' +
-                    '$("#go").mouseup(slideUp);' +
-                '</script>' +
-            '</body>'+
-            '</html>';
-            response.write(page);
-        };
-
-        var sendJQuery = function(response) {
-            var fs = require('fs');
-            var jqueryLib = require('path').join(__dirname, '../support/jquery-2.1.3.min.js');
-            var content = fs.readFileSync(jqueryLib).toString();
-            response.setHeader('Content-Type', 'text/plain');
-            response.write(content);
-        };
-
-        var handler = function(request, response) {
-            if (request.url == '/jquery.js') {
-                sendJQuery(response);
-            }
-            else {
-                sendPage(response);
-            }
-            response.end();
-        };
-
-        app = require('http').createServer(handler);
-        app.listen(port, done);
+    beforeEach(function(done) {                    
+        server = new LocalServer(page);
+        server.start(done);
     });
 
-    afterEach(function() {
-        app.close();
+    afterEach(function(done) {
+        server.stop(done);
     });
 
     it('hides the targetted element', function(done) {
-        browser.visit('http://localhost:' + port)
+        browser.visit('http://localhost:' + server.port)
             .then(function() {
                 browser.assert.style('#message', 'display', '');
             })

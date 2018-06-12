@@ -1,59 +1,45 @@
 var expect = require('chai').expect;
-var sinon = require('sinon');
 require('chai').use(require('sinon-chai'));
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
+let LocalServer = require('../support/local.server');
 
 describe('Triggering script via select onchange', function() {
 
     var server;
-    beforeEach(function() {
-        server = require('http').createServer(function(request, response) {
-            var index = '' +
-            '<html>' +
-            '   <head>' +
-            '       <title>initial title</title>' +
-            '       <script src="/jquery.js"></script>' +
-            '       <script src="/script.js"></script>' +
-            '   </head>' +
-            '   <body>' +
-            '       <select id="countries" onchange="displayId(this.options[this.selectedIndex].id);">' +
-            '           <option id="china">China</option>' +
-            '           <option id="canada">Canada</option>' +
-            '       </select>' +
-            '       <label id="continent"></label>' +
-            '   </body>' +
-            '</html>';
-            var script =    'function displayId(id) { ' +
-                            '   document.querySelector("#continent").innerHTML = id;' +
-                            '}';
+    var index = `
+        <html>
+            <head>
+                <title>initial title</title>
+                <script src="/lib/jquery-2.1.3.min.js"></script>
+                <script src="/script.js"></script>
+            </head>
+            <body>
+                <select id="countries" onchange="displayId(this.options[this.selectedIndex].id);">
+                    <option id="china">China</option>
+                    <option id="canada">Canada</option>
+                </select>
+                <label id="continent"></label>
+            </body>
+        </html>`;
+    var script = `function displayId(id) {
+        document.querySelector("#continent").innerHTML = id;
+    }`;
 
-            if (request.url == '/') {
-                response.writeHead(200, { 'content-type':'text/html' });
-                response.end(index);
-            }
-            if (request.url == '/script.js') {
-                response.writeHead(200, { 'content-type':'application/javascript' });
-                response.end(script);
-                return;
-            }
-            if (request.url == '/jquery.js') {
-                response.writeHead(200, { 'content-type':'application/javascript' });
-                var fs = require('fs');
-                var jqueryLib = require('path').join(__dirname, '../support/jquery-2.1.3.min.js');
-                var content = fs.readFileSync(jqueryLib).toString();
-                response.end(content);
-                return;
-            }
-        }).listen(5000);
+    beforeEach(function(done) {
+        server = new LocalServer({
+            '/': index,
+            '/script.js': script
+        });
+        server.start(done);
     });
 
-    afterEach(function() {
-        server.close();
+    afterEach(function(done) {
+        server.stop(done);
     });
 
     it('works', function(done) {
-        JSDOM.fromURL('http://localhost:5000/', {
+        JSDOM.fromURL('http://localhost:' + server.port, {
             runScripts: 'dangerously',
             resources: 'usable'
         })

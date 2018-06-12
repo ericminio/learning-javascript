@@ -1,18 +1,13 @@
 var expect = require('chai').expect;
 const Browser = require('zombie');
 const browser = new Browser();
+let LocalServer = require('../support/local.server');
 
 describe('setTimeout in a web page', function() {
 
-    var app;
     var server;
-    var port = 5000;
-
-    beforeEach(function(done) {
-
-        var handler = function(request, response) {
-            response.setHeader('Content-Type', 'text/html');
-            var page = '<html>' +
+    var page = 
+        '<html>' +
             '<body>'+
                 '<script>' +
                     'function delayShowMessage(delay) {' +
@@ -32,21 +27,19 @@ describe('setTimeout in a web page', function() {
                     '}, 200);' +
                 '</script>' +
             '</body>'+
-            '</html>';
-            response.write(page);
-            response.end();
-        };
+        '</html>';
 
-        app = require('http').createServer(handler);
-        app.listen(port, done);
+    beforeEach(function(done) {
+        server = new LocalServer(page);
+        server.start(done);
     });
 
-    afterEach(function() {
-        app.close();
+    afterEach(function(done) {
+        server.stop(done);
     });
 
     it('is considered in the event loop', function(done) {
-        browser.visit('http://localhost:' + port)
+        browser.visit('http://localhost:' + server.port)
             .then(function() {
                 expect(browser.document.getElementById('message').style.display).to.equal('none');
             })
@@ -54,7 +47,7 @@ describe('setTimeout in a web page', function() {
     });
 
     it('allows to postpone a treatment', function(done) {
-        browser.visit('http://localhost:' + port)
+        browser.visit('http://localhost:' + server.port)
             .then(function() {
                 browser.fire('#show', 'mouseup');
             })
@@ -71,7 +64,7 @@ describe('setTimeout in a web page', function() {
     });
 
     it('can be triggered programmaticaly', function(done) {
-        browser.visit('http://localhost:' + port)
+        browser.visit('http://localhost:' + server.port)
             .then(function() {
                 browser.window.delayShowMessage(100);
             })
