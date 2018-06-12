@@ -1,6 +1,6 @@
 const Browser = require('zombie');
 const browser = new Browser();
-let LocalServer = require('../tests/local.server');
+let LocalServer = require('../support/local.server');
 
 describe.skip('Angular v1', function() {
 

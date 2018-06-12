@@ -4,7 +4,7 @@ require('chai').use(require('sinon-chai'));
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 //var canvas = require('canvas');
-let LocalServer = require('./local.server');
+let LocalServer = require('../support/local.server');
 
 describe('Jsdom', function() {
 

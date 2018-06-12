@@ -1,6 +1,6 @@
 const Browser = require('zombie');
 const browser = new Browser();
-let LocalServer = require('./local.server');
+let LocalServer = require('../support/local.server');
 
 describe('Zombie', function() {
 
