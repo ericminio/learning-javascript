@@ -3,6 +3,7 @@ let get = require('request');
 let expect = require('chai').expect;
 const Browser = require('zombie');
 const browser = new Browser();
+let request = require('request');
 
 describe('Local Server', ()=> {
 
@@ -106,6 +107,21 @@ describe('Local Server', ()=> {
                     browser.assert.text('title', 'modified title');
                 })
                 .then(done, done);
+        });
+    });
+
+    it('serves json', (done)=> {
+        server = new LocalServer({
+            json: {
+                '/ping': { message:'pong' }
+            }
+        });
+        server.start(()=>{
+            request.get('http://localhost:'+server.port+'/ping', (err, response, body)=>{
+                expect(JSON.parse(body)).to.deep.equal({ message:'pong' });
+                expect(response.headers['content-type']).to.equal('application/json');
+                done();
+            });
         });
     });
 });

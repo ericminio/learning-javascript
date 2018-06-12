@@ -5,13 +5,13 @@ var port = 5001;
 let LocalServer = function(handler) {
     this.handler = handler;    
 };
-LocalServer.prototype.wrapHandler = function() {
+LocalServer.prototype.wrapHandler = function() {    
     if (typeof this.handler == 'function') {
         return this.handler;
     }
-    else {
+    else {        
         let self = this;
-        return function(request, response) {            
+        return function(request, response) {   
             var parsed = url.parse(request.url, true);            
             var pattern = /^\/lib\/(.*)\.js$/;
             if (pattern.test(parsed.pathname)) {
@@ -26,7 +26,18 @@ LocalServer.prototype.wrapHandler = function() {
                     response.write(self.handler);
                 }
                 else {
-                    response.write(self.handler[request.url]);
+                    if (self.handler[request.url]) {
+                        response.write(self.handler[request.url]);
+                    }
+                    else {
+                        if (self.handler.json[request.url]) {
+                            response.setHeader('Content-Type', 'application/json');
+                            response.write(JSON.stringify(self.handler.json[request.url]));
+                        }
+                        else {
+                            response.write('not found');
+                        }
+                    }
                 }
             }
             response.end();
