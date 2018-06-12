@@ -5,7 +5,7 @@ const Browser = require('zombie');
 const browser = new Browser();
 let request = require('request');
 
-describe('Local Server', ()=> {
+describe.only('Local Server', ()=> {
 
     let server;
     afterEach((done)=>{
@@ -120,6 +120,18 @@ describe('Local Server', ()=> {
             request.get('http://localhost:'+server.port+'/ping', (err, response, body)=>{
                 expect(JSON.parse(body)).to.deep.equal({ message:'pong' });
                 expect(response.headers['content-type']).to.equal('application/json');
+                done();
+            });
+        });
+    });
+
+    it('serves not-found when setup with an object', (done)=>{
+        server = new LocalServer({});
+        server.start(()=>{
+            request.get('http://localhost:'+server.port+'/ping', (err, response, body)=>{
+                expect(body).to.equal('not found');
+                expect(response.headers['content-type']).to.equal('text/plain');
+                expect(response.statusCode).to.equal(404);
                 done();
             });
         });

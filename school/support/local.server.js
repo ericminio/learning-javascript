@@ -31,11 +31,13 @@ LocalServer.prototype.wrapHandler = function() {
                         response.write(self.handler[request.url]);
                     }
                     else {
-                        if (self.handler.json[request.url]) {
+                        if (self.handler.json && self.handler.json[request.url]) {
                             response.setHeader('Content-Type', 'application/json');
                             response.write(JSON.stringify(self.handler.json[request.url]));
                         }
                         else {
+                            response.setHeader('Content-Type', 'text/plain');
+                            response.statusCode = 404;
                             response.write('not found');
                         }
                     }
