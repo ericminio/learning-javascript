@@ -70,4 +70,81 @@ describe('CORS', function() {
             })
             .then(done, done);
     });
+
+    it('is active for PUT method even with allow-origin header', (done)=>{
+        thirdPartyAnswer = function(response) {
+            response.setHeader('Content-Type', 'text/plain');
+            response.setHeader('Access-Control-Allow-Origin', '*');
+            response.write('Peace, Love, Joy');
+        };
+        origin.stop(()=>{
+            var page = `
+                <html>
+                    <head>
+                        <script src="/lib/jquery-2.1.3.min.js"></script>
+                    </head>
+                    <body>
+                        <label id="greetings"></label>
+                        <script>
+                            $( document ).ready(function() {
+                                var xhr = new XMLHttpRequest();
+                                xhr.onload = function() {
+                                    var label = document.getElementById('greetings');
+                                    label.innerHTML = xhr.responseText;
+                                };
+                                xhr.open('PUT', 'http://localhost:` + thirdParty.port + `/message');
+                                xhr.send();
+                            });
+                        </script>
+                    </body>
+                </html>`;
+            origin = new LocalServer(page);
+            origin.start(()=>{
+                browser.visit('http://localhost:' + origin.port)
+                    .then(()=>{}, ()=>{                            
+                        expect(browser.errors[0].toString()).to.equal('Cannot make request with not-allowed method(PUT): 18');
+                        done();
+                    }); 
+            });
+        });
+    });
+
+    it('can be overriden for PUT with additional header', (done)=>{
+        thirdPartyAnswer = function(response) {
+            response.setHeader('Content-Type', 'text/plain');
+            response.setHeader('Access-Control-Allow-Origin', '*');
+            response.setHeader('Access-Control-Allow-Methods', 'PUT');
+            response.write('Peace, Love, Joy');
+        };
+        origin.stop(()=>{
+            var page = `
+                <html>
+                    <head>
+                        <script src="/lib/jquery-2.1.3.min.js"></script>
+                    </head>
+                    <body>
+                        <label id="greetings"></label>
+                        <script>
+                            $( document ).ready(function() {
+                                var xhr = new XMLHttpRequest();
+                                xhr.onload = function() {
+                                    var label = document.getElementById('greetings');
+                                    label.innerHTML = xhr.responseText;
+                                };
+                                xhr.open('PUT', 'http://localhost:` + thirdParty.port + `/message');
+                                xhr.send();
+                            });
+                        </script>
+                    </body>
+                </html>`;
+            origin = new LocalServer(page);
+            origin.start(()=>{
+                browser.visit('http://localhost:' + origin.port)
+                    .then(()=>{
+                        browser.assert.text('#greetings', 'Peace, Love, Joy');
+                    })
+                    .then(done, done);
+            });
+        });
+    });
 });
