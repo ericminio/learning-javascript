@@ -112,7 +112,7 @@ describe('Jsdom', function() {
 
                 expect(dom.window.document.title).to.equal('modified title');
                 done();    
-            }, 100);
+            }, 500);
         });            
     });
 
@@ -201,7 +201,7 @@ describe('Jsdom', function() {
                 let document = dom.window.document;
                 let button = document.getElementById('fetchData');
                 button.click();
-            }, 100);
+            }, 500);
         }); 
     });  
 });
