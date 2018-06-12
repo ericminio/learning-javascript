@@ -80,10 +80,7 @@ describe('Zombie', function() {
                 server = new LocalServer(page);
                 server.start(()=>{                    
                     browser.visit('http://localhost:' + server.port)
-                        .then(function() {
-                            browser.assert.text('#greetings', 'answer from third party');
-                        })
-                        .then(done, ()=>{                            
+                        .then(()=>{}, ()=>{                            
                             expect(browser.errors[0].toString()).to.equal('Cannot make request with not-allowed method(PUT): 18');
                             done();
                         });                        
