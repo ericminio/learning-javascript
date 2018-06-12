@@ -78,4 +78,34 @@ describe('Local Server', ()=> {
         candidate = '/';
         expect(pattern.test(candidate)).to.equal(false);
     });
+
+    it('serves local libs', (done)=> {
+        var page = `
+            <html>
+                <head>
+                    <title>initial title</title>
+                    <script src="/lib/jquery-2.1.3.min.js"></script>
+                    <script src="/modify-title.js"></script>
+                </head>
+                <body>
+                    <script>
+                        $( document ).ready(function() {
+                            modifyTitle();
+                        });
+                    </script>
+                </body>
+            </html>                    
+        `;
+        server = new LocalServer({
+            '/': page,
+            '/modify-title.js': `function modifyTitle() { document.title='modified title'; } `
+        });
+        server.start(()=>{
+            browser.visit('http://localhost:' + server.port)
+                .then(function() {
+                    browser.assert.text('title', 'modified title');
+                })
+                .then(done, done);
+        });
+    });
 });

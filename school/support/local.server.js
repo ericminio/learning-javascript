@@ -20,9 +20,14 @@ LocalServer.prototype.wrapHandler = function() {
                 response.setHeader('Content-Type', 'application/javascript');
                 response.write(content);
             }
-            else {
-                response.setHeader('Content-Type', 'text/html');
-                response.write(self.handler);
+            else {                
+                if (typeof self.handler == 'string') {
+                    response.setHeader('Content-Type', 'text/html');
+                    response.write(self.handler);
+                }
+                else {
+                    response.write(self.handler[request.url]);
+                }
             }
             response.end();
         }
