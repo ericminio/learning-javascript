@@ -1,4 +1,4 @@
-var order = (data)=> {
+var align = (data)=> {
     data[0].coordinates = { row:1, col:1 }
     data[1].coordinates = { row:2, col:1 }
     data[2].coordinates = { row:2, col:2 }
@@ -9,7 +9,7 @@ var order = (data)=> {
 var render = (document, source, target)=> {
     var textarea = document.getElementById(source)
     var data = JSON.parse(textarea.innerHTML).data
-    data = order(data)
+    data = align(data)
 
     var tbody = document.querySelector(`table#${target} tbody`)
     var currentRow = -1
