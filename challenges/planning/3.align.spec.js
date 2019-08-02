@@ -8,15 +8,15 @@ describe('align', ()=> {
 
     it('works with default value', ()=>{
         var input = [
-            { "day":1, "value":"A", "label":"one"   },
-            { "day":1, "value":"B", "label":"two"   },
-            { "day":2, "value":"B", "label":"three" }
+            { "day":1, "value":"A" },
+            { "day":1, "value":"B" },
+            { "day":2, "value":"B" }
         ]
         var aligned = align(input)
         expect(aligned).to.deep.equal([
-            { "day":1, "value":"A", "label":"one", coordinates: { row:1, col:1 } },
-            { "day":1, "value":"B", "label":"two", coordinates: { row:2, col:1 }   },
-            { "day":2, "value":"B", "label":"three", coordinates: { row:2, col:2 } }
+            { "day":1, "value":"A", coordinates: { row:1, col:1 } },
+            { "day":1, "value":"B", coordinates: { row:2, col:1 }   },
+            { "day":2, "value":"B", coordinates: { row:2, col:2 } }
         ])
     })
 })
