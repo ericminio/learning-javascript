@@ -31,7 +31,7 @@ describe('Default data', function() {
         await driver.quit()
     })
 
-    it('renders as expected', async ()=> {
+    it('handles default data as expected', async ()=> {
         await driver.get('http://localhost:5000')
         let render = await driver.findElement(By.id('render'))
         await render.click()
@@ -46,4 +46,25 @@ describe('Default data', function() {
 
         return value
     }
+
+    it.only('can digest empty spaces', async ()=> {
+        await driver.get('http://localhost:5000')
+        let data = await driver.findElement(By.id('data'))
+        await data.clear()
+        let value = `{
+            "data": [
+                { "day":1, "value":"A", "label":"one"   },
+                { "day":1, "value":"B", "label":"two"   },
+                { "day":2, "value":"B", "label":"three" },
+                { "day":3, "value":"A", "label":"four"  }
+            ]
+        }`
+        await data.sendKeys(value)
+        let render = await driver.findElement(By.id('render'))
+        await render.click()
+
+        await driver.sleep(1*1000)
+
+        expect(await valueIn('table#grid tr:nth-child(1) td:nth-child(3)')).to.equal('four')
+    })
 })

@@ -1,0 +1,16 @@
+{
+  "name": "planning",
+  "version": "1.0.0",
+  "description": "",
+  "main": "1.welcome.spec.js",
+  "scripts": {
+    "test": "mocha *.spec.js --timeout 0"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0",
+    "selenium-webdriver": "^4.0.0-alpha.4"
+  }
+}

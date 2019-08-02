@@ -19,4 +19,17 @@ describe('align', ()=> {
             { "day":2, "value":"B", coordinates: { row:2, col:2 } }
         ])
     })
+    it('resists unordered input', ()=>{
+        var input = [
+            { "day":2, "value":"B" },
+            { "day":1, "value":"A" },
+            { "day":1, "value":"B" }
+        ]
+        var aligned = align(input)
+        expect(aligned).to.deep.equal([
+            { "day":1, "value":"A", coordinates: { row:1, col:1 } },
+            { "day":1, "value":"B", coordinates: { row:2, col:1 }   },
+            { "day":2, "value":"B", coordinates: { row:2, col:2 } }
+        ])
+    })
 })
