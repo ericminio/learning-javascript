@@ -47,7 +47,7 @@ describe('Default data', function() {
         return value
     }
 
-    it.only('can digest empty spaces', async ()=> {
+    it('can digest empty spaces', async ()=> {
         await driver.get('http://localhost:5000')
         let data = await driver.findElement(By.id('data'))
         await data.clear()
