@@ -51,7 +51,7 @@ var render = (document, source, target)=> {
             currentCol += 1
         }
         var td = document.createElement('TD')
-        td.className = `cell-${currentRow}-${item.coordinates.col}`
+        td.className = `cell-${currentRow}-${item.coordinates.col} with-value`
         td.innerHTML = item.label
         tr.appendChild(td)
         currentCol += 1

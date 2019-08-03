@@ -3,6 +3,16 @@
     <head>
         <title>planning</title>
         <script src="./render.js" charset="utf-8"></script>
+        <style>
+            table {
+                border-spacing: 10px;
+                border: 1px solid black;
+            }
+            td.with-value {
+                border: 1px solid black;
+                text-align: center;
+            }
+        </style>
     </head>
     <body>
         <textarea id="data" rows="15" cols="100" style="border: 1px solid black">
@@ -16,7 +26,16 @@
         </textarea>
         <button type="button" id="render" onclick="render(document, 'data', 'grid')">render now</button>
 
-        <table id="grid" border="1" width="100%">
+        <table id="grid" width="100%">
+            <thead>
+                <tr>
+                    <th>Monday</th>
+                    <th>Tuesday</th>
+                    <th>Wednesday</th>
+                    <th>Thursday</th>
+                    <th>Friday</th>
+                </tr>
+            </thead>
             <tbody>
             </tbody>
         </table>
