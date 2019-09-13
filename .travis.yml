@@ -4,5 +4,9 @@ node_js:
   - "10.16.0"
 env:
   - MOZ_HEADLESS=1
+before_script:
+  - export PATH=$PATH:$TRAVIS_BUILD_DIR/school/support/webdriver/linux
+  - chmod +x $TRAVIS_BUILD_DIR/school/support/webdriver/linux/geckodriver
+  - ls -l $TRAVIS_BUILD_DIR/school/support/webdriver/linux
 script:
   - npm run test
