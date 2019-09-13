@@ -7,10 +7,8 @@ var html = `
 <head>
     <title>Getting Started with jQuery Grid</title>
     <meta charset="utf-8" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css" />
-    <link href="https://cdn.jsdelivr.net/npm/gijgo@1.9.10/css/gijgo.min.css" rel="stylesheet" type="text/css" />
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gijgo@1.9.10/js/gijgo.min.js" type="text/javascript"></script>
+    <script src="/lib/jquery-3.3.1.min.js"></script>
+    <script src="/lib/gijgo-1.9.10.js" type="text/javascript"></script>
 </head>
 <body>
     <table id="grid"></table>
@@ -72,13 +70,13 @@ describe('Gijgo', ()=>{
         server.stop(done);
     });
 
-    it('can be gigested by zombie', (done)=>{
+    it('can be digested by zombie', (done)=>{
         browser.visit('http://localhost:' + server.port)
             .then(function() {
                 setTimeout(() => {
                     let document = browser.document;
                     expect(document.querySelector('#grid [data-position="2"]').innerHTML).to.contain('Superman');
-                    done();    
+                    done();
                 }, 100);
             });
     });

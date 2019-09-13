@@ -4,7 +4,7 @@ let LocalServer = require('../support/local.server');
 
 describe('React HelloWorld', function() {
 
-    var server;    
+    var server;
 
     describe('with html element', function() {
 
