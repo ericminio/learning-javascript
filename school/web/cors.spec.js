@@ -4,12 +4,12 @@ var browser = new Browser();
 let LocalServer = require('../support/local.server');
 
 describe('CORS', function() {
-    
+
     var origin;
     var thirdParty;
     var thirdPartyAnswer;
-    
-    beforeEach(function(done) {   
+
+    beforeEach(function(done) {
         thirdParty = new LocalServer(function(request, response) {
             thirdPartyAnswer(response);
             response.end();
@@ -35,13 +35,13 @@ describe('CORS', function() {
                 </html>`;
             origin = new LocalServer(page);
             origin.start(done);
-        });   
+        });
     });
 
     afterEach(function(done) {
         origin.stop(()=>{ thirdParty.stop(done); });
     });
-    
+
     it('is active by default', function(done) {
         thirdPartyAnswer = function(response) {
             response.setHeader('Content-Type', 'text/plain');
@@ -54,7 +54,7 @@ describe('CORS', function() {
             });
         });
     });
-    
+
     it('can be overriden', function(done) {
         thirdPartyAnswer = function(response) {
             response.setHeader('Content-Type', 'text/plain');
@@ -64,6 +64,9 @@ describe('CORS', function() {
         browser.visit('http://localhost:' + origin.port)
             .then(function() {
                 return browser.click('#go');
+            })
+            .then(function() {
+                expect(browser.errors).to.deep.equal([]);
             })
             .then(function() {
                 browser.assert.text('#message', 'Peace, Love, Joy');
@@ -101,10 +104,10 @@ describe('CORS', function() {
             origin = new LocalServer(page);
             origin.start(()=>{
                 browser.visit('http://localhost:' + origin.port)
-                    .then(()=>{}, ()=>{                            
+                    .then(()=>{}, ()=>{
                         expect(browser.errors[0].toString()).to.equal('Cannot make request with not-allowed method(PUT): 18');
                         done();
-                    }); 
+                    });
             });
         });
     });
@@ -140,6 +143,9 @@ describe('CORS', function() {
             origin = new LocalServer(page);
             origin.start(()=>{
                 browser.visit('http://localhost:' + origin.port)
+                    .then(()=>{
+                        expect(browser.errors).to.deep.equal([]);
+                    })
                     .then(()=>{
                         browser.assert.text('#greetings', 'Peace, Love, Joy');
                     })
