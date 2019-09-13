@@ -10,10 +10,8 @@
     "chai-string": "^1.2.0",
     "cheerio": "latest",
     "chromedriver": "2.28.0",
-    "crypto": "latest",
     "deep-equal": "latest",
     "geckodriver": "1.5.0",
-    "istanbul": "^0.4.5",
     "jsdom": "^11.11.0",
     "log4js": "^0.6.27",
     "mocha": "^2.3.3",
@@ -25,10 +23,10 @@
     "zombie": "^6.1.2"
   },
   "engines": {
-    "node": "8.9.4",
-    "npm": "3.10.8"
+    "node": "10.16.0",
+    "npm": "6.9.0"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha --require babel-polyfill --require babel-register school/**/*.spec.js school/*.spec.js"
+    "test": "./node_modules/.bin/mocha school/*.spec.js"
   }
 }
