@@ -120,6 +120,7 @@ describe('Local Server', ()=> {
             request.get('http://localhost:'+server.port+'/ping', (err, response, body)=>{
                 expect(JSON.parse(body)).to.deep.equal({ message:'pong' });
                 expect(response.headers['content-type']).to.equal('application/json');
+                expect(response.headers['content-length']).to.equal('18');
                 done();
             });
         });

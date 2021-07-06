@@ -3,7 +3,7 @@ var url = require('url');
 var port = 5001;
 
 let LocalServer = function(handler) {
-    this.handler = handler;    
+    this.handler = handler;   
 };
 LocalServer.prototype.wrapHandler = function() {    
     if (typeof this.handler == 'function') {
@@ -17,28 +17,36 @@ LocalServer.prototype.wrapHandler = function() {
             var pattern = /^\/lib\/(.*)\.js$/;
             if (pattern.test(parsed.pathname)) {
                 var path = require('path').join(__dirname, pattern.exec(parsed.pathname)[1] + '.js');                
-                var content = require('fs').readFileSync(path).toString();
+                var body = require('fs').readFileSync(path).toString();
+                response.setHeader('Content-Length', body.length);
                 response.setHeader('Content-Type', 'application/javascript');
-                response.write(content);
+                response.write(body);
             }
             else {                
                 if (typeof self.handler == 'string') {
+                    var body = self.handler;
+                    response.setHeader('Content-Length', body.length);
                     response.setHeader('Content-Type', 'text/html');
-                    response.write(self.handler);
+                    response.write(body);
                 }
                 else {
                     if (self.handler[request.url]) {
-                        response.write(self.handler[request.url]);
+                        var body = self.handler[request.url];
+                        response.write(body);
                     }
                     else {
                         if (self.handler.json && self.handler.json[request.url]) {
+                            var body = JSON.stringify(self.handler.json[request.url]);
+                            response.setHeader('Content-Length', body.length);
                             response.setHeader('Content-Type', 'application/json');
-                            response.write(JSON.stringify(self.handler.json[request.url]));
+                            response.write(body);
                         }
                         else {
+                            var body = 'not found';
+                            response.setHeader('Content-Length', body.length);
                             response.setHeader('Content-Type', 'text/plain');
                             response.statusCode = 404;
-                            response.write('not found');
+                            response.write(body);
                         }
                     }
                 }
@@ -57,11 +65,13 @@ LocalServer.prototype.start = function(done) {
         self.port = port;
         done();
     });
+    // console.log('trying port ' + (port+1));
     self.server.listen(++port);   
 };
 LocalServer.prototype.stop = function(done) {
-    if (this.server.listening) { this.server.close(done); }
-    else { done(); }
+    // console.log(`stopping server on port ${this.port} (listening ${this.server.listening})`)
+    if (this.server.listening) { this.server.close(); }
+    done();
 };
 
 module.exports = LocalServer;

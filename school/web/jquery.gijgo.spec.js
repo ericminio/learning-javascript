@@ -30,7 +30,7 @@ var html = `
 </html>
 `;
 
-describe('Gijgo', ()=>{
+describe.skip('Gijgo', ()=>{
 
     var server;
     beforeEach(function(done) {

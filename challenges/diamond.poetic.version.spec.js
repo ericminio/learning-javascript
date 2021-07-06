@@ -1,3 +1,4 @@
+const { expect } = require('chai');
 var Sculptor = function() {};
 
 Sculptor.prototype = {
@@ -11,7 +12,6 @@ Sculptor.prototype = {
 };
 
 she = it;
-xshe = xit;
 
 describe('Sculptor', function() {
 
@@ -32,7 +32,7 @@ describe('Sculptor', function() {
                 ]
             }
         
-            expect(Ufa.explore(mine).findAStoneOfSize(3)).toEqual([
+            expect(Ufa.explore(mine).findAStoneOfSize(3)).to.equal([
                 '*****',
                 '*****',
                 '*****',
@@ -41,14 +41,14 @@ describe('Sculptor', function() {
             ]);
         });
     
-        xshe('sculpts the rock', function() {
+        she.skip('sculpts the rock', function() {
             expect(Ufa.sculpt([
                 '*****',
                 '*****',
                 '*****',
                 '*****',
                 '*****'
-            ])).toEqual([
+            ])).to.equal([
                 '  *  ',
                 ' *** ',
                 '*****',
@@ -57,14 +57,14 @@ describe('Sculptor', function() {
             ]);
         });
         
-        xshe('decorate the stone', function() {
+        she.skip('decorate the stone', function() {
             expect(Ufa.decorate([
                 '  *  ',
                 ' *** ',
                 '*****',
                 ' *** ',
                 '  *  '
-            ])).toEqual([
+            ])).to.equal([
                 '  A  ',
                 ' B*B ',
                 'C***C',
@@ -73,14 +73,14 @@ describe('Sculptor', function() {
             ]);
         });
         
-        xshe('polishes the diamond', function() {
+        she.skip('polishes the diamond', function() {
             expect(Ufa.polish([
                 '  A  ',
                 ' B*B ',
                 'C***C',
                 ' B*B ',
                 '  A  '
-            ])).toEqual([
+            ])).to.equal([
                 '  A  ',
                 ' B B ',
                 'C   C',

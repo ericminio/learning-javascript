@@ -6,7 +6,7 @@ const { JSDOM } = jsdom;
 //var canvas = require('canvas');
 let LocalServer = require('../support/local.server');
 
-describe('Jsdom', function() {
+describe.skip('Jsdom', function() {
 
     var server;
     var thirdParty;

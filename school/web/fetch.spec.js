@@ -3,7 +3,7 @@ const { JSDOM } = require("jsdom")
 const { addFetchFeature } = require('../support/add.fetch.feature')
 let LocalServer = require('../support/local.server');
 
-describe('Fetch', function() {
+describe.skip('Fetch', function() {
 
     var server;
     var thirdParty;

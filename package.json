@@ -2,31 +2,26 @@
   "name": "learning-javascript",
   "version": "1.0.0",
   "devDependencies": {
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-register": "^6.26.0",
-    "chai": "^3.3.0",
-    "chai-string": "^1.2.0",
+    "chai": "latest",
+    "chai-string": "latest",
     "cheerio": "latest",
     "deep-equal": "latest",
-    "geckodriver": "1.5.0",
-    "istanbul": "^0.4.5",
-    "jsdom": "^11.11.0",
-    "log4js": "^0.6.27",
-    "mocha": "^2.3.3",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "selenium-webdriver": "^4.0.0-alpha.1",
-    "sinon": "^1.17.1",
-    "sinon-chai": "^2.8.0",
-    "zombie": "^6.1.2"
+    "geckodriver": "latest",
+    "istanbul": "latest",
+    "jsdom": "latest",
+    "mocha": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "selenium-webdriver": "latest",
+    "sinon": "latest",
+    "sinon-chai": "latest",
+    "zombie": "latest"
   },
   "engines": {
-    "node": "10.16.0",
-    "npm": "6.9.0"
+    "node": "14.16.0",
+    "npm": "6.14.11"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha --require babel-polyfill --require babel-register school/*.spec.js school/**/*.spec.js --timeout 0"
+    "test": "mocha './school/**/*.spec.js' --timeout 0 --exit"
   }
 }

@@ -1,6 +1,6 @@
-var expect = require('chai').expect;
+const { expect } = require('chai');
 
-describe.only('Drone', ()=> {
+describe('Drone', ()=> {
 
     describe('Steps', ()=> {
         
