@@ -52,6 +52,31 @@ describe("Functions", function() {
 
             expect(service('Joe')).to.equal('hello Joe');
         });
+        it('can be setup to digest a script with globals', function() {
+            var script = `
+                var template = document.createElement('template');
+                class MyElement extends HTMLElement {
+                    constructor() {
+                        super()
+                    }
+                    greetings(name) {
+                        return 'hello ' + name; 
+                    }
+                };
+                customElements.define('my-element', MyElement);
+            `;
+            var wrapper = `
+                var wrapper = (document, customElements)=> {
+                    class HTMLElement {};
+                    ${script};
+                    return new MyElement();
+                };
+                return wrapper({ createElement:()=>{} }, { define:()=>{} });
+            `;
+            var element = (new Function(wrapper))();
+
+            expect(element.greetings('Joe')).to.equal('hello Joe');
+        });
     });
 
     describe('not so obvious behavior', function() {
