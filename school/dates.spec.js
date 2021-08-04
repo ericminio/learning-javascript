@@ -1,6 +1,6 @@
 var expect = require('chai').expect;
 
-describe.only("Date", function() {
+describe("Date", function() {
 
 	beforeEach(function() {
 	});
