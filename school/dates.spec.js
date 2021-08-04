@@ -60,6 +60,9 @@ describe("Date", function() {
 			expect(monday.getTime()).to.equal((new Date(2015, 0, 12)).getTime());
 		});
 
+		const f = (n)=> (n+6) % 7;
+		const mondayOf = (date)=> new Date( date.getTime() - dayLength * f(date.getDay()) );
+
 		it('can be unified', ()=> {
 			expect(f(1)).to.equal(0);
 			expect(f(2)).to.equal(1);
@@ -75,8 +78,6 @@ describe("Date", function() {
 			expect(mondayOf(sunday).getTime()).to.equal((new Date(2015, 0, 12)).getTime());
 		});
 
-		const f = (n)=> n==0? 6: n-1;
-		const mondayOf = (date)=> new Date( date.getTime() - dayLength * f(date.getDay()) );
 		const addDays = (count, date)=> new Date(date.getTime() + dayLength * count);
 
 		it('is a base to find the other days around a date', ()=>{
