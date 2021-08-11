@@ -22,7 +22,7 @@ describe('Linked list inversion', function() {
         let inverted =           invert(list('1 --> 2'));
         expect(stringify(inverted)).to.equal('2 --> 1');
     });
-    it('also works with three elements', ()=>{
+    it('should also work with three elements', ()=>{
         let inverted =           invert(list('1 --> 2 --> 3'));
         expect(stringify(inverted)).to.equal('3 --> 2 --> 1');
     });
