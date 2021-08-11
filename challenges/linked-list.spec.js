@@ -19,13 +19,11 @@ describe('Linked list inversion', function() {
         });
     });
     it('also works with two elements', ()=>{
-        let head = list('1 --> 2');
-        let inverted = invert(head);
+        let inverted =           invert(list('1 --> 2'));
         expect(stringify(inverted)).to.equal('2 --> 1');
     });
     it('also works with three elements', ()=>{
-        let head = list('1 --> 2 --> 3');
-        let inverted = invert(head);
+        let inverted =           invert(list('1 --> 2 --> 3'));
         expect(stringify(inverted)).to.equal('3 --> 2 --> 1');
     });
 });
