@@ -1,6 +1,6 @@
 var expect = require('chai').expect;
 
-describe.only('Linked list inversion', function() {
+describe('Linked list inversion', function() {
 
     it('is easy with one element', ()=>{
         let head = { value:42, next:undefined };
