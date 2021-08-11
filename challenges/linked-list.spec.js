@@ -6,6 +6,18 @@ describe('Linked list inversion', function() {
         let head = { value:42, next:undefined };
         expect(invert(head)).to.deep.equal({ value:42, next:undefined });
     });
+    describe('helpers', ()=>{
+        describe('list from string', ()=>{
+            it('is available', ()=> {
+                expect(list('11 --> 22')).to.deep.equal({ value:11, next: { value:22, next:undefined }});
+            });
+        });
+        describe('list to string', ()=>{
+            it('is availble', ()=>{
+                expect(stringify(list('11 --> 22'))).to.equal('11 --> 22');
+            });
+        });
+    });
     it('also works with two elements', ()=>{
         let head = list('1 --> 2');
         let inverted = invert(head);
@@ -19,9 +31,16 @@ describe('Linked list inversion', function() {
 });
 
 var invert = (head)=> {
-    let current = head
+    let previous = undefined,
+        current = head,
+        next = current.next
         ;
-
+    if (next !== undefined) {
+        current.next = previous;
+        previous = current;
+        current = next;
+    }
+    current.next = previous;
     return current;
 }
 
