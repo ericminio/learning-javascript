@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "devDependencies": {
     "chai": "latest",
+    "chai-as-promised": "latest",
     "chai-string": "latest",
     "cheerio": "latest",
     "deep-equal": "latest",
