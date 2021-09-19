@@ -77,6 +77,14 @@ describe("Functions", function() {
 
             expect(element.greetings('Joe')).to.equal('hello Joe');
         });
+
+        it('is a way to expose api with dependencies that are not node modules', function() {
+            var api = 'var greetings = function(name) { return prefix() + " " + name; };';
+            var dependency = 'var prefix = function() { return "hello"; };';
+            var service = (new Function(dependency + api + 'return greetings;'))();
+
+            expect(service('Joe')).to.equal('hello Joe');
+        });
     });
 
     describe('not so obvious behavior', function() {
