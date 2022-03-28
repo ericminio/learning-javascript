@@ -46,11 +46,8 @@ class Hanoi {
         }        
     }
     isLegalMove(ring, tower) {
-        if (! tower.hasRings()) { return true; }        
-        if (ring.getSize() > tower.getRingSize()) {
-            return false;
-        }
-        return true;
+        return tower.isEmpty()
+            || ring.isSmallerThan(tower.getRing());
     }
 }
 class Tower {
@@ -58,8 +55,8 @@ class Tower {
         this.rings = [];
     }
 
-    hasRings() {
-        return this.rings.length > 0;
+    isEmpty() {
+        return this.rings.length == 0;
     }
     getRing() {
         return this.rings[this.rings.length - 1];
@@ -80,5 +77,8 @@ class Ring {
     }
     getSize() {
         return this.size;
+    }
+    isSmallerThan(other) {
+        return this.getSize() < other.getSize();
     }
 }
