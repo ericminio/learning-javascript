@@ -1,29 +1,29 @@
 const { expect } = require('chai');
 
-describe('the Hanoi game', ()=> {
+describe('the Hanoi puzzle', ()=> {
 
     it('is about 3 towers', ()=> {
-        let game = new Hanoi();
+        let puzzle = new Hanoi();
 
-        expect(game.getTowers().length).to.equal(3);
-        game.getTowers().forEach(o => {
+        expect(puzzle.getTowers().length).to.equal(3);
+        puzzle.getTowers().forEach(o => {
             expect(o instanceof Tower).to.equal(true);
         })
     });
     it('is about pilling up rings on tower', () => {
-        let game = new Hanoi();
-        let tower = game.getTowers()[1];
-        game.push({ ring:{ size:5 }, tower:tower });
-        game.push({ ring:{ size:3 }, tower:tower });
+        let puzzle = new Hanoi();
+        let aTower = puzzle.getTowers()[1];
+        puzzle.try(new Ring({ size:5 }), aTower);
+        puzzle.try(new Ring({ size:3 }), aTower);
 
-        expect(tower.getRings()).to.deep.equal([ { size:5 }, { size:3 }]);
+        expect(aTower.getRings().map(r => r.getSize())).to.deep.equal([5, 3]);
     });
     it('only allows pilling up rings in descending order', () => {
-        let game = new Hanoi();
-        let tower = game.getTowers()[1];
-        game.push({ ring:{ size:3 }, tower:tower });
+        let puzzle = new Hanoi();
+        let aTower = puzzle.getTowers()[1];
+        puzzle.try(new Ring({ size:3 }), aTower);
 
-        expect(() => game.push({ ring:{ size:7 }, tower:tower }))
+        expect(() => puzzle.try(new Ring({ size:7 }), aTower))
             .to.throw(/^cannot put ring 7 on top of ring 3$/);
     });
 });
@@ -36,16 +36,21 @@ class Hanoi {
     getTowers() {
         return this.towers;
     }
-    push(options) {
-        let rings = options.tower.getRings();
-        if (rings.length > 0) {
-            let top = rings[rings.length - 1]
-            let incoming = options.ring;
-            if(incoming.size > top.size) {
-                throw `cannot put ring ${incoming.size} on top of ring ${top.size}`;
-            }
+    try(ring, tower) {
+        this.checkMove(ring, tower);
+        tower.push(ring);
+    }
+    checkMove(ring, tower) {
+        if (! this.isLegalMove(ring, tower)) {
+            throw `cannot put ring ${ring.getSize()} on top of ring ${tower.getRingSize()}`;
+        }        
+    }
+    isLegalMove(ring, tower) {
+        if (! tower.hasRings()) { return true; }        
+        if (ring.getSize() > tower.getRingSize()) {
+            return false;
         }
-        options.tower.push(options.ring);
+        return true;
     }
 }
 class Tower {
@@ -53,10 +58,27 @@ class Tower {
         this.rings = [];
     }
 
+    hasRings() {
+        return this.rings.length > 0;
+    }
+    getRing() {
+        return this.rings[this.rings.length - 1];
+    }
+    getRingSize() {
+        return this.getRing().size;
+    }
     getRings() {
         return this.rings;
     }
     push(ring) {
         this.rings.push(ring);
+    }
+}
+class Ring {
+    constructor(options) {
+        this.size = options.size;
+    }
+    getSize() {
+        return this.size;
     }
 }
