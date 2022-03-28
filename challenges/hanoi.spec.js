@@ -10,7 +10,7 @@ describe('the Hanoi game', ()=> {
             expect(o instanceof Tower).to.equal(true);
         })
     });
-    it('is about pilling rings on tower', () => {
+    it('is about pilling up rings on tower', () => {
         let game = new Hanoi();
         let tower = game.getTowers()[1];
         game.push({ ring:{ size:5 }, tower:tower });
@@ -18,7 +18,14 @@ describe('the Hanoi game', ()=> {
 
         expect(tower.getRings()).to.deep.equal([ { size:5 }, { size:3 }]);
     });
+    it('only allows pilling up rings in descending order', () => {
+        let game = new Hanoi();
+        let tower = game.getTowers()[1];
+        game.push({ ring:{ size:3 }, tower:tower });
 
+        expect(() => game.push({ ring:{ size:7 }, tower:tower }))
+            .to.throw(/^cannot put ring 7 on top of ring 3$/);
+    });
 });
 
 class Hanoi {
@@ -30,6 +37,14 @@ class Hanoi {
         return this.towers;
     }
     push(options) {
+        let rings = options.tower.getRings();
+        if (rings.length > 0) {
+            let top = rings[rings.length - 1]
+            let incoming = options.ring;
+            if(incoming.size > top.size) {
+                throw `cannot put ring ${incoming.size} on top of ring ${top.size}`;
+            }
+        }
         options.tower.push(options.ring);
     }
 }
