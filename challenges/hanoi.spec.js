@@ -12,21 +12,31 @@ describe('the Hanoi puzzle', ()=> {
     });
     it('is about pilling up rings on tower', () => {
         let puzzle = new Hanoi();
-        let aTower = puzzle.getTowers()[1];
-        puzzle.try(new Ring({ size:5 }), aTower);
-        puzzle.try(new Ring({ size:3 }), aTower);
+        let secondTower = puzzle.getTowers()[1];
+        puzzle.try(new Ring({ size:5 }), secondTower);
+        puzzle.try(new Ring({ size:3 }), secondTower);
 
-        expect(aTower.getRings().map(r => r.getSize())).to.deep.equal([5, 3]);
-    });
+        expect(skyline(puzzle)).to.deep.equal([
+            [],
+            [5, 3],
+            []
+        ])
+    });    
     it('only allows pilling up rings in descending order', () => {
         let puzzle = new Hanoi();
-        let aTower = puzzle.getTowers()[1];
-        puzzle.try(new Ring({ size:3 }), aTower);
+        let secondTower = puzzle.getTowers()[1];
+        puzzle.try(new Ring({ size:3 }), secondTower);
 
-        expect(() => puzzle.try(new Ring({ size:7 }), aTower))
+        expect(() => puzzle.try(new Ring({ size:7 }), secondTower))
             .to.throw(/^cannot put ring 7 on top of ring 3$/);
     });
 });
+const skyline = (puzzle) => {
+    return puzzle.getTowers().reduce((all, tower) => {
+        all.push(tower.getRings().map(r => r.getSize()))
+        return all;
+    }, []);
+}
 
 class Hanoi {
     constructor() {
