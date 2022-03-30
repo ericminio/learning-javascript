@@ -42,6 +42,20 @@ describe('the Hanoi puzzle', ()=> {
             []
         ]);
     });
+    it('cancels an illegal move', () => {
+        let puzzle = new Hanoi();
+        let firstTower = puzzle.getTowers()[0];
+        let secondTower = puzzle.getTowers()[1];
+        puzzle.put(new Ring({ size:3 }), firstTower);
+        puzzle.put(new Ring({ size:1 }), secondTower);    
+        puzzle.move({ from:0, to:1 });    
+        
+        expect(skyline(puzzle)).to.deep.equal([
+            [3],
+            [1],
+            []
+        ]);
+    });
 });
 const skyline = (puzzle) => {
     return puzzle.getTowers().reduce((all, tower) => {
@@ -66,7 +80,12 @@ class Hanoi {
         let from = this.getTowers()[movement.from];
         let to = this.getTowers()[movement.to];
         let ring = from.getRings().pop();
-        this.put(ring, to);
+        try {
+            this.put(ring, to);
+        }
+        catch {
+            this.put(ring, from);
+        }
     }
     checkMove(ring, tower) {
         if (! this.isLegalMove(ring, tower)) {
