@@ -13,22 +13,34 @@ describe('the Hanoi puzzle', ()=> {
     it('is about pilling up rings on tower', () => {
         let puzzle = new Hanoi();
         let secondTower = puzzle.getTowers()[1];
-        puzzle.try(new Ring({ size:5 }), secondTower);
-        puzzle.try(new Ring({ size:3 }), secondTower);
+        puzzle.put(new Ring({ size:5 }), secondTower);
+        puzzle.put(new Ring({ size:3 }), secondTower);
 
         expect(skyline(puzzle)).to.deep.equal([
             [],
             [5, 3],
             []
-        ])
+        ]);
     });    
     it('only allows pilling up rings in descending order', () => {
         let puzzle = new Hanoi();
         let secondTower = puzzle.getTowers()[1];
-        puzzle.try(new Ring({ size:3 }), secondTower);
+        puzzle.put(new Ring({ size:3 }), secondTower);
 
-        expect(() => puzzle.try(new Ring({ size:7 }), secondTower))
+        expect(() => puzzle.put(new Ring({ size:7 }), secondTower))
             .to.throw(/^cannot put ring 7 on top of ring 3$/);
+    });
+    it('is about moving the rings from one tower to the next one', () => {
+        let puzzle = new Hanoi();
+        let firstTower = puzzle.getTowers()[0];
+        puzzle.put(new Ring({ size:3 }), firstTower);
+        puzzle.move({ from:0, to:1 });
+        
+        expect(skyline(puzzle)).to.deep.equal([
+            [],
+            [3],
+            []
+        ]);
     });
 });
 const skyline = (puzzle) => {
@@ -46,9 +58,15 @@ class Hanoi {
     getTowers() {
         return this.towers;
     }
-    try(ring, tower) {
+    put(ring, tower) {
         this.checkMove(ring, tower);
         tower.push(ring);
+    }
+    move(movement) {
+        let from = this.getTowers()[movement.from];
+        let to = this.getTowers()[movement.to];
+        let ring = from.getRings().pop();
+        this.put(ring, to);
     }
     checkMove(ring, tower) {
         if (! this.isLegalMove(ring, tower)) {
@@ -82,8 +100,8 @@ class Tower {
     }
 }
 class Ring {
-    constructor(options) {
-        this.size = options.size;
+    constructor(movement) {
+        this.size = movement.size;
     }
     getSize() {
         return this.size;
