@@ -47,9 +47,10 @@ describe('the Hanoi puzzle', ()=> {
         let firstTower = puzzle.getTowers()[0];
         let secondTower = puzzle.getTowers()[1];
         puzzle.put(new Ring({ size:3 }), firstTower);
-        puzzle.put(new Ring({ size:1 }), secondTower);    
-        puzzle.move({ from:0, to:1 });    
+        puzzle.put(new Ring({ size:1 }), secondTower);            
         
+        expect(() => puzzle.move({ from:0, to:1 }))
+            .to.throw(/^cannot put ring 3 on top of ring 1$/);
         expect(skyline(puzzle)).to.deep.equal([
             [3],
             [1],
@@ -96,8 +97,9 @@ class Hanoi {
         try {
             this.put(ring, to);
         }
-        catch {
+        catch(error) {
             this.put(ring, from);
+            throw error;
         }
     }
     checkMove(ring, tower) {
