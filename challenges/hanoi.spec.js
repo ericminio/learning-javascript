@@ -72,6 +72,19 @@ describe('the Hanoi puzzle', ()=> {
         ]);
     });
 });
+describe('third tower', () => {    
+
+    let solver;
+    beforeEach(() => {
+        solver = new Solver();
+    });
+    it('is needed to move 2 rings', () => {
+        expect(solver.thirdTower({ from:0, to:2 })).to.equal(1);
+    });
+    it('is the tower that is not in the spec', () => {
+        expect(solver.thirdTower({ from:2, to:1 })).to.equal(0);
+    });
+});
 const skyline = (puzzle) => {
     return puzzle.getTowers().reduce((all, tower) => {
         all.push(tower.getRings().map(r => r.getSize()))
@@ -88,7 +101,7 @@ class Solver {
         this.hanoi.move({ from:this.thirdTower(spec), to:spec.to });
     }
     thirdTower(spec) {
-        return 1;
+        return 3 - spec.from - spec.to;
     }
 }
 class Hanoi {
