@@ -62,7 +62,8 @@ describe('the Hanoi puzzle', ()=> {
         let firstTower = puzzle.getTowers()[0];
         puzzle.put(new Ring({ size:2 }), firstTower);
         puzzle.put(new Ring({ size:1 }), firstTower);
-        puzzle.moveRings({ from:0, to:2 });
+        let solver = new Solver(puzzle);
+        solver.moveRings({ from:0, to:2 });
 
         expect(skyline(puzzle)).to.deep.equal([
             [],
@@ -77,7 +78,19 @@ const skyline = (puzzle) => {
         return all;
     }, []);
 }
-
+class Solver {
+    constructor(puzzle) {
+        this.hanoi = puzzle;
+    }
+    moveRings(spec) {
+        this.hanoi.move({ from:spec.from, to:this.thirdTower(spec) });
+        this.hanoi.move({ from:spec.from, to:spec.to });
+        this.hanoi.move({ from:this.thirdTower(spec), to:spec.to });
+    }
+    thirdTower(spec) {
+        return 1;
+    }
+}
 class Hanoi {
     constructor() {
         this.towers = [new Tower(), new Tower(), new Tower()];
@@ -90,9 +103,9 @@ class Hanoi {
         this.checkMove(ring, tower);
         tower.push(ring);
     }
-    move(movement) {
-        let from = this.getTowers()[movement.from];
-        let to = this.getTowers()[movement.to];
+    move(spec) {
+        let from = this.getTowers()[spec.from];
+        let to = this.getTowers()[spec.to];
         let ring = from.getRings().pop();
         try {
             this.put(ring, to);
@@ -110,14 +123,6 @@ class Hanoi {
     isLegalMove(ring, tower) {
         return tower.isEmpty()
             || ring.isSmallerThan(tower.getRing());
-    }
-    moveRings(movement) {
-        this.move({ from:movement.from, to:this.thirdTower(movement) });
-        this.move({ from:movement.from, to:movement.to });
-        this.move({ from:this.thirdTower(movement), to:movement.to });
-    }
-    thirdTower(movement) {
-        return 1;
     }
 }
 class Tower {
@@ -142,8 +147,8 @@ class Tower {
     }
 }
 class Ring {
-    constructor(movement) {
-        this.size = movement.size;
+    constructor(spec) {
+        this.size = spec.size;
     }
     getSize() {
         return this.size;
