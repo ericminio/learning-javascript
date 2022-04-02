@@ -111,10 +111,13 @@ class Hanoi {
         return tower.isEmpty()
             || ring.isSmallerThan(tower.getRing());
     }
-    solve(challenge) {
-        this.move({ from:challenge.from, to:1 });
-        this.move({ from:challenge.from, to:challenge.to });
-        this.move({ from:1, to:challenge.to });
+    solve(movement) {
+        this.move({ from:movement.from, to:this.thirdTower(movement) });
+        this.move({ from:movement.from, to:movement.to });
+        this.move({ from:this.thirdTower(movement), to:movement.to });
+    }
+    thirdTower(movement) {
+        return 1;
     }
 }
 class Tower {
