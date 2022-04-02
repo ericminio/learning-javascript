@@ -62,7 +62,7 @@ describe('the Hanoi puzzle', ()=> {
         let firstTower = puzzle.getTowers()[0];
         puzzle.put(new Ring({ size:2 }), firstTower);
         puzzle.put(new Ring({ size:1 }), firstTower);
-        puzzle.solve();
+        puzzle.solve({ from:0, to:2 });
 
         expect(skyline(puzzle)).to.deep.equal([
             [],
@@ -111,10 +111,10 @@ class Hanoi {
         return tower.isEmpty()
             || ring.isSmallerThan(tower.getRing());
     }
-    solve() {
-        this.move({ from:0, to:1 });
-        this.move({ from:0, to:2 });
-        this.move({ from:1, to:2 });
+    solve(challenge) {
+        this.move({ from:challenge.from, to:1 });
+        this.move({ from:challenge.from, to:challenge.to });
+        this.move({ from:1, to:challenge.to });
     }
 }
 class Tower {
