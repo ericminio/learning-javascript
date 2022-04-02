@@ -56,6 +56,19 @@ describe('the Hanoi puzzle', ()=> {
             []
         ]);
     });
+    it('is easy with 2 rings', () => {
+        let puzzle = new Hanoi();
+        let firstTower = puzzle.getTowers()[0];
+        puzzle.put(new Ring({ size:2 }), firstTower);
+        puzzle.put(new Ring({ size:1 }), firstTower);
+        puzzle.solve();
+
+        expect(skyline(puzzle)).to.deep.equal([
+            [],
+            [],
+            [2, 1]
+        ]);
+    });
 });
 const skyline = (puzzle) => {
     return puzzle.getTowers().reduce((all, tower) => {
@@ -95,6 +108,11 @@ class Hanoi {
     isLegalMove(ring, tower) {
         return tower.isEmpty()
             || ring.isSmallerThan(tower.getRing());
+    }
+    solve() {
+        this.move({ from:0, to:1 });
+        this.move({ from:0, to:2 });
+        this.move({ from:1, to:2 });
     }
 }
 class Tower {
