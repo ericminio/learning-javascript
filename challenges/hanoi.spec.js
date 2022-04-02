@@ -2,17 +2,23 @@ const { expect } = require('chai');
 
 describe('the Hanoi puzzle', ()=> {
 
+    let puzzle;
+    let firstTower;
+    let secondTower;
+    let solver;
+    beforeEach(() => {
+        puzzle = new Hanoi();
+        firstTower = puzzle.getTowers()[0];
+        secondTower = puzzle.getTowers()[1];
+        solver = new Solver(puzzle);
+    });
     it('is about 3 towers', ()=> {
-        let puzzle = new Hanoi();
-
         expect(puzzle.getTowers().length).to.equal(3);
         puzzle.getTowers().forEach(o => {
             expect(o instanceof Tower).to.equal(true);
         })
     });
-    it('is about pilling up rings on tower', () => {
-        let puzzle = new Hanoi();
-        let secondTower = puzzle.getTowers()[1];
+    it('is about pilling up rings on tower', () => {        
         puzzle.put(new Ring({ size:5 }), secondTower);
         puzzle.put(new Ring({ size:3 }), secondTower);
 
@@ -23,16 +29,12 @@ describe('the Hanoi puzzle', ()=> {
         ]);
     });    
     it('only allows pilling up rings in descending order', () => {
-        let puzzle = new Hanoi();
-        let secondTower = puzzle.getTowers()[1];
         puzzle.put(new Ring({ size:3 }), secondTower);
 
         expect(() => puzzle.put(new Ring({ size:7 }), secondTower))
             .to.throw(/^cannot put ring 7 on top of ring 3$/);
     });
     it('is about moving the rings from one tower to the next one', () => {
-        let puzzle = new Hanoi();
-        let firstTower = puzzle.getTowers()[0];
         puzzle.put(new Ring({ size:3 }), firstTower);
         puzzle.move({ from:0, to:1 });
         
@@ -43,9 +45,6 @@ describe('the Hanoi puzzle', ()=> {
         ]);
     });
     it('cancels an illegal move', () => {
-        let puzzle = new Hanoi();
-        let firstTower = puzzle.getTowers()[0];
-        let secondTower = puzzle.getTowers()[1];
         puzzle.put(new Ring({ size:3 }), firstTower);
         puzzle.put(new Ring({ size:1 }), secondTower);            
         
@@ -58,11 +57,8 @@ describe('the Hanoi puzzle', ()=> {
         ]);
     });
     it('is easy with 2 rings', () => {
-        let puzzle = new Hanoi();
-        let firstTower = puzzle.getTowers()[0];
         puzzle.put(new Ring({ size:2 }), firstTower);
         puzzle.put(new Ring({ size:1 }), firstTower);
-        let solver = new Solver(puzzle);
         solver.moveRings({ from:0, to:2 });
 
         expect(skyline(puzzle)).to.deep.equal([
