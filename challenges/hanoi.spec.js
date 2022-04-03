@@ -36,7 +36,7 @@ describe('the Hanoi puzzle', ()=> {
     });
     it('is about moving the rings from one tower to the next one', () => {
         puzzle.put(new Ring({ size:3 }), firstTower);
-        puzzle.move({ from:0, to:1 });
+        solver.move({ from:0, to:1 });
         
         expect(skyline(puzzle)).to.deep.equal([
             [],
@@ -48,7 +48,7 @@ describe('the Hanoi puzzle', ()=> {
         puzzle.put(new Ring({ size:3 }), firstTower);
         puzzle.put(new Ring({ size:1 }), secondTower);            
         
-        expect(() => puzzle.move({ from:0, to:1 }))
+        expect(() => solver.move({ from:0, to:1 }))
             .to.throw(/^cannot put ring 3 on top of ring 1$/);
         expect(skyline(puzzle)).to.deep.equal([
             [3],
@@ -91,10 +91,22 @@ class Solver {
     constructor(puzzle) {
         this.hanoi = puzzle;
     }
+    move(spec) {
+        let from = this.hanoi.getTowers()[spec.from];
+        let to = this.hanoi.getTowers()[spec.to];
+        let ring = from.getRings().pop();
+        try {
+            this.hanoi.put(ring, to);
+        }
+        catch(error) {
+            this.hanoi.put(ring, from);
+            throw error;
+        }
+    }
     moveRings(spec) {
-        this.hanoi.move({ from:spec.from, to:this.thirdTower(spec) });
-        this.hanoi.move({ from:spec.from, to:spec.to });
-        this.hanoi.move({ from:this.thirdTower(spec), to:spec.to });
+        this.move({ from:spec.from, to:this.thirdTower(spec) });
+        this.move({ from:spec.from, to:spec.to });
+        this.move({ from:this.thirdTower(spec), to:spec.to });
     }
     thirdTower(spec) {
         return 3 - spec.from - spec.to;
@@ -111,18 +123,6 @@ class Hanoi {
     put(ring, tower) {
         this.checkMove(ring, tower);
         tower.push(ring);
-    }
-    move(spec) {
-        let from = this.getTowers()[spec.from];
-        let to = this.getTowers()[spec.to];
-        let ring = from.getRings().pop();
-        try {
-            this.put(ring, to);
-        }
-        catch(error) {
-            this.put(ring, from);
-            throw error;
-        }
     }
     checkMove(ring, tower) {
         if (! this.isLegalMove(ring, tower)) {
