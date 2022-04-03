@@ -56,7 +56,7 @@ describe('the Hanoi puzzle', ()=> {
             []
         ]);
     });
-    it('is easy with 2 rings', () => {
+    it('is easy to solve with 2 rings', () => {
         puzzle.put(new Ring({ size:2 }), firstTower);
         puzzle.put(new Ring({ size:1 }), firstTower);
         player.play({ from:0, to:2 });
@@ -92,6 +92,9 @@ class Player {
         this.hanoi = puzzle;
     }
     play(spec) {
+        this.moveRings(spec);
+    }
+    moveRings(spec) {
         this.move({ from:spec.from, to:this.thirdTower(spec) });
         this.move({ from:spec.from, to:spec.to });
         this.move({ from:this.thirdTower(spec), to:spec.to });
