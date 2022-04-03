@@ -5,12 +5,12 @@ describe('the Hanoi puzzle', ()=> {
     let puzzle;
     let firstTower;
     let secondTower;
-    let solver;
+    let player;
     beforeEach(() => {
         puzzle = new Hanoi();
         firstTower = puzzle.getTowers()[0];
         secondTower = puzzle.getTowers()[1];
-        solver = new Solver(puzzle);
+        player = new Player(puzzle);
     });
     it('is about 3 towers', ()=> {
         expect(puzzle.getTowers().length).to.equal(3);
@@ -36,7 +36,7 @@ describe('the Hanoi puzzle', ()=> {
     });
     it('is about moving the rings from one tower to the next one', () => {
         puzzle.put(new Ring({ size:3 }), firstTower);
-        solver.move({ from:0, to:1 });
+        player.move({ from:0, to:1 });
         
         expect(skyline(puzzle)).to.deep.equal([
             [],
@@ -48,7 +48,7 @@ describe('the Hanoi puzzle', ()=> {
         puzzle.put(new Ring({ size:3 }), firstTower);
         puzzle.put(new Ring({ size:1 }), secondTower);            
         
-        expect(() => solver.move({ from:0, to:1 }))
+        expect(() => player.move({ from:0, to:1 }))
             .to.throw(/^cannot put ring 3 on top of ring 1$/);
         expect(skyline(puzzle)).to.deep.equal([
             [3],
@@ -59,7 +59,7 @@ describe('the Hanoi puzzle', ()=> {
     it('is easy with 2 rings', () => {
         puzzle.put(new Ring({ size:2 }), firstTower);
         puzzle.put(new Ring({ size:1 }), firstTower);
-        solver.moveRings({ from:0, to:2 });
+        player.moveRings({ from:0, to:2 });
 
         expect(skyline(puzzle)).to.deep.equal([
             [],
@@ -70,15 +70,15 @@ describe('the Hanoi puzzle', ()=> {
 });
 describe('third tower', () => {    
 
-    let solver;
+    let player;
     beforeEach(() => {
-        solver = new Solver();
+        player = new Player();
     });
     it('is needed to move 2 rings', () => {
-        expect(solver.thirdTower({ from:0, to:2 })).to.equal(1);
+        expect(player.thirdTower({ from:0, to:2 })).to.equal(1);
     });
     it('is the tower that is not in the spec', () => {
-        expect(solver.thirdTower({ from:2, to:1 })).to.equal(0);
+        expect(player.thirdTower({ from:2, to:1 })).to.equal(0);
     });
 });
 const skyline = (puzzle) => {
@@ -87,7 +87,7 @@ const skyline = (puzzle) => {
         return all;
     }, []);
 }
-class Solver {
+class Player {
     constructor(puzzle) {
         this.hanoi = puzzle;
     }
