@@ -59,7 +59,7 @@ describe('the Hanoi puzzle', ()=> {
     it('is easy with 2 rings', () => {
         puzzle.put(new Ring({ size:2 }), firstTower);
         puzzle.put(new Ring({ size:1 }), firstTower);
-        player.moveRings({ from:0, to:2 });
+        player.play({ from:0, to:2 });
 
         expect(skyline(puzzle)).to.deep.equal([
             [],
@@ -91,6 +91,11 @@ class Player {
     constructor(puzzle) {
         this.hanoi = puzzle;
     }
+    play(spec) {
+        this.move({ from:spec.from, to:this.thirdTower(spec) });
+        this.move({ from:spec.from, to:spec.to });
+        this.move({ from:this.thirdTower(spec), to:spec.to });
+    }
     move(spec) {
         let from = this.hanoi.getTowers()[spec.from];
         let to = this.hanoi.getTowers()[spec.to];
@@ -102,11 +107,6 @@ class Player {
             this.hanoi.put(ring, from);
             throw error;
         }
-    }
-    moveRings(spec) {
-        this.move({ from:spec.from, to:this.thirdTower(spec) });
-        this.move({ from:spec.from, to:spec.to });
-        this.move({ from:this.thirdTower(spec), to:spec.to });
     }
     thirdTower(spec) {
         return 3 - spec.from - spec.to;
