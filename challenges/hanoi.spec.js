@@ -104,7 +104,7 @@ class Player {
     }
     play(spec) {
         this.moveCount = 0;
-        spec.ringCount = this.hanoi.getRingCount();
+        spec.ringCount = this.hanoi.getRingCount(spec.from);
         this.moveRings(spec);
         return this.moveCount;
     }
@@ -156,8 +156,8 @@ class Hanoi {
         return tower.isEmpty()
             || ring.isSmallerThan(tower.getRing());
     }
-    getRingCount() {
-        return this.towers.reduce((acc, curr) => acc += curr.getRings().length, 0);
+    getRingCount(index) {
+        return this.towers[index].getRings().length;
     }
 }
 class Tower {
