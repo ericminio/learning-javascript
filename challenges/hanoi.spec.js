@@ -67,6 +67,17 @@ describe('the Hanoi puzzle', ()=> {
             [2, 1]
         ]);
     });
+    it('is obvious to solve with 1 ring', () => {
+        puzzle.put(new Ring({ size:1 }), firstTower);
+        let moveCount = player.play({ from:0, to:2 });
+
+        expect(moveCount).to.equal(1);
+        expect(skyline(puzzle)).to.deep.equal([
+            [],
+            [],
+            [1]
+        ]);
+    });
 });
 describe('third tower', () => {    
 
@@ -92,14 +103,23 @@ class Player {
         this.hanoi = puzzle;
     }
     play(spec) {
+        this.moveCount = 0;
+        spec.ringCount = this.hanoi.getRingCount();
         this.moveRings(spec);
+        return this.moveCount;
     }
     moveRings(spec) {
-        this.move({ from:spec.from, to:this.thirdTower(spec) });
-        this.move({ from:spec.from, to:spec.to });
-        this.move({ from:this.thirdTower(spec), to:spec.to });
+        if (spec.ringCount == 1) {
+            this.move({ from:spec.from, to:spec.to });
+        }
+        else {
+            this.move({ from:spec.from, to:this.thirdTower(spec) });
+            this.move({ from:spec.from, to:spec.to });
+            this.move({ from:this.thirdTower(spec), to:spec.to });
+        }
     }
     move(spec) {
+        this.moveCount ++;
         let from = this.hanoi.getTowers()[spec.from];
         let to = this.hanoi.getTowers()[spec.to];
         let ring = from.getRings().pop();
@@ -135,6 +155,9 @@ class Hanoi {
     isLegalMove(ring, tower) {
         return tower.isEmpty()
             || ring.isSmallerThan(tower.getRing());
+    }
+    getRingCount() {
+        return this.towers.reduce((acc, curr) => acc += curr.getRings().length, 0);
     }
 }
 class Tower {
