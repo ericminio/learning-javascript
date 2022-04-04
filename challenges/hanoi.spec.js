@@ -78,6 +78,20 @@ describe('the Hanoi puzzle', ()=> {
             [1]
         ]);
     });
+    it('requires to catch the generic to stay simple with more rings', () => {
+        puzzle.put(new Ring({ size:5 }), firstTower);
+        puzzle.put(new Ring({ size:4 }), firstTower);
+        puzzle.put(new Ring({ size:3 }), firstTower);
+        puzzle.put(new Ring({ size:2 }), firstTower);
+        puzzle.put(new Ring({ size:1 }), firstTower);
+        player.play({ from:0, to:2 });
+
+        expect(skyline(puzzle)).to.deep.equal([
+            [],
+            [],
+            [5, 4, 3, 2, 1]
+        ]);
+    });
 });
 describe('third tower', () => {    
 
@@ -113,9 +127,9 @@ class Player {
             this.move({ from:spec.from, to:spec.to });
         }
         else {
-            this.move({ from:spec.from, to:this.thirdTower(spec) });
+            this.moveRings({ ringCount:spec.ringCount-1, from:spec.from, to:this.thirdTower(spec) });
             this.move({ from:spec.from, to:spec.to });
-            this.move({ from:this.thirdTower(spec), to:spec.to });
+            this.moveRings({ ringCount:spec.ringCount-1, from:this.thirdTower(spec), to:spec.to });
         }
     }
     move(spec) {
