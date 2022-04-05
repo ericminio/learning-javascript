@@ -1,18 +1,19 @@
 var chai = require('chai');
 chai.use(require('chai-string'));
 var expect = chai.expect;
+const fs = require('fs');
 
 const { Builder, By } = require('selenium-webdriver')
-const firefox = ()=> new Builder().forBrowser('firefox').build()
+const firefox = () => new Builder().forBrowser('firefox').build()
 
-describe('Selenium', function() {
+describe('Selenium', function () {
 
     var server;
     var driver;
 
-    beforeEach(function(done) {
+    beforeEach(function (done) {
         driver = firefox();
-        server = require('http').createServer(function(request, response) {
+        server = require('http').createServer(function (request, response) {
             var page = `
                 <html>
                     <head>
@@ -23,21 +24,30 @@ describe('Selenium', function() {
                     </body>
                 </html>
             `
-            response.writeHead(200, { 'content-type':'text/html' })
+            response.writeHead(200, { 'content-type': 'text/html' })
             response.end(page)
-        }).listen(5000, done)
+        }).listen(5001, done)
     })
 
-    afterEach(async ()=> {
+    afterEach(async () => {
         server.close();
         await driver.quit();
     })
 
-    it('can be used to inspect the computed width of an element', async ()=> {
-        await driver.get('http://localhost:5000/')
+    it('can be used to inspect the computed width of an element', async () => {
+        await driver.get('http://localhost:5001/')
         let element = await driver.findElement(By.id('greetings'))
         let value = await element.getCssValue('width')
 
         expect(value).to.endWith('px')
+    })
+
+    it('can be used to inspect the screenshot of an element', async () => {
+        await driver.get('http://localhost:5001/')
+        let element = await driver.findElement(By.id('greetings'))
+        let actual = await element.takeScreenshot()
+        let expected = fs.readFileSync('school/tests/expected-welcome.png', 'base64');
+
+        expect(actual).to.equal(expected)
     })
 })
