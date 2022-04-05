@@ -26,7 +26,7 @@ describe('Selenium', function () {
             `
             response.writeHead(200, { 'content-type': 'text/html' })
             response.end(page)
-        }).listen(5001, done)
+        }).listen(4999, done)
     })
 
     afterEach(async () => {
@@ -35,7 +35,7 @@ describe('Selenium', function () {
     })
 
     it('can be used to inspect the computed width of an element', async () => {
-        await driver.get('http://localhost:5001/')
+        await driver.get('http://localhost:4999/')
         let element = await driver.findElement(By.id('greetings'))
         let value = await element.getCssValue('width')
 
@@ -43,7 +43,7 @@ describe('Selenium', function () {
     })
 
     it('can be used to inspect the screenshot of an element', async () => {
-        await driver.get('http://localhost:5001/')
+        await driver.get('http://localhost:4999/')
         let element = await driver.findElement(By.id('greetings'))
         let actual = await element.takeScreenshot()
         let expected = fs.readFileSync('school/tests/expected-welcome.png', 'base64');

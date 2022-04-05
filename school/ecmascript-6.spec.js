@@ -1,29 +1,28 @@
 const Browser = require('zombie');
 var browser = new Browser();
 
-describe('ECMAScript 6', function() {
+describe('ECMAScript 6', function () {
 
     var app;
-    var server;
-    var port = 5000;
+    var port = 5001;
     var script;
 
-    beforeEach(function(done) {
+    beforeEach(function (done) {
 
-        var page = ''+
-        '<html>' +
+        var page = '' +
+            '<html>' +
             '<head>' +
-                '<script src="script.js"></script>' +
+            '<script src="script.js"></script>' +
             '</head>' +
-            '<body>'+
-                '<div id="root"></div>' +
-                '<script>'+
-                    'document.getElementById("root").innerHTML = output();'+
-                '</script>'+
-            '</body>'+
-        '</html>';
+            '<body>' +
+            '<div id="root"></div>' +
+            '<script>' +
+            'document.getElementById("root").innerHTML = output();' +
+            '</script>' +
+            '</body>' +
+            '</html>';
 
-        var handler = function(request, response) {
+        var handler = function (request, response) {
             var parsed = require('url').parse(request.url, true);
             if (parsed.pathname == '/script.js') {
                 response.setHeader('Content-Type', 'application/javascript');
@@ -40,19 +39,19 @@ describe('ECMAScript 6', function() {
         app.listen(port, done);
     });
 
-    afterEach(function() {
+    afterEach(function () {
         app.close();
     });
 
-    var yes = function(done) {
+    var yes = function (done) {
         browser.visit('http://localhost:' + port)
-            .then(function() {
+            .then(function () {
                 browser.assert.text('#root', 'hello world');
             })
             .then(done, done);
     };
 
-    it('introduces destructuring', function(sir) {
+    it('introduces destructuring', function (sir) {
         script = '' +
             'var output = function() { ' +
             '   let options = { message:"hello world", source:"a friend" };' +
@@ -61,29 +60,29 @@ describe('ECMAScript 6', function() {
             '}';
         yes(sir);
     });
-    it('introduces arrow functions', function(sir) {
+    it('introduces arrow functions', function (sir) {
         script = '' +
             'var output = () => { ' +
             '   return "hello world";' +
             '}';
         yes(sir);
     });
-    it('introduces classes', function(sir) {
+    it('introduces classes', function (sir) {
         script = '' +
-            'class Greeting {'+
-            '   constructor(value) {'+
-            '       this.value = value;'+
-            '   }'+
-            '   message() {'+
-            '       return this.value;'+
-            '   }'+
-            '}'+
+            'class Greeting {' +
+            '   constructor(value) {' +
+            '       this.value = value;' +
+            '   }' +
+            '   message() {' +
+            '       return this.value;' +
+            '   }' +
+            '}' +
             'var output = () => { ' +
             '   return new Greeting("hello world").message();' +
             '}';
         yes(sir);
     });
-    it('introduces template literals', function(sir) {
+    it('introduces template literals', function (sir) {
         script = '' +
             'var output = () => { ' +
             '   let a = "hello world";' +
@@ -91,15 +90,15 @@ describe('ECMAScript 6', function() {
             '}';
         yes(sir);
     });
-    it('introduces multi-line strings', function(sir) {
+    it('introduces multi-line strings', function (sir) {
         script = '' +
             'var output = () => { ' +
             '   return `hello' +
             '   world`;' +
             '}';
         yes(sir);
-    });    
-    it('introduces rest operator', function(sir) {
+    });
+    it('introduces rest operator', function (sir) {
         script = `
             var concatenate = (...args)=>{
                 return args.join(' ');
