@@ -1,7 +1,7 @@
 dist: trusty
 language: node_js
 node_js:
-  - "14.16.0"
+  - "14.17.1"
 env:
   - MOZ_HEADLESS=1
 before_script:
