@@ -76,11 +76,24 @@ const extractBoundary = (payload) => {
 }
 
 const create = (options) => {
-    return '-----token\n' +
-    'Content-Disposition:form-data;name=field\n' +
-    '\n'+
-    'any content\n' +
-    '-----token--\n';
+    let segments = [];
+
+    options.form.forEach(field => {
+        let segment = `${CONTENT_DISPOSITION} form-data${FIELD_SEPARATOR} name=${field.name}`;
+        if (field.fileName !== undefined) {
+            segment += `${FIELD_SEPARATOR} filename=${field.fileName}`
+        }
+        segment += `${EOL}`;
+        if (field.contentType !== undefined) {
+            segment += `${CONTENT_TYPE} ${field.contentType}${EOL}`
+        }
+        segment += `${EOL}${field.value}${EOL}`;
+        segments.push(segment);    
+    });
+    let boundary = `${HYPHENS}${options.secret}`;
+    let payload = `${boundary}${EOL}${segments.join(`${boundary}${EOL}`)}${boundary}--${EOL}`;
+
+    return payload;
 }
 
 module.exports = { parse, create };

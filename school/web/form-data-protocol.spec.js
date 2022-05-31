@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const { parse, create } = require('./form-data-protocol');
 
-describe.only('Form data protocol', () => {
+describe('Form data protocol', () => {
     
     describe('parser', () => {
         
@@ -150,7 +150,41 @@ describe.only('Form data protocol', () => {
                 secret: 'token'
             })).to.equal('' +
                 '-----token\n' +
-                'Content-Disposition:form-data;name=field\n' +
+                'Content-Disposition: form-data; name=field\n' +
+                '\n'+
+                'any content\n' +
+                '-----token--\n'
+            )
+        });
+        it('can build payload for two fields with a single line of data', () => {
+            expect(create({
+                form: [
+                    { name: 'one', value: '111' },
+                    { name: 'two', value: '222' }
+                ],
+                secret: 'token'
+            })).to.equal('' +
+                '-----token\n' +
+                'Content-Disposition: form-data; name=one\n' +
+                '\n'+
+                '111\n' +
+                '-----token\n' +
+                'Content-Disposition: form-data; name=two\n' +
+                '\n'+
+                '222\n' +
+                '-----token--\n'
+            )
+        });
+        it('can build payload for a text file', () => {
+            expect(create({
+                form: [
+                    { name: 'one', fileName: 'toto.txt', contentType: 'text/plain', value: 'any content' }
+                ],
+                secret: 'token'
+            })).to.equal('' +
+                '-----token\n' +
+                'Content-Disposition: form-data; name=one; filename=toto.txt\n' +
+                'Content-Type: text/plain\n' +
                 '\n'+
                 'any content\n' +
                 '-----token--\n'
