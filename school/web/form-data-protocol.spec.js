@@ -190,6 +190,21 @@ describe('Form data protocol', () => {
                 '-----token--\n'
             )
         });
+        it('can build payload for a single field with a several lines of data', () => {
+            expect(create({
+                form: [
+                    { name: 'field', value: 'any\ncontent' }
+                ],
+                secret: 'token'
+            })).to.equal('' +
+                '-----token\n' +
+                'Content-Disposition: form-data; name=field\n' +
+                '\n'+
+                'any\n' +
+                'content\n' +
+                '-----token--\n'
+            )
+        });
     });
     
 });
