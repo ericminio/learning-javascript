@@ -75,4 +75,12 @@ const extractBoundary = (payload) => {
     return payload.substring(startIndex, startIndex + endIndex).trim();
 }
 
-module.exports = { parse };
+const create = (options) => {
+    return '-----token\n' +
+    'Content-Disposition:form-data;name=field\n' +
+    '\n'+
+    'any content\n' +
+    '-----token--\n';
+}
+
+module.exports = { parse, create };
