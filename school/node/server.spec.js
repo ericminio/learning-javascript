@@ -39,4 +39,21 @@ describe('server', () => {
         expect(answer.statusCode).to.equal(501);
         expect(answer.body).to.equal('NOT IMPLEMENTED');
     });
+
+    it('answers request as expected using callback', (done) => {
+        let request = http.request({ port:5001 }, pong => {    
+            expect(pong.statusCode).to.equal(501);            
+            let body = '';
+            pong.on('data', chunk => {
+                body += chunk;
+            });
+            pong.on('end', ()=>{
+                expect(body).to.equal('NOT IMPLEMENTED');
+                done();
+            });
+            pong.on('error', done);
+        })
+        request.on('error', done);
+        request.end();
+    });
 });
