@@ -1,11 +1,11 @@
 const extractBody = (incoming) => {
     return new Promise((resolve, reject) => {
-        let body = '';
+        let payload = '';
         incoming.on('data', chunk => {
-            body += chunk;
+            payload += chunk;
         });
         incoming.on('end', ()=>{
-            resolve(body);
+            resolve(payload);
         });
         incoming.on('error', error => {
             reject(error);

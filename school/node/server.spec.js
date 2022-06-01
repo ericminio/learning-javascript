@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const http = require('http');
 const { Server } = require('./server');
-const extractBody = require('./extract-body');
+const extractPayload = require('./extract-payload');
 
 describe('server', () => {
 
@@ -62,9 +62,9 @@ describe('server', () => {
         });
         let answer = await new Promise((resolve, reject)=>{
             let request = http.request({ port:5001 }, pong => {                
-                extractBody(pong)
-                    .then((body) => {
-                        pong.body = body;
+                extractPayload(pong)
+                    .then((payload) => {
+                        pong.body = payload;
                         resolve(pong);
                     })
                     .catch((error) => {

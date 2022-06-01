@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const http = require('http');
 const { Server } = require('./server');
-const extractBody = require('./extract-body');
+const extractPayload = require('./extract-payload');
 
 describe('GET', () => {
 
@@ -22,7 +22,7 @@ describe('GET', () => {
             }));
         });
         let request = http.request({ port:5001 }, pong => {                
-            extractBody(pong)
+            extractPayload(pong)
                 .then((payload) => {
                     let message = JSON.parse(payload);
                     expect(message.method).to.equal('GET');
