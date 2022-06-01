@@ -1,19 +1,16 @@
 const { expect } = require('chai');
 const http = require('http');
+const { Server } = require('./server');
 
 describe('server', () => {
 
     let server;
     beforeEach((done) => {
-        server = http.createServer();        
-        server.on('request', (request, response) => {
-            response.writeHead(501, { 'content-Type': 'text/plain' });
-            response.end('NOT IMPLEMENTED');
-          });
-        server.listen(5001, done);
+        server = new Server(5001);
+        server.start(done);
     });
     afterEach((done) => {
-        server.close(done);
+        server.stop(done);
     });
 
     it('answers request as expected', async () => {
