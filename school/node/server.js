@@ -16,6 +16,11 @@ class Server {
     stop(done) {
         this.internal.close(done);
     }
+    use(handler) {
+        this.internal.removeListener('request', this.handler);
+        this.handler = handler;
+        this.internal.on('request', this.handler);
+    }
 };
 
 module.exports = { Server };

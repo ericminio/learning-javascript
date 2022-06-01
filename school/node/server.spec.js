@@ -53,4 +53,32 @@ describe('server', () => {
         request.on('error', done);
         request.end();
     });
+
+    it('uses the provided handler', async () => {
+        server.use((request, response) => {
+            response.writeHead(200, { 'content-Type': 'text/plain' });
+            response.end('hello world');
+        });
+        let answer = await new Promise((resolve, reject)=>{
+            let request = http.request({ port:5001 }, pong => {                
+                let body = '';
+                pong.on('data', chunk => {
+                    body += chunk;
+                });
+                pong.on('end', ()=>{
+                    pong.body = body;
+                    resolve(pong);
+                });
+                pong.on('error', error => {
+                    reject(error);
+                })
+            })
+            request.on('error', error => {
+                reject(error);
+            })
+            request.end();
+        });
+        expect(answer.statusCode).to.equal(200);
+        expect(answer.body).to.equal('hello world');
+    });
 });
