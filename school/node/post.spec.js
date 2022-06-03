@@ -41,4 +41,23 @@ describe('POST', () => {
             })
             .catch(done);
     });
+
+    it('usually submits a content-type header', (done) => {
+        server.use(async (request, response) => {
+            let contentType = request.headers['content-type'];
+            response.writeHead(200, { 'content-Type': 'text/plain' });
+            response.end(contentType);
+        });
+        request({ 
+            port:5001, 
+            method:'post', 
+            contentType: 'application/json',
+            payload:JSON.stringify({ answer:42 }) 
+        })
+            .then((answer) => {
+                expect(answer.payload).to.equal('application/json');
+                done();
+            })
+            .catch(done);
+    });
 });
