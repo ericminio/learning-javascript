@@ -8,9 +8,9 @@ class Server {
             response.writeHead(501, { 'content-Type': 'text/plain' });
             response.end('NOT IMPLEMENTED');
         };
+        this.use(this.handler);
     }
     start(done) {
-        this.internal.on('request', this.handler);
         this.internal.listen(this.port, done);
     }
     stop(done) {
