@@ -60,4 +60,18 @@ describe('POST', () => {
             })
             .catch(done);
     });
+
+    it('reports error like connection refused', async () => {
+        server.use(async (request, response) => {
+            let contentType = request.headers['content-type'];
+            response.writeHead(200, { 'content-Type': 'text/plain' });
+            response.end(contentType);
+        });
+        try {
+            await request({ port:5002 });
+        }
+        catch(error) {
+            expect(error.code).to.equal('ECONNREFUSED')
+        }
+    });
 });
