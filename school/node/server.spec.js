@@ -50,4 +50,22 @@ describe('server', () => {
             });
         });
     });
+
+    it('welcomes handler as second parameter', (done) => {
+        server.stop(() => {
+            server = new Server(5002, (request, response) => {
+                response.writeHead(200, { 'content-Type': 'text/plain' });
+                response.end('hello world');
+            });
+            server.start(() => {
+                request({ port:5002 })
+                    .then(answer => {
+                        expect(answer.statusCode).to.equal(200);
+                        expect(answer.payload).to.equal('hello world');
+                        done();
+                    })
+                    .catch(done);
+            });
+        });
+    });
 });
