@@ -1,7 +1,7 @@
 const { expect } = require('chai');
-const http = require('http');
 const { Server } = require('./server');
 const extractPayload = require('./extract-payload');
+const request = require('./request');
 
 describe('POST', () => {
 
@@ -19,38 +19,26 @@ describe('POST', () => {
             response.writeHead(200, { 'content-Type': 'application/json' });
             response.end(JSON.stringify({ method: request.method }));
         });
-        let request = http.request({ port:5001, method:'post' }, pong => {                
-            extractPayload(pong)
-                .then((payload) => {
-                    let message = JSON.parse(payload);
-                    expect(message.method).to.equal('POST');
-                    done();
-                })
-                .catch(done);
-            pong.on('error', done);
-        })
-        request.on('error', done);
-        request.end();
+        request({ port:5001, method:'post' })
+            .then((answer) => {
+                let message = JSON.parse(answer.payload);
+                expect(message.method).to.equal('POST');
+                done();
+            })
+            .catch(done);
     });
 
     it('usually submits a payload', (done) => {
         server.use(async (request, response) => {
             let payload = await extractPayload(request)
-            response.writeHead(200, { 'content-Type': 'application/json' });
-            response.end(JSON.stringify({ payload }));
+            response.writeHead(200, { 'content-Type': 'text/plain' });
+            response.end(payload);
         });
-        let request = http.request({ port:5001, method:'post' }, pong => {                
-            extractPayload(pong)
-                .then((payload) => {
-                    let message = JSON.parse(payload);
-                    expect(message.payload).to.equal('this payload');
-                    done();
-                })
-                .catch(done);
-            pong.on('error', done);
-        })
-        request.on('error', done);
-        request.write('this payload');
-        request.end();
+        request({ port:5001, method:'post', payload:'this payload' })
+            .then((answer) => {
+                expect(answer.payload).to.equal('this payload');
+                done();
+            })
+            .catch(done);
     });
 });
