@@ -202,4 +202,48 @@ describe("Arrays", function () {
 			expect(Array.from('hello', x => x.toUpperCase())).to.deep.equal(['H', 'E', 'L', 'L', 'O']);
 		});
 	});
+
+	describe('Sort', function () {
+
+		it('modifies the array', function () {
+			let set = [3, 1, 2];
+			set.sort();
+
+			expect(set).to.deep.equal([1, 2, 3])
+		});
+
+		it('returns the sorted array', function () {
+			let set = [3, 1, 2];
+			let value = set.sort();
+
+			expect(value).to.deep.equal([1, 2, 3])
+		});
+
+		describe('optional comparator', () => {
+
+			it('uses 0 to indicate equality', function () {
+				let set = [3, 1, 2];
+				set.sort((a, b) => 0);
+	
+				expect(set).to.deep.equal([3, 1, 2])
+			});
+
+			it('uses +-1 to indicate comparaison', function () {
+				let set = [3, 1, 2];
+				set.sort((a, b) => {
+					if (a < b) return 1;
+					if (a > b) return -1;
+				});
+	
+				expect(set).to.deep.equal([3, 2, 1])
+			});
+
+			it('also works with positive/negative', function () {
+				let set = [3, 1, 2];
+				set.sort((a, b) => a - b);
+	
+				expect(set).to.deep.equal([1, 2, 3])
+			});
+		});
+	});
 });
