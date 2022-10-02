@@ -12,6 +12,31 @@ describe('Mocha', function () {
     it('can require sinon', function() {
         expect(require('sinon')).not.to.equal(undefined);
     });
+    it('exposes test name in this.ctx.test.title with arrow function', ()=> {
+        expect(this.ctx.test.title).to.equal('exposes test name in this.ctx.test.title with arrow function');
+    });
+    it('exposes test name in this.test.title with regular function', function () {
+        expect(this.test.title).to.equal('exposes test name in this.test.title with regular function');
+    });
+    describe(`
+        multiline
+        context
+        with regular function callback
+        `, function() {
+
+        let title;
+        beforeEach(() => {
+            title = this.title
+                    .split('\n')
+                    .map(line => line.trim())
+                    .filter(line => line.length > 0)
+                    .join(' ');
+        });
+
+        it('is exposed in this.title', ()=> {
+            expect(title).to.equal('multiline context with regular function callback');
+        });
+    });
 
     describe('Spying with sinon', function() {
 
