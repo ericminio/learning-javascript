@@ -33,5 +33,13 @@ const decode = (buffer) => {
 
     return decoded.toString();
 };
+const encode = (text) => {
+    let buffer = Buffer.alloc(2 + text.length);
+    buffer[0] = 0x81;
+    buffer[1] = text.length;
+    Buffer.from(text).copy(buffer, 2);
 
-module.exports = { isFrameFinal, isText, decodeLength, extractMask, extractData, decode };
+    return buffer;
+};
+
+module.exports = { isFrameFinal, isText, decodeLength, extractMask, extractData, decode, encode };
