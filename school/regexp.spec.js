@@ -1,6 +1,6 @@
 var expect = require('chai').expect;
 
-describe.only('Regexp', function () {
+describe('Regexp', function () {
 
 	describe('matching beginning of a string', function () {
 
