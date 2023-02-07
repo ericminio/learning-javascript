@@ -8,6 +8,7 @@ describe("Arrays", function () {
 		array = [];
 		one = { value: "first" };
 		two = { value: "second" };
+		three = { value: "three" };
 	});
 
 	describe("adding elements", function () {
