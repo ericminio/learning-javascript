@@ -165,7 +165,6 @@ describe('Regexp', function () {
 				'ericminio',
 				'1',
 			]);
-			expect(pattern.exec('/players/ericminio/play/world/1')[1]).to.equal('ericminio');
 		});
 
 		it('can extract second parameter', function () {
