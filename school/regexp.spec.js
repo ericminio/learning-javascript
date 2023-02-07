@@ -154,7 +154,7 @@ describe('Regexp', function () {
 
 	});
 
-	describe.only('Data extraction', function () {
+	describe('Data extraction', function () {
 
 		var pattern = /^\/players\/(.*)\/play\/world\/(.*)/;
 
