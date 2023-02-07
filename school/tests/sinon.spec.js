@@ -23,7 +23,7 @@ describe.only('Sinon', function () {
 
     it('can verify a non-event', function () {
         var sut = {
-            api: function (dependency) { dependency.doThat('please'); },
+            api: (dependency) => { dependency.doThat('please'); },
             nop: () => { }
         };
         var collaborator = { doThat: sinon.spy() };
