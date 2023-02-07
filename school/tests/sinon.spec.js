@@ -22,10 +22,13 @@ describe.only('Sinon', function () {
     });
 
     it('can verify a non-event', function () {
-        var sut = { api: function (dependency) { dependency.doThat('please'); } };
+        var sut = {
+            api: function (dependency) { dependency.doThat('please'); },
+            nop: () => { }
+        };
         var collaborator = { doThat: sinon.spy() };
-        sut.api(collaborator);
+        sut.nop();
 
-        expect(collaborator.doThat).to.have.been.calledWith('please');
+        expect(collaborator.doThat).not.to.have.been.called;
     });
 });
