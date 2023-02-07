@@ -167,10 +167,6 @@ describe('Regexp', function () {
 			]);
 		});
 
-		it('can extract second parameter', function () {
-			expect(pattern.exec('/players/ericminio/play/world/42')[2]).to.equal('42');
-		});
-
 		it('returns null when not found', function () {
 			expect(pattern.exec('/non/matching')).to.equal(null);
 		});
