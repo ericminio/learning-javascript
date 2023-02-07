@@ -1,6 +1,6 @@
 var { expect } = require('chai');
 
-describe.only('Mocha', function () {
+describe('Mocha', function () {
 
     it('can assert', function () {
         expect(1 + 1).to.equal(2);
