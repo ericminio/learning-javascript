@@ -48,7 +48,7 @@ describe("Arrays", function () {
 		});
 	});
 
-	describe.only("removing elements", function () {
+	describe("removing elements", function () {
 
 		it("'pop' removes the last element", function () {
 			array.push(one);
