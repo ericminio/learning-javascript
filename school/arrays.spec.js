@@ -84,7 +84,7 @@ describe("Arrays", function () {
 			expect(array[0]).to.equal(two);
 		});
 
-		it("'splice' has a shortcut to remove the beginning of an array", function () {
+		it("'splice' with one paramter is a shortcut to remove the beginning of an array", function () {
 			array.push(one);
 			array.push(two);
 			array.push(three);
