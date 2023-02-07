@@ -159,6 +159,7 @@ describe('Regexp', function () {
 		var pattern = /^\/players\/(.*)\/play\/world\/(.*)/;
 
 		it('is built-in', function () {
+			const data = pattern.exec('/players/ericminio/play/world/1');
 			expect(pattern.exec('/players/ericminio/play/world/1')[1]).to.equal('ericminio');
 		});
 
