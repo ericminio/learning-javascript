@@ -1,5 +1,6 @@
 var { expect } = require('chai');
 var sinon = require('sinon');
+require('chai').use(require('sinon-chai'));
 
 describe.only('Sinon', function () {
 
@@ -13,7 +14,14 @@ describe.only('Sinon', function () {
     });
 
     it('gives better assertion errors with sinon-chai', function () {
-        require('chai').use(require('sinon-chai'));
+        var sut = { api: function (dependency) { dependency.doThat('please'); } };
+        var collaborator = { doThat: sinon.spy() };
+        sut.api(collaborator);
+
+        expect(collaborator.doThat).to.have.been.calledWith('please');
+    });
+
+    it('can verify a non-event', function () {
         var sut = { api: function (dependency) { dependency.doThat('please'); } };
         var collaborator = { doThat: sinon.spy() };
         sut.api(collaborator);
