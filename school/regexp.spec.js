@@ -160,6 +160,11 @@ describe('Regexp', function () {
 
 		it('is built-in', function () {
 			const data = pattern.exec('/players/ericminio/play/world/1');
+			expect(data).to.deep.equal([
+				'/players/ericminio/play/world/1',
+				'ericminio',
+				'1',
+			]);
 			expect(pattern.exec('/players/ericminio/play/world/1')[1]).to.equal('ericminio');
 		});
 
