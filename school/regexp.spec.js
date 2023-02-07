@@ -165,10 +165,6 @@ describe('Regexp', function () {
 				'ericminio',
 				'1',
 			]);
-			expect(data.splice(1)).to.deep.equal([
-				'ericminio',
-				'1',
-			]);
 		});
 
 		it('can extract second parameter', function () {
