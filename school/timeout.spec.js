@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-describe.only('timeout', () => {
+describe('timeout', () => {
 
     it('can be used with 1 to kind-off yield', (done) => {
         let duration = 0;
