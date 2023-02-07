@@ -84,6 +84,17 @@ describe("Arrays", function () {
 			expect(array[0]).to.equal(two);
 		});
 
+		it("'splice' has a shortcut to remove the beginning of an array", function () {
+			array.push(one);
+			array.push(two);
+			array.push(three);
+			const extracted = array.splice(1);
+
+			expect(extracted.length).to.equal(2);
+			expect(extracted[0]).to.equal(two);
+			expect(extracted[1]).to.equal(three);
+		});
+
 	});
 
 	describe("extracting elements", function () {
