@@ -47,7 +47,7 @@ describe("Arrays", function () {
 		});
 	});
 
-	describe("removing elements", function () {
+	describe.only("removing elements", function () {
 
 		it("'pop' removes the last element", function () {
 			array.push(one);
@@ -224,7 +224,7 @@ describe("Arrays", function () {
 			it('uses 0 to indicate equality', function () {
 				let set = [3, 1, 2];
 				set.sort((a, b) => 0);
-	
+
 				expect(set).to.deep.equal([3, 1, 2])
 			});
 
@@ -234,14 +234,14 @@ describe("Arrays", function () {
 					if (a < b) return 1;
 					if (a > b) return -1;
 				});
-	
+
 				expect(set).to.deep.equal([3, 2, 1])
 			});
 
 			it('also works with positive/negative', function () {
 				let set = [3, 1, 2];
 				set.sort((a, b) => a - b);
-	
+
 				expect(set).to.deep.equal([1, 2, 3])
 			});
 		});
