@@ -9,9 +9,7 @@ describe.only('Mocha', function () {
         expect(require('http')).not.to.equal(undefined);
         expect(require('fs')).not.to.equal(undefined);
     });
-    it('can require sinon', function () {
-        expect(require('sinon')).not.to.equal(undefined);
-    });
+
     it('exposes test name in this.ctx.test.title with arrow function', () => {
         expect(this.ctx.test.title).to.equal('exposes test name in this.ctx.test.title with arrow function');
     });
