@@ -88,11 +88,11 @@ describe("Arrays", function () {
 			array.push(one);
 			array.push(two);
 			array.push(three);
-			const extracted = array.splice(1);
+			const deleted = array.splice(1);
 
-			expect(extracted.length).to.equal(2);
-			expect(extracted[0]).to.equal(two);
-			expect(extracted[1]).to.equal(three);
+			expect(deleted.length).to.equal(2);
+			expect(deleted[0]).to.equal(two);
+			expect(deleted[1]).to.equal(three);
 		});
 
 	});
