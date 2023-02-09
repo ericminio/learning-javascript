@@ -47,7 +47,7 @@ describe('Sinon', function () {
             expect(answer.data.value).to.equal(42);
         });
 
-        it('can hide separate intentions of stubbing and mocking', () => {
+        it('can lead to tough troubleshooting when separate intentions of stubbing and mocking are mixed', () => {
             fetch.withArgs('666').returns({ data: { value: 42 } });
             const adapter = { getData: fetch => fetch('parameter-wants-coverage') };
             try {
