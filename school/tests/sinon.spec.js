@@ -37,9 +37,9 @@ describe.only('Sinon', function () {
         it('can hide separate intentions of stubbing and mocking', () => {
             const fetch = sinon.stub();
             fetch.withArgs('oops').returns({ data: { value: 42 } });
-            const sut = { api: fetch => { return fetch('please'); } };
+            const adapter = { api: fetch => { return fetch('please'); } };
             try {
-                const answer = sut.api(fetch);
+                const answer = adapter.api(fetch);
                 answer.data.value;
                 expect('should fail').to.equal('but no');
             }
