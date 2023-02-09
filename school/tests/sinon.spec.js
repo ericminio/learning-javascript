@@ -49,9 +49,9 @@ describe.only('Sinon', function () {
         });
 
         it('primarily stubs the returned value', () => {
-            const adapter = { api: (dependency) => { return dependency.doThat('not-covered'); } };
+            const adapter = { getData: (dependency) => { return dependency.doThat('not-covered'); } };
             const collaborator = { doThat: sinon.stub().returns({ data: { value: 42 } }) };
-            const answer = adapter.api(collaborator);
+            const answer = adapter.getData(collaborator);
             const value = answer.data.value;
 
             expect(value).to.equal(42);
