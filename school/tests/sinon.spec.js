@@ -35,8 +35,9 @@ describe.only('Sinon', function () {
     describe('stubbing', () => {
 
         it('primarily stubs the returned value', () => {
+            const fetch = sinon.stub();
+            fetch.returns({ data: { value: 42 } });
             const adapter = { getData: fetch => { return fetch('not-covered'); } };
-            const fetch = sinon.stub().returns({ data: { value: 42 } });
             const answer = adapter.getData(fetch);
 
             expect(answer.data.value).to.equal(42);
