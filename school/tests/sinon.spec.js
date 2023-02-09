@@ -34,7 +34,7 @@ describe.only('Sinon', function () {
 
     describe('stubbing', () => {
 
-        it('stubs a returned value', () => {
+        it('pre-set a returned value', () => {
             const fetch = sinon.stub();
             fetch.returns({ data: { value: 42 } });
             const adapter = { getData: fetch => { return fetch('parameter-not-covered'); } };
