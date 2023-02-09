@@ -36,8 +36,9 @@ describe.only('Sinon', function () {
 
         it('can specify parameters', () => {
             const sut = { api: (dependency) => { return dependency.doThat('please'); } };
-            const collaborator = { doThat: sinon.stub().withArgs('p').returns({ data: { value: 42 } }) };
-            const answer = sut.api(collaborator);
+            const stub = sinon.stub();
+            stub.withArgs('please').returns({ data: { value: 42 } });
+            const answer = sut.api({ doThat: stub });
             const value = answer.data.value;
 
             expect(value).to.equal(42);
