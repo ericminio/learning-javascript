@@ -39,7 +39,7 @@ describe('Sinon', function () {
             fetch = sinon.stub();
         });
 
-        it('pre-sets a returned value', () => {
+        it('offers pre-setting a returned value', () => {
             fetch.returns({ data: { value: 42 } });
             const adapter = { getData: fetch => fetch('parameter-not-covered') };
             const answer = adapter.getData(fetch);
