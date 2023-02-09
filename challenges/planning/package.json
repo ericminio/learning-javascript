@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "chai": "^4.2.0",
-    "mocha": "^6.2.0",
+    "mocha": "^10.2.0",
     "selenium-webdriver": "^4.0.0-alpha.4"
   }
 }
