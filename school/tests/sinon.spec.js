@@ -34,6 +34,14 @@ describe.only('Sinon', function () {
 
     describe('stubbing', () => {
 
+        it('primarily stubs the returned value', () => {
+            const adapter = { getData: fetch => { return fetch('not-covered'); } };
+            const fetch = sinon.stub().returns({ data: { value: 42 } });
+            const answer = adapter.getData(fetch);
+
+            expect(answer.data.value).to.equal(42);
+        });
+
         it('can hide separate intentions of stubbing and mocking', () => {
             const fetch = sinon.stub();
             fetch.withArgs('oops').returns({ data: { value: 42 } });
@@ -46,14 +54,6 @@ describe.only('Sinon', function () {
             catch (error) {
                 expect(error.toString()).to.equal(`TypeError: Cannot read property 'data' of undefined`)
             }
-        });
-
-        it('primarily stubs the returned value', () => {
-            const adapter = { getData: fetch => { return fetch('not-covered'); } };
-            const fetch = sinon.stub().returns({ data: { value: 42 } });
-            const answer = adapter.getData(fetch);
-
-            expect(answer.data.value).to.equal(42);
         });
 
         it('also provides mock verification', () => {
