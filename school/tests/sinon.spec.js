@@ -34,7 +34,7 @@ describe.only('Sinon', function () {
 
     describe('stubbing', () => {
 
-        it('can hide separate intentions', () => {
+        it('can hide separate intentions of stubbing and mocking', () => {
             const stub = sinon.stub();
             stub.withArgs('oops').returns({ data: { value: 42 } });
             const sut = { api: (dependency) => { return dependency.doThat('please'); } };
