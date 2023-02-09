@@ -36,12 +36,16 @@ describe.only('Sinon', function () {
 
         it('can hide separate intentions', () => {
             const stub = sinon.stub();
-            stub.withArgs('please').returns({ data: { value: 42 } });
+            stub.withArgs('oops').returns({ data: { value: 42 } });
             const sut = { api: (dependency) => { return dependency.doThat('please'); } };
-            const answer = sut.api({ doThat: stub });
-            const value = answer.data.value;
-
-            expect(value).to.equal(42);
+            try {
+                const answer = sut.api({ doThat: stub });
+                const value = answer.data.value;
+                expect('should fail').to.equal('but no');
+            }
+            catch (error) {
+                console.log(error.message);
+            }
         });
 
         it('primarily stubs the returned value', () => {
