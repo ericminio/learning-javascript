@@ -34,7 +34,7 @@ describe.only('Sinon', function () {
 
     describe('stubbing', () => {
 
-        it('can hide separate needs of stubbing and mocking', () => {
+        it('can hide separate intentions of stubbing and mocking', () => {
             const fetch = sinon.stub();
             fetch.withArgs('oops').returns({ data: { value: 42 } });
             const adapter = { getData: fetch => { return fetch('please'); } };
