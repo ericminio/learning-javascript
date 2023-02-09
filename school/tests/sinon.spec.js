@@ -36,7 +36,7 @@ describe.only('Sinon', function () {
 
         it('can lead to obscur error message', () => {
             const sut = { api: (dependency) => { return dependency.doThat('please'); } };
-            const collaborator = { doThat: sinon.stub().returns({ data: { value: 42 } }) };
+            const collaborator = { doThat: sinon.stub().withArgs('please').returns({ data: { value: 42 } }) };
             const answer = sut.api(collaborator);
             const value = answer.data.value;
 
