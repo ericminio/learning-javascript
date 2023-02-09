@@ -53,7 +53,11 @@ describe.only('Sinon', function () {
                 expect('should fail').to.equal('but no');
             }
             catch (error) {
-                expect(error.toString()).to.equal(`TypeError: Cannot read property 'data' of undefined`)
+                expect(error.toString()).to.equal(`TypeError: Cannot read property 'data' of undefined`);
+
+                fetch.withArgs('parameter-wants-coverage').returns({ data: { value: 42 } });
+                const answer = adapter.getData(fetch);
+                expect(answer.data.value).to.equal(42);
             }
         });
 
