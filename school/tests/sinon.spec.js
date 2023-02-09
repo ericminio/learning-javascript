@@ -32,17 +32,15 @@ describe.only('Sinon', function () {
         expect(collaborator.doThat).not.to.have.been.called;
     });
 
-    describe('stubbing dilema', () => {
+    describe('stubbing', () => {
 
-        describe('stubbing with parameters constraints', () => {
-            it('can lead to obscur error message', () => {
-                const sut = { api: (dependency) => { return dependency.doThat('please'); } };
-                const collaborator = { doThat: sinon.stub().returns({ data: { value: 42 } }) };
-                const answer = sut.api(collaborator);
-                const value = answer.data.value;
+        it('can lead to obscur error message', () => {
+            const sut = { api: (dependency) => { return dependency.doThat('please'); } };
+            const collaborator = { doThat: sinon.stub().returns({ data: { value: 42 } }) };
+            const answer = sut.api(collaborator);
+            const value = answer.data.value;
 
-                expect(value).to.equal(42);
-            });
-        })
+            expect(value).to.equal(42);
+        });
     })
 });
