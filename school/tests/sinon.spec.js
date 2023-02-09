@@ -49,7 +49,7 @@ describe.only('Sinon', function () {
         });
 
         it('primarily stubs the returned value', () => {
-            const sut = { api: (dependency) => { return dependency.doThat('please'); } };
+            const sut = { api: (dependency) => { return dependency.doThat('not-specified'); } };
             const collaborator = { doThat: sinon.stub().returns({ data: { value: 42 } }) };
             const answer = sut.api(collaborator);
             const value = answer.data.value;
