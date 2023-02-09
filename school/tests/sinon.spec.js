@@ -2,7 +2,7 @@ var { expect } = require('chai');
 var sinon = require('sinon');
 require('chai').use(require('sinon-chai'));
 
-describe.only('Sinon', function () {
+describe('Sinon', function () {
 
     it('offers spying on the method of an object', function () {
         var sut = { api: function (dependency) { dependency.doThat('please'); } };
@@ -32,7 +32,7 @@ describe.only('Sinon', function () {
         expect(collaborator.doThat).not.to.have.been.called;
     });
 
-    describe('stubbing', () => {
+    describe.only('stubbing', () => {
 
         it('pre-sets a returned value', () => {
             const fetch = sinon.stub();
