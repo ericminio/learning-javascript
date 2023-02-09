@@ -54,7 +54,7 @@ describe.only('Sinon', function () {
                 expect(value).to.equal(42);
             });
 
-            it('also specify parameters', () => {
+            it('also specifies parameters', () => {
                 const sut = { api: (dependency) => { return dependency.doThat('please'); } };
                 const collaborator = { doThat: sinon.stub() }
                 sut.api(collaborator);
