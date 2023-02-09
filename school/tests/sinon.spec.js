@@ -47,7 +47,7 @@ describe('Sinon', function () {
             expect(answer.data.value).to.equal(42);
         });
 
-        it('can hide separate intentions of stubbing and mocking', () => {
+        it('can bundle separate intentions of stubbing and mocking', () => {
             fetch.withArgs('666').returns({ data: { value: 42 } });
             const adapter = { getData: fetch => fetch('parameter-wants-coverage') };
             try {
@@ -64,7 +64,7 @@ describe('Sinon', function () {
             }
         });
 
-        it('also provides mock verification', () => {
+        it('welcomes mocking verification as a separate intention', () => {
             const adapter = { getData: fetch => fetch('I-see-you') };
             adapter.getData(fetch);
 
