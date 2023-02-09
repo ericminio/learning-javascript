@@ -45,7 +45,7 @@ describe.only('Sinon', function () {
             }
             catch (error) {
                 console.log(error.toString())
-                // expect(error).to.equal(`Cannot read property 'data' of undefined`)
+                expect(error.toString()).to.equal(`TypeError: Cannot read property 'data' of undefined`)
             }
         });
 
