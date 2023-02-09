@@ -57,7 +57,7 @@ describe.only('Sinon', function () {
             expect(value).to.equal(42);
         });
 
-        it('also provides mocks verification', () => {
+        it('also provides mock verification', () => {
             const sut = { api: (dependency) => { return dependency.doThat('please'); } };
             const collaborator = { doThat: sinon.stub() }
             sut.api(collaborator);
