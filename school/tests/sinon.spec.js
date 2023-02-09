@@ -34,8 +34,12 @@ describe('Sinon', function () {
 
     describe.only('stubbing', () => {
 
+        let fetch;
+        beforeEach(() => {
+            fetch = sinon.stub();
+        });
+
         it('pre-sets a returned value', () => {
-            const fetch = sinon.stub();
             fetch.returns({ data: { value: 42 } });
             const adapter = { getData: fetch => fetch('parameter-not-covered') };
             const answer = adapter.getData(fetch);
@@ -44,7 +48,6 @@ describe('Sinon', function () {
         });
 
         it('can hide separate intentions of stubbing and mocking', () => {
-            const fetch = sinon.stub();
             fetch.withArgs('666').returns({ data: { value: 42 } });
             const adapter = { getData: fetch => fetch('parameter-wants-coverage') };
             try {
@@ -62,7 +65,6 @@ describe('Sinon', function () {
         });
 
         it('also provides mock verification', () => {
-            const fetch = sinon.stub();
             const adapter = { getData: fetch => fetch('I-see-you') };
             adapter.getData(fetch);
 
