@@ -58,11 +58,11 @@ describe.only('Sinon', function () {
         });
 
         it('also provides mock verification', () => {
-            const adapter = { getData: dependency => { return dependency.doThat('I-see-you'); } };
-            const collaborator = { doThat: sinon.stub() }
-            adapter.getData(collaborator);
+            const adapter = { getData: fetch => { return fetch('I-see-you'); } };
+            const fetch = sinon.stub();
+            adapter.getData(fetch);
 
-            expect(collaborator.doThat).to.have.been.calledWith('I-see-you');
+            expect(fetch).to.have.been.calledWith('I-see-you');
         });
     })
 });
