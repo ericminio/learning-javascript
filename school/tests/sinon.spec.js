@@ -44,7 +44,6 @@ describe.only('Sinon', function () {
                 expect('should fail').to.equal('but no');
             }
             catch (error) {
-                console.log(error.toString())
                 expect(error.toString()).to.equal(`TypeError: Cannot read property 'data' of undefined`)
             }
         });
