@@ -34,7 +34,7 @@ describe.only('Sinon', function () {
 
     describe('stubbing', () => {
 
-        it('can specify parameters', () => {
+        it('can hide separate intentions', () => {
             const stub = sinon.stub();
             stub.withArgs('please').returns({ data: { value: 42 } });
             const sut = { api: (dependency) => { return dependency.doThat('please'); } };
@@ -44,24 +44,21 @@ describe.only('Sinon', function () {
             expect(value).to.equal(42);
         });
 
-        describe('might hide separate intentions', () => {
+        it('primarily stubs the returned value', () => {
+            const sut = { api: (dependency) => { return dependency.doThat('please'); } };
+            const collaborator = { doThat: sinon.stub().returns({ data: { value: 42 } }) };
+            const answer = sut.api(collaborator);
+            const value = answer.data.value;
 
-            it('primarily stubs the returned value', () => {
-                const sut = { api: (dependency) => { return dependency.doThat('please'); } };
-                const collaborator = { doThat: sinon.stub().returns({ data: { value: 42 } }) };
-                const answer = sut.api(collaborator);
-                const value = answer.data.value;
+            expect(value).to.equal(42);
+        });
 
-                expect(value).to.equal(42);
-            });
+        it('also provides mocks verification', () => {
+            const sut = { api: (dependency) => { return dependency.doThat('please'); } };
+            const collaborator = { doThat: sinon.stub() }
+            sut.api(collaborator);
 
-            it('also provides mocks verification', () => {
-                const sut = { api: (dependency) => { return dependency.doThat('please'); } };
-                const collaborator = { doThat: sinon.stub() }
-                sut.api(collaborator);
-
-                expect(collaborator.doThat).to.have.been.calledWith('please');
-            });
+            expect(collaborator.doThat).to.have.been.calledWith('please');
         });
     })
 });
