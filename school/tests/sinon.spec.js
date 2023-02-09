@@ -34,7 +34,7 @@ describe.only('Sinon', function () {
 
     describe('stubbing', () => {
 
-        it('can lead to obscur error message', () => {
+        it('can specify parameters', () => {
             const sut = { api: (dependency) => { return dependency.doThat('please'); } };
             const collaborator = { doThat: sinon.stub().withArgs('oops').returns({ data: { value: 42 } }) };
             const answer = sut.api(collaborator);
