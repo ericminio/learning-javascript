@@ -40,6 +40,8 @@ describe.only('Sinon', function () {
                 const collaborator = { doThat: sinon.stub().returns({ data: { value: 42 } }) };
                 const answer = sut.api(collaborator);
                 const value = answer.data.value;
+
+                expect(value).to.equal(42);
             });
         })
     })
