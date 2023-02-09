@@ -2,7 +2,7 @@ var { expect } = require('chai');
 var sinon = require('sinon');
 require('chai').use(require('sinon-chai'));
 
-describe('Sinon', function () {
+describe.only('Sinon', function () {
 
     it('offers spying on the method of an object', function () {
         var sut = { api: function (dependency) { dependency.doThat('please'); } };
