@@ -52,9 +52,8 @@ describe.only('Sinon', function () {
             const adapter = { getData: fetch => { return fetch('not-covered'); } };
             const fetch = sinon.stub().returns({ data: { value: 42 } });
             const answer = adapter.getData(fetch);
-            const value = answer.data.value;
 
-            expect(value).to.equal(42);
+            expect(answer.data.value).to.equal(42);
         });
 
         it('also provides mock verification', () => {
