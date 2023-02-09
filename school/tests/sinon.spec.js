@@ -63,7 +63,7 @@ describe('Sinon', function () {
 
         it('also provides mock verification', () => {
             const fetch = sinon.stub();
-            const adapter = { getData: fetch => { return fetch('I-see-you'); } };
+            const adapter = { getData: fetch => fetch('I-see-you') };
             adapter.getData(fetch);
 
             expect(fetch).to.have.been.calledWith('I-see-you');
