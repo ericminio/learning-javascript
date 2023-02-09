@@ -46,7 +46,7 @@ describe('Sinon', function () {
         it('can hide separate intentions of stubbing and mocking', () => {
             const fetch = sinon.stub();
             fetch.withArgs('666').returns({ data: { value: 42 } });
-            const adapter = { getData: fetch => { return fetch('parameter-wants-coverage'); } };
+            const adapter = { getData: fetch => fetch('parameter-wants-coverage') };
             try {
                 const answer = adapter.getData(fetch);
                 answer.data.value;
