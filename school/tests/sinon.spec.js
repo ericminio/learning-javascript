@@ -39,6 +39,7 @@ describe.only('Sinon', function () {
                 const sut = { api: (dependency) => { return dependency.doThat('please'); } };
                 const collaborator = { doThat: sinon.stub().returns({ data: { value: 42 } }) };
                 const answer = sut.api(collaborator);
+                const value = answer.data.value;
             });
         })
     })
