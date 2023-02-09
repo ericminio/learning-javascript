@@ -57,8 +57,8 @@ describe.only('Sinon', function () {
         });
 
         it('also provides mock verification', () => {
-            const adapter = { getData: fetch => { return fetch('I-see-you'); } };
             const fetch = sinon.stub();
+            const adapter = { getData: fetch => { return fetch('I-see-you'); } };
             adapter.getData(fetch);
 
             expect(fetch).to.have.been.calledWith('I-see-you');
