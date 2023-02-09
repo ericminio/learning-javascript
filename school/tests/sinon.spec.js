@@ -35,11 +35,11 @@ describe.only('Sinon', function () {
     describe('stubbing', () => {
 
         it('can hide separate intentions of stubbing and mocking', () => {
-            const stub = sinon.stub();
-            stub.withArgs('oops').returns({ data: { value: 42 } });
+            const fetch = sinon.stub();
+            fetch.withArgs('oops').returns({ data: { value: 42 } });
             const sut = { api: (dependency) => { return dependency.doThat('please'); } };
             try {
-                const answer = sut.api({ doThat: stub });
+                const answer = sut.api({ doThat: fetch });
                 answer.data.value;
                 expect('should fail').to.equal('but no');
             }
