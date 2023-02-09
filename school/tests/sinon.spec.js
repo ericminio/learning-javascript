@@ -40,7 +40,7 @@ describe.only('Sinon', function () {
             const sut = { api: (dependency) => { return dependency.doThat('please'); } };
             try {
                 const answer = sut.api({ doThat: stub });
-                const value = answer.data.value;
+                answer.data.value;
                 expect('should fail').to.equal('but no');
             }
             catch (error) {
