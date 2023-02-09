@@ -58,9 +58,9 @@ describe.only('Sinon', function () {
         });
 
         it('also provides mock verification', () => {
-            const sut = { api: (dependency) => { return dependency.doThat('I-see-you'); } };
+            const adapter = { api: (dependency) => { return dependency.doThat('I-see-you'); } };
             const collaborator = { doThat: sinon.stub() }
-            sut.api(collaborator);
+            adapter.api(collaborator);
 
             expect(collaborator.doThat).to.have.been.calledWith('I-see-you');
         });
