@@ -12,13 +12,13 @@ describe.only('Tests', () => {
         fetch = sinon.stub();
     });
 
-    it('can whether focus on behaviors observable from outside', () => {
+    it('can describe behaviors observable from outside', () => {
         fetch.returns(42);
 
         expect(a.doThat(b, fetch)).to.equal(42);
     });
 
-    it('can have internal tests', () => {
+    it('can describe internal behaviors', () => {
         b.doThis(fetch);
 
         expect(fetch).to.have.been.calledWith('key');
