@@ -67,25 +67,4 @@ describe('Sinon', function () {
             expect(fetch).to.have.been.calledWith('I-see-you');
         });
     });
-
-    describe.only('emerging pyramid', () => {
-        const a = { doThat: (b, fetch) => b.doThis(fetch) };
-        const b = { doThis: fetch => fetch('key') };
-        let fetch;
-        beforeEach(() => {
-            fetch = sinon.stub();
-        });
-
-        it('can start with external test', () => {
-            fetch.returns(42);
-
-            expect(a.doThat(b, fetch)).to.equal(42);
-        });
-
-        it('can continue with internal test', () => {
-            b.doThis(fetch);
-
-            expect(fetch).to.have.been.calledWith('key');
-        });
-    });
 });
