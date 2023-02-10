@@ -19,6 +19,12 @@ describe.only('Tests', () => {
 
         expect(fetch).to.have.been.calledWith('key');
     });
+
+    it('can be a little of both at the cost of ?', () => {
+        fetch.withArgs('key').returns(42);
+
+        expect(new Service().doThat()).to.equal(42);
+    });
 });
 
 let fetch;
