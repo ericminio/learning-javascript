@@ -21,7 +21,7 @@ describe.only('Tests', () => {
         expect(fetch).to.have.been.calledWith('key');
     });
 
-    it('can be internal and describe internal details', () => {
+    it('can be internal', () => {
         new Service().doThis();
 
         expect(fetch).to.have.been.calledWith('key');
