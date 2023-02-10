@@ -32,7 +32,7 @@ describe('Sinon', function () {
         expect(collaborator.doThat).not.to.have.been.called;
     });
 
-    describe.only('stubbing', () => {
+    describe('stubbing', () => {
 
         let fetch;
         beforeEach(() => {
@@ -66,5 +66,12 @@ describe('Sinon', function () {
 
             expect(fetch).to.have.been.calledWith('I-see-you');
         });
-    })
+    });
+
+    describe.only('emerging pyramid empowerement', () => {
+
+        it('takes an a-b sut', () => {
+
+        })
+    });
 });
