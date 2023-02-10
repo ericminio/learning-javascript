@@ -68,7 +68,7 @@ describe('Sinon', function () {
         });
     });
 
-    describe.only('emerging pyramid empowerement', () => {
+    describe.only('emerging pyramid', () => {
         const a = { doThat: (b, fetch) => b.doThis(fetch) };
         const b = { doThis: fetch => fetch('key') };
         let fetch;
@@ -80,6 +80,10 @@ describe('Sinon', function () {
             fetch.returns(42);
 
             expect(a.doThat(b, fetch)).to.equal(42);
+        });
+
+        it('is something that we decide', () => {
+
         });
     });
 });
