@@ -4,7 +4,6 @@ require('chai').use(require('sinon-chai'));
 
 describe.only('Tests', () => {
 
-    let fetch;
     beforeEach(() => {
         fetch = sinon.stub();
     });
@@ -22,6 +21,7 @@ describe.only('Tests', () => {
     });
 });
 
+let fetch;
 class Service {
     doThat(port) {
         return port.doThis();
