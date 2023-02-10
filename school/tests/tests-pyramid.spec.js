@@ -2,7 +2,7 @@ var { expect } = require('chai');
 var sinon = require('sinon');
 require('chai').use(require('sinon-chai'));
 
-const a = { doThat: (b, fetch) => b.doThis(fetch) };
+const service = { doThat: (b, fetch) => b.doThis(fetch) };
 const b = { doThis: fetch => fetch('key') };
 
 describe.only('Tests', () => {
@@ -15,7 +15,7 @@ describe.only('Tests', () => {
     it('can be external and describe behaviors observable from outside', () => {
         fetch.returns(42);
 
-        expect(a.doThat(b, fetch)).to.equal(42);
+        expect(service.doThat(b, fetch)).to.equal(42);
     });
 
     it('can be internal and describe internal details', () => {
