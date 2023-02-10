@@ -76,13 +76,13 @@ describe('Sinon', function () {
             fetch = sinon.stub();
         });
 
-        it('takes an a->b sut', () => {
+        it('can start with external test', () => {
             fetch.returns(42);
 
             expect(a.doThat(b, fetch)).to.equal(42);
         });
 
-        it('is something that we decide', () => {
+        it('can continue with internal test', () => {
             b.doThis(fetch);
 
             expect(fetch).to.have.been.calledWith('key');
