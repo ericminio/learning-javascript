@@ -8,10 +8,17 @@ describe.only('Tests', () => {
         fetch = sinon.stub();
     });
 
-    it('can be external and focus on the big picture', () => {
+    it('can be external and focus on the user point of view', () => {
         fetch.returns(42);
 
         expect(new Service().doThat()).to.equal(42);
+    });
+
+    it('can be external and focus on interactions with the boundaries', () => {
+        fetch.returns(42);
+        new Service().doThat()
+
+        expect(fetch).to.have.been.calledWith('key');
     });
 
     it('can be internal and describe internal details', () => {
