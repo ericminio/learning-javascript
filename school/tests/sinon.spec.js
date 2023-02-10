@@ -74,7 +74,7 @@ describe('Sinon', function () {
             fetch = sinon.stub();
         });
 
-        it('takes an a-b sut', () => {
+        it('takes an a->b sut', () => {
             const a = { doThat: (b, fetch) => b.doThis(fetch) };
             const b = { doThis: fetch => fetch('key') };
             fetch.returns(42);
