@@ -27,7 +27,7 @@ describe.only('Tests', () => {
         expect(fetch).to.have.been.calledWith('key');
     });
 
-    it('can be both maybe at the cost of a clear intention', () => {
+    it('can be hard to troubleshoot when they do too much', () => {
         fetch.withArgs('key').returns(42);
 
         expect(new Component().doThat()).to.equal(42);
