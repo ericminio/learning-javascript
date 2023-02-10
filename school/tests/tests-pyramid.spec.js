@@ -32,6 +32,6 @@ class Adapter {
         this.fetch = fetch;
     }
     doThis() {
-        return this.fetch('key');
+        return fetch('key');
     }
 };
