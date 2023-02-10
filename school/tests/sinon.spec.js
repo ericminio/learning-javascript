@@ -83,7 +83,9 @@ describe('Sinon', function () {
         });
 
         it('is something that we decide', () => {
+            b.doThis(fetch);
 
+            expect(fetch).to.have.been.calledWith('key');
         });
     });
 });
