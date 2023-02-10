@@ -11,7 +11,7 @@ describe.only('Tests', () => {
     it('can be external and describe behaviors observable from outside', () => {
         fetch.returns(42);
 
-        expect(new Service().doThat(new Adapter(fetch))).to.equal(42);
+        expect(new Service().doThat(new Adapter())).to.equal(42);
     });
 
     it('can be internal and describe internal details', () => {
@@ -28,9 +28,6 @@ class Service {
     }
 };
 class Adapter {
-    constructor(fetch) {
-        this.fetch = fetch;
-    }
     doThis() {
         return fetch('key');
     }
