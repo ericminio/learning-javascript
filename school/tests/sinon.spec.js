@@ -69,9 +69,14 @@ describe('Sinon', function () {
     });
 
     describe.only('emerging pyramid empowerement', () => {
+        let fetch;
+        beforeEach(() => {
+            fetch = sinon.stub();
+        });
 
         it('takes an a-b sut', () => {
-
+            const a = { doThat: b => b.doThis() };
+            const b = { doThis: fetch => fetch('key') };
         })
     });
 });
