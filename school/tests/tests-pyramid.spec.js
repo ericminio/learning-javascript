@@ -18,7 +18,7 @@ describe.only('Tests', () => {
         expect(a.doThat(b, fetch)).to.equal(42);
     });
 
-    it('can be internal and describe internal collaboration', () => {
+    it('can be internal and describe internal details', () => {
         b.doThis(fetch);
 
         expect(fetch).to.have.been.calledWith('key');
