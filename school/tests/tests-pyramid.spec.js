@@ -38,10 +38,10 @@ let fetch;
 
 class Component {
     constructor() {
-        this.port = new Adapter();
+        this.service = new Adapter();
     }
     doThat() {
-        return this.port.doThis();
+        return this.service.doThis();
     }
 };
 class Adapter {
