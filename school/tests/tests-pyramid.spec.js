@@ -22,7 +22,7 @@ describe.only('Tests', () => {
     });
 
     it('can be internal and describe internal details', () => {
-        new Adapter().doThis();
+        new Service().doThis();
 
         expect(fetch).to.have.been.calledWith('key');
     });
@@ -38,13 +38,13 @@ let fetch;
 
 class Component {
     constructor() {
-        this.service = new Adapter();
+        this.service = new Service();
     }
     doThat() {
         return this.service.doThis();
     }
 };
-class Adapter {
+class Service {
     doThis() {
         return fetch('key');
     }
