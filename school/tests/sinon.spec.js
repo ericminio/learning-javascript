@@ -75,11 +75,11 @@ describe('Sinon', function () {
         });
 
         it('takes an a-b sut', () => {
-            const a = { doThat: b => b.doThis() };
+            const a = { doThat: (b, fetch) => b.doThis(fetch) };
             const b = { doThis: fetch => fetch('key') };
             fetch.returns(42);
 
-
+            expect(a.doThat(b, fetch)).to.equal(42);
         });
     });
 });
