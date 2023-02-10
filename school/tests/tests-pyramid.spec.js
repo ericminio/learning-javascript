@@ -28,6 +28,7 @@ describe.only('Tests', () => {
 });
 
 let fetch;
+
 class Service {
     constructor() {
         this.port = new Adapter();
