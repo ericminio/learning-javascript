@@ -8,7 +8,7 @@ describe.only('Tests', () => {
         fetch = sinon.stub();
     });
 
-    it('can be external and focus on the boundaries', () => {
+    it('can be external and focus on the big picture', () => {
         fetch.returns(42);
 
         expect(new Service().doThat()).to.equal(42);
