@@ -27,7 +27,7 @@ describe.only('Tests', () => {
         expect(fetch).to.have.been.calledWith('key');
     });
 
-    it('can be both at the cost maybe of a clear intention', () => {
+    it('can be both maybe at the cost of a clear intention', () => {
         fetch.withArgs('key').returns(42);
 
         expect(new Service().doThat()).to.equal(42);
