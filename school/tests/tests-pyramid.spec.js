@@ -2,9 +2,11 @@ var { expect } = require('chai');
 var sinon = require('sinon');
 require('chai').use(require('sinon-chai'));
 
+const a = { doThat: (b, fetch) => b.doThis(fetch) };
+const b = { doThis: fetch => fetch('key') };
+
 describe.only('Emerging tests pyramid', () => {
-    const a = { doThat: (b, fetch) => b.doThis(fetch) };
-    const b = { doThis: fetch => fetch('key') };
+
     let fetch;
     beforeEach(() => {
         fetch = sinon.stub();
