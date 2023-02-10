@@ -15,7 +15,7 @@ describe.only('Tests', () => {
     });
 
     it('can be internal and describe internal details', () => {
-        new Adapter(fetch).doThis();
+        new Adapter().doThis();
 
         expect(fetch).to.have.been.calledWith('key');
     });
