@@ -11,12 +11,12 @@ describe.only('Tests', () => {
     it('can be external and focus on feedback', () => {
         fetch.returns(42);
 
-        expect(new Service().doThat()).to.equal(42);
+        expect(new Component().doThat()).to.equal(42);
     });
 
     it('can be external and focus on notifications', () => {
         fetch.returns(42);
-        new Service().doThat()
+        new Component().doThat()
 
         expect(fetch).to.have.been.calledWith('key');
     });
@@ -30,13 +30,13 @@ describe.only('Tests', () => {
     it('can be both maybe at the cost of a clear intention', () => {
         fetch.withArgs('key').returns(42);
 
-        expect(new Service().doThat()).to.equal(42);
+        expect(new Component().doThat()).to.equal(42);
     });
 });
 
 let fetch;
 
-class Service {
+class Component {
     constructor() {
         this.port = new Adapter();
     }
