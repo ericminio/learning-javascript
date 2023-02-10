@@ -5,14 +5,14 @@ require('chai').use(require('sinon-chai'));
 const a = { doThat: (b, fetch) => b.doThis(fetch) };
 const b = { doThis: fetch => fetch('key') };
 
-describe.only('Tests pyramid', () => {
+describe.only('Tests', () => {
 
     let fetch;
     beforeEach(() => {
         fetch = sinon.stub();
     });
 
-    it('can have external tests focusing on outputs', () => {
+    it('can whether focus on behaviors observable from outside', () => {
         fetch.returns(42);
 
         expect(a.doThat(b, fetch)).to.equal(42);
