@@ -12,7 +12,7 @@ describe.only('Tests pyramid', () => {
         fetch = sinon.stub();
     });
 
-    it('can have external tests', () => {
+    it('can have external tests focusing on outputs', () => {
         fetch.returns(42);
 
         expect(a.doThat(b, fetch)).to.equal(42);
