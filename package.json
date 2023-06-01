@@ -11,6 +11,7 @@
     "istanbul": "latest",
     "jsdom": "latest",
     "mocha": "latest",
+    "prettier": "^2.8.8",
     "react": "latest",
     "react-dom": "latest",
     "selenium-webdriver": "latest",

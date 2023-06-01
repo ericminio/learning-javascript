@@ -1,112 +1,43 @@
-const Browser = require('zombie');
-var browser = new Browser();
+const { expect } = require('chai');
 
 describe('ECMAScript 6', function () {
+    it('introduces destructuring', function () {
+        const options = { message: 'hello world', source: 'a friend' };
+        const { message } = options;
 
-    var app;
-    var port = 5001;
-    var script;
-
-    beforeEach(function (done) {
-
-        var page = '' +
-            '<html>' +
-            '<head>' +
-            '<script src="script.js"></script>' +
-            '</head>' +
-            '<body>' +
-            '<div id="root"></div>' +
-            '<script>' +
-            'document.getElementById("root").innerHTML = output();' +
-            '</script>' +
-            '</body>' +
-            '</html>';
-
-        var handler = function (request, response) {
-            var parsed = require('url').parse(request.url, true);
-            if (parsed.pathname == '/script.js') {
-                response.setHeader('Content-Type', 'application/javascript');
-                response.write(script);
+        expect(message).to.equal('hello world');
+    });
+    it('introduces classes', function () {
+        class Greeting {
+            constructor(value) {
+                this.value = value;
             }
-            else {
-                response.setHeader('Content-Type', 'text/html');
-                response.write(page);
+            message() {
+                return this.value;
             }
-            response.end();
-        };
+        }
+        const output = new Greeting('hello world').message();
 
-        app = require('http').createServer(handler);
-        app.listen(port, done);
+        expect(output).to.equal('hello world');
     });
+    it('introduces template literals', function () {
+        const a = 'world';
 
-    afterEach(function () {
-        app.close();
+        expect(`hello ${a}`).to.equal('hello world');
     });
+    it('introduces multi-line strings', function () {
+        const output = `
+        hello
+            world`;
 
-    var yes = function (done) {
-        browser.visit('http://localhost:' + port)
-            .then(function () {
-                browser.assert.text('#root', 'hello world');
-            })
-            .then(done, done);
-    };
-
-    it('introduces destructuring', function (sir) {
-        script = '' +
-            'var output = function() { ' +
-            '   let options = { message:"hello world", source:"a friend" };' +
-            '   let {message, source} = options;' +
-            '   return message;' +
-            '}';
-        yes(sir);
-    });
-    it('introduces arrow functions', function (sir) {
-        script = '' +
-            'var output = () => { ' +
-            '   return "hello world";' +
-            '}';
-        yes(sir);
-    });
-    it('introduces classes', function (sir) {
-        script = '' +
-            'class Greeting {' +
-            '   constructor(value) {' +
-            '       this.value = value;' +
-            '   }' +
-            '   message() {' +
-            '       return this.value;' +
-            '   }' +
-            '}' +
-            'var output = () => { ' +
-            '   return new Greeting("hello world").message();' +
-            '}';
-        yes(sir);
-    });
-    it('introduces template literals', function (sir) {
-        script = '' +
-            'var output = () => { ' +
-            '   let a = "hello world";' +
-            '   return `${a}`' +
-            '}';
-        yes(sir);
-    });
-    it('introduces multi-line strings', function (sir) {
-        script = '' +
-            'var output = () => { ' +
-            '   return `hello' +
-            '   world`;' +
-            '}';
-        yes(sir);
+        expect(output).to.equal('\n        hello\n            world');
     });
     it('introduces rest operator', function (sir) {
-        script = `
-            var concatenate = (...args)=>{
-                return args.join(' ');
-            }
-            var output = () => {
-                return concatenate('hello', 'world');
-            }
-        `;
-        yes(sir);
+        const concatenate = (...args) => {
+            return args.join(' ');
+        };
+        const output = concatenate('hello', 'world');
+
+        expect(output).to.equal('hello world');
     });
 });
