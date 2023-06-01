@@ -19,11 +19,11 @@
     "zombie": "latest"
   },
   "engines": {
-    "node": "14.17.1",
-    "npm": "6.14.13"
+    "node": "18.16.0",
+    "npm": "9.5.1"
   },
   "scripts": {
-    "test": "mocha school/tests/*.spec.js --timeout 0 --exit",
+    "test": "mocha school/*.spec.js --timeout 0 --exit",
     "challenges": "mocha './challenges/**/*.spec.js' --timeout 0 --exit"
   }
 }
