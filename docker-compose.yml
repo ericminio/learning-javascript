@@ -3,12 +3,11 @@ version: '3.4'
 services:
     ubuntu:
         build: support
-        image: ubuntu-node
+        image: ubuntu:nvm
         container_name: ubuntu-node
-        user: dev
         volumes:
-            - ./package.json:/home/dev/code/package.json
-            - ./package-lock.json:/home/dev/code/package-lock.json
-            - ./.nvmrc:/home/dev/code/.nvmrc
-            - ./school:/home/dev/code/school
-        working_dir: /home/dev/code
+            - ./package.json:/root/code/package.json
+            - ./package-lock.json:/root/code/package-lock.json
+            - ./.nvmrc:/root/code/.nvmrc
+            - ./school:/root/code/school
+        working_dir: /root/code

@@ -3,5 +3,6 @@
 In case your computer is becoming old for all this
 
 ```
-docker-compose run --build -it --rm ubuntu
+docker-compose build ubuntu
+docker-compose run --rm ubuntu
 ```
