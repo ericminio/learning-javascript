@@ -7,13 +7,8 @@ RUN apt-get install -y curl git vim python3
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get -y install tzdata
 RUN apt-get install -y build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev 
 
-RUN useradd dev --create-home --shell /bin/bash
-USER dev
 RUN echo "PS1='\n\[\e[32m\]\u \[\e[33m\]in \w\[\e[0m\] \n> '" >> ~/.bashrc
-
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
-
-ENV NVM_DIR=/home/dev/.nvm
-RUN . /home/dev/.nvm/nvm.sh
-
-RUN mkdir /home/dev/code
+ENV NVM_DIR=~/.nvm
+RUN . ~/.nvm/nvm.sh
+WORKDIR /root/code
