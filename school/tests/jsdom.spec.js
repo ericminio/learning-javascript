@@ -143,7 +143,7 @@ describe('Jsdom', function () {
         xhr.send();
     });
 
-    it.only('can be used to inspect canvas content', function () {
+    it('can be used to inspect canvas content', function () {
         var document = new JSDOM(
             `<canvas id="board" width="3", height="3"></canvas>`
         ).window.document;
