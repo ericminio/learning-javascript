@@ -32,7 +32,7 @@ describe('ECMAScript 6', function () {
 
         expect(output).to.equal('\n        hello\n            world');
     });
-    it('introduces rest operator', function (sir) {
+    it('introduces rest operator', function () {
         const concatenate = (...args) => {
             return args.join(' ');
         };

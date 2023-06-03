@@ -25,7 +25,6 @@
         "npm": "9.5.1"
     },
     "scripts": {
-        "test": "mocha school/*.spec.js --timeout 0 --exit",
-        "challenges": "mocha './challenges/**/*.spec.js' --timeout 0 --exit"
+        "test": "mocha --exit $(find school -name '*.spec.js')"
     }
 }

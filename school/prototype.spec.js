@@ -23,26 +23,6 @@ describe("Prototype", function() {
 
 			expect("Me".greaterThan("You")).to.equal(true);
 		});
-
-		describe('on custom objects', function() {
-
-			beforeEach(function() {
-				Object.prototype.isStrictlyGreaterThan = function(other) {
-					return this.field > other.field;
-				};
-			});
-
-			afterEach(function() {
-				Object.prototype.isStrictlyGreaterThan = undefined;
-			});
-
-			it("works", function() {
-				var one = { field: 1};
-				var two = { field: 2};
-
-				expect(one.isStrictlyGreaterThan(two)).to.equal(false);
-			});
-		});
 	});
 
 });

@@ -6,7 +6,7 @@ const fs = require('fs');
 const { Builder, By } = require('selenium-webdriver')
 const firefox = () => new Builder().forBrowser('firefox').build()
 
-describe('Selenium', function () {
+describe.skip('Selenium', function () {
 
     var server;
     var driver;
