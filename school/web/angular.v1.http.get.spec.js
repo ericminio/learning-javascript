@@ -2,8 +2,7 @@ const Browser = require('zombie');
 const browser = new Browser();
 let LocalServer = require('../support/local.server');
 
-describe('Angular v1', function() {
-
+describe('Angular v1', function () {
     var server;
     var page = `
         <html ng-app="testApp">
@@ -22,22 +21,23 @@ describe('Angular v1', function() {
             </body>
         </html>`;
 
-    beforeEach(function(done) {
+    beforeEach(function (done) {
         server = new LocalServer({
             '/': page,
-            json: { 
-                '/data': { answer:42 }
-            }
+            json: {
+                '/data': { answer: 42 },
+            },
         });
         server.start(done);
     });
-    afterEach(function(done) {
+    afterEach(function (done) {
         server.stop(done);
     });
 
-    it('can make http GET requests', function(done) {
-        browser.visit('http://localhost:' + server.port)
-            .then(function() {
+    it('can make http GET requests', function (done) {
+        browser
+            .visit('http://localhost:' + server.port)
+            .then(function () {
                 browser.assert.text('#data', '42');
             })
             .then(done, done);

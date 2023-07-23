@@ -1,8 +1,7 @@
 var cheerio = require('cheerio');
 var expect = require('chai').expect;
 
-describe('cheerio', function() {
-
+describe('cheerio', function () {
     var html = `
         <html>
             <body>
@@ -12,15 +11,15 @@ describe('cheerio', function() {
     `;
     var page;
 
-    beforeEach(function() {
+    beforeEach(function () {
         page = cheerio.load(html);
     });
 
-    it('can access element by id', function() {
+    it('can access element by id', function () {
         expect(page('#number').text()).to.equal('42');
     });
 
-    it('can modify the id of an element', function() {
+    it('can modify the id of an element', function () {
         page('#number').attr('id', 'value');
 
         expect(page('#value').text()).to.equal('42');

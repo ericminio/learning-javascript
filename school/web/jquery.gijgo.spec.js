@@ -30,54 +30,55 @@ var html = `
 </html>
 `;
 
-describe.skip('Gijgo', ()=>{
-
+describe.skip('Gijgo', () => {
     var server;
-    beforeEach(function(done) {
+    beforeEach(function (done) {
         server = new LocalServer({
             '/': html,
             json: {
                 '/Players/Get?page=1&limit=5': {
                     records: [
                         {
-                            "ID":1,
-                            "Name":"Batman",
-                            "PlaceOfBirth":"Gotham",
-                            "DateOfBirth":"\/Date(-122227200000)\/",
-                            "CountryID":2,
-                            "CountryName":"Earth",
-                            "IsActive":true,
-                            "OrderNumber":1
+                            ID: 1,
+                            Name: 'Batman',
+                            PlaceOfBirth: 'Gotham',
+                            DateOfBirth: '/Date(-122227200000)/',
+                            CountryID: 2,
+                            CountryName: 'Earth',
+                            IsActive: true,
+                            OrderNumber: 1,
                         },
                         {
-                            "ID":2,
-                            "Name":"Superman",
-                            "PlaceOfBirth":"Kripton",
-                            "DateOfBirth":"\/Date(-122227200000)\/",
-                            "CountryID":1,
-                            "CountryName":"Kripton",
-                            "IsActive":false,
-                            "OrderNumber":2
-                        }
+                            ID: 2,
+                            Name: 'Superman',
+                            PlaceOfBirth: 'Kripton',
+                            DateOfBirth: '/Date(-122227200000)/',
+                            CountryID: 1,
+                            CountryName: 'Kripton',
+                            IsActive: false,
+                            OrderNumber: 2,
+                        },
                     ],
-                    total:2
-                }
-            }
+                    total: 2,
+                },
+            },
         });
         server.start(done);
     });
-    afterEach(function(done) {
+    afterEach(function (done) {
         server.stop(done);
     });
 
-    it('can be digested by zombie', (done)=>{
-        browser.visit('http://localhost:' + server.port)
-            .then(function() {
-                setTimeout(() => {
-                    let document = browser.document;
-                    expect(document.querySelector('#grid [data-position="2"]').innerHTML).to.contain('Superman');
-                    done();
-                }, 100);
-            });
+    it('can be digested by zombie', (done) => {
+        browser.visit('http://localhost:' + server.port).then(function () {
+            setTimeout(() => {
+                let document = browser.document;
+                expect(
+                    document.querySelector('#grid [data-position="2"]')
+                        .innerHTML
+                ).to.contain('Superman');
+                done();
+            }, 100);
+        });
     });
 });

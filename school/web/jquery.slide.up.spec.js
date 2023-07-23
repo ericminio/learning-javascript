@@ -2,8 +2,7 @@ const Browser = require('zombie');
 var browser = new Browser();
 let LocalServer = require('../support/local.server');
 
-describe('slideUp jquery animation', function() {
-
+describe('slideUp jquery animation', function () {
     var server;
     var page = `
         <html>
@@ -26,24 +25,25 @@ describe('slideUp jquery animation', function() {
             </body>
         </html>`;
 
-    beforeEach(function(done) {                    
+    beforeEach(function (done) {
         server = new LocalServer(page);
         server.start(done);
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
         server.stop(done);
     });
 
-    it('hides the targetted element', function(done) {
-        browser.visit('http://localhost:' + server.port)
-            .then(function() {
+    it('hides the targetted element', function (done) {
+        browser
+            .visit('http://localhost:' + server.port)
+            .then(function () {
                 browser.assert.style('#message', 'display', '');
             })
-            .then(function() {
-                return browser.fire('#go', 'mouseup')
+            .then(function () {
+                return browser.fire('#go', 'mouseup');
             })
-            .then(function() {
+            .then(function () {
                 browser.assert.style('#message', 'display', 'none');
             })
             .then(done);

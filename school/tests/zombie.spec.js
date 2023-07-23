@@ -3,8 +3,7 @@ const browser = new Browser();
 let LocalServer = require('../support/local.server');
 let expect = require('chai').expect;
 
-describe('Zombie', function() {
-
+describe('Zombie', function () {
     var server;
     var page = `
         <html>
@@ -23,41 +22,44 @@ describe('Zombie', function() {
         </html>
     `;
 
-    beforeEach(function(done) {
+    beforeEach(function (done) {
         server = new LocalServer(page);
         server.start(done);
     });
-    afterEach(function(done) {
+    afterEach(function (done) {
         server.stop(done);
     });
 
-    it('can digest jquery', function(done) {
-        browser.visit('http://localhost:' + server.port)
-            .then(function() {
+    it('can digest jquery', function (done) {
+        browser
+            .visit('http://localhost:' + server.port)
+            .then(function () {
                 browser.assert.text('#greetings', 'hello world');
             })
             .then(done, done);
     });
-    it('can spy custom events', function(done) {
-        browser.on('event', function(e) {
+    it('can spy custom events', function (done) {
+        browser.on('event', function (e) {
             if (e.type == 'this-event') {
                 done();
             }
         });
-        browser.visit('http://localhost:' + server.port)
-            .then(function(){}, done);
+        browser
+            .visit('http://localhost:' + server.port)
+            .then(function () {}, done);
     });
-    it('can be used to detect the need for cors with non-optional method', (done)=>{
-        server.stop(()=>{
+    it('can be used to detect the need for cors with non-optional method', (done) => {
+        server.stop(() => {
             var thirdParty;
-            thirdParty = new LocalServer(function(request, response) {
+            thirdParty = new LocalServer(function (request, response) {
                 response.setHeader('Access-Control-Allow-Origin', '*');
                 //response.setHeader('Access-Control-Allow-Methods', 'PUT');
                 response.write('answer from third party');
                 response.end();
             });
-            thirdParty.start(function() {
-                var page = `
+            thirdParty.start(function () {
+                var page =
+                    `
                     <html>
                         <head>
                             <script src="/lib/jquery-2.1.3.min.js"></script>
@@ -71,21 +73,27 @@ describe('Zombie', function() {
                                         var label = document.getElementById('greetings');
                                         label.innerHTML = xhr.responseText;
                                     };
-                                    xhr.open('PUT', 'http://localhost:` + thirdParty.port + `/message');
+                                    xhr.open('PUT', 'http://localhost:` +
+                    thirdParty.port +
+                    `/message');
                                     xhr.send();
                                 });
                             </script>
                         </body>
                     </html>`;
                 server = new LocalServer(page);
-                server.start(()=>{                    
-                    browser.visit('http://localhost:' + server.port)
-                        .then(()=>{}, ()=>{                            
-                            expect(browser.errors[0].toString()).to.equal('Cannot make request with not-allowed method(PUT): 18');
+                server.start(() => {
+                    browser.visit('http://localhost:' + server.port).then(
+                        () => {},
+                        () => {
+                            expect(browser.errors[0].toString()).to.equal(
+                                'Cannot make request with not-allowed method(PUT): 18'
+                            );
                             done();
-                        });                        
+                        }
+                    );
                 });
             });
-        })
+        });
     });
 });

@@ -6,11 +6,13 @@ const browser = new Browser();
 let request = require('request');
 
 describe('Local Server', () => {
-
     let server;
     afterEach((done) => {
-        if (server) { server.stop(done); }
-        else { done(); }
+        if (server) {
+            server.stop(done);
+        } else {
+            done();
+        }
     });
     it('exposes the chosen port', (done) => {
         server = new LocalServer((request, response) => {
@@ -22,7 +24,7 @@ describe('Local Server', () => {
                 expect(err).to.equal(null);
                 expect(body).to.equal('Hello');
                 done();
-            })
+            });
         });
     });
     it('always uses a fresh port', (done) => {
@@ -62,7 +64,8 @@ describe('Local Server', () => {
         `;
         server = new LocalServer(page);
         server.start(() => {
-            browser.visit('http://localhost:' + server.port)
+            browser
+                .visit('http://localhost:' + server.port)
                 .then(function () {
                     browser.assert.text('title', 'modified title');
                 })
@@ -99,10 +102,11 @@ describe('Local Server', () => {
         `;
         server = new LocalServer({
             '/': page,
-            '/modify-title.js': `function modifyTitle() { document.title='modified title'; } `
+            '/modify-title.js': `function modifyTitle() { document.title='modified title'; } `,
         });
         server.start(() => {
-            browser.visit('http://localhost:' + server.port)
+            browser
+                .visit('http://localhost:' + server.port)
                 .then(function () {
                     browser.assert.text('title', 'modified title');
                 })
@@ -113,28 +117,38 @@ describe('Local Server', () => {
     it('serves json', (done) => {
         server = new LocalServer({
             json: {
-                '/ping': { message: 'pong' }
-            }
+                '/ping': { message: 'pong' },
+            },
         });
         server.start(() => {
-            request.get('http://localhost:' + server.port + '/ping', (err, response, body) => {
-                expect(JSON.parse(body)).to.deep.equal({ message: 'pong' });
-                expect(response.headers['content-type']).to.equal('application/json');
-                expect(response.headers['content-length']).to.equal('18');
-                done();
-            });
+            request.get(
+                'http://localhost:' + server.port + '/ping',
+                (err, response, body) => {
+                    expect(JSON.parse(body)).to.deep.equal({ message: 'pong' });
+                    expect(response.headers['content-type']).to.equal(
+                        'application/json'
+                    );
+                    expect(response.headers['content-length']).to.equal('18');
+                    done();
+                }
+            );
         });
     });
 
     it('serves not-found when setup with an object', (done) => {
         server = new LocalServer({});
         server.start(() => {
-            request.get('http://localhost:' + server.port + '/ping', (err, response, body) => {
-                expect(body).to.equal('not found');
-                expect(response.headers['content-type']).to.equal('text/plain');
-                expect(response.statusCode).to.equal(404);
-                done();
-            });
+            request.get(
+                'http://localhost:' + server.port + '/ping',
+                (err, response, body) => {
+                    expect(body).to.equal('not found');
+                    expect(response.headers['content-type']).to.equal(
+                        'text/plain'
+                    );
+                    expect(response.statusCode).to.equal(404);
+                    done();
+                }
+            );
         });
     });
 });

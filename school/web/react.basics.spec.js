@@ -2,12 +2,10 @@ const Browser = require('zombie');
 var browser = new Browser();
 let LocalServer = require('../support/local.server');
 
-describe('React HelloWorld', function() {
-
+describe('React HelloWorld', function () {
     var server;
 
-    describe('with html element', function() {
-
+    describe('with html element', function () {
         var page = `
             <html>
                 <head>
@@ -25,26 +23,26 @@ describe('React HelloWorld', function() {
                 </body>
             </html>`;
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             server = new LocalServer(page);
             server.start(done);
         });
 
-        afterEach(function(done) {
+        afterEach(function (done) {
             server.stop(done);
         });
 
-        it('works', function(done) {
-            browser.visit('http://localhost:' + server.port)
-                .then(function() {
+        it('works', function (done) {
+            browser
+                .visit('http://localhost:' + server.port)
+                .then(function () {
                     browser.assert.text('#greetings', 'Hello World!');
                 })
                 .then(done, done);
         });
     });
 
-    describe('with class', function() {
-
+    describe('with class', function () {
         var page = `
             <html>
                 <head>
@@ -68,23 +66,22 @@ describe('React HelloWorld', function() {
                 </body>
             </html>`;
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             server = new LocalServer(page);
             server.start(done);
         });
 
-        afterEach(function(done) {
+        afterEach(function (done) {
             server.stop(done);
         });
 
-        it('works', function(done) {
-            browser.visit('http://localhost:' + server.port)
-                .then(function() {
+        it('works', function (done) {
+            browser
+                .visit('http://localhost:' + server.port)
+                .then(function () {
                     browser.assert.text('#greetings', 'Hello World!');
                 })
                 .then(done, done);
         });
     });
-
-
 });

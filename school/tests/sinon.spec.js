@@ -1,79 +1,83 @@
-var { expect } = require("chai");
-var sinon = require("sinon");
-require("chai").use(require("sinon-chai"));
+var { expect } = require('chai');
+var sinon = require('sinon');
+require('chai').use(require('sinon-chai'));
 
-describe("Sinon", function () {
-  it("offers spying on the method of an object", function () {
-    var sut = {
-      api: function (dependency) {
-        dependency.doThat("please");
-      },
-    };
-    var collaborator = { doThat: function () {} };
-    var spy = sinon.spy(collaborator, "doThat");
-    sut.api(collaborator);
+describe('Sinon', function () {
+    it('offers spying on the method of an object', function () {
+        var sut = {
+            api: function (dependency) {
+                dependency.doThat('please');
+            },
+        };
+        var collaborator = { doThat: function () {} };
+        var spy = sinon.spy(collaborator, 'doThat');
+        sut.api(collaborator);
 
-    expect(spy.calledWith("please")).to.equal(true);
-  });
-
-  it("gives better assertion errors with sinon-chai", function () {
-    var sut = {
-      api: function (dependency) {
-        dependency.doThat("please");
-      },
-    };
-    var collaborator = { doThat: sinon.spy() };
-    sut.api(collaborator);
-
-    expect(collaborator.doThat).to.have.been.calledWith("please");
-  });
-
-  it("can verify a non-event", function () {
-    var sut = {
-      api: (dependency) => {
-        dependency.doThat("please");
-      },
-      nop: () => {},
-    };
-    var collaborator = { doThat: sinon.spy() };
-    sut.nop();
-
-    expect(collaborator.doThat).not.to.have.been.called;
-  });
-
-  describe("stubbing", () => {
-    let fetch;
-    beforeEach(() => {
-      fetch = sinon.stub();
+        expect(spy.calledWith('please')).to.equal(true);
     });
 
-    it("offers pre-setting a returned value", () => {
-      fetch.returns({ data: { value: 42 } });
-      const adapter = { getData: (fetch) => fetch("parameter-not-covered") };
-      const answer = adapter.getData(fetch);
+    it('gives better assertion errors with sinon-chai', function () {
+        var sut = {
+            api: function (dependency) {
+                dependency.doThat('please');
+            },
+        };
+        var collaborator = { doThat: sinon.spy() };
+        sut.api(collaborator);
 
-      expect(answer.data.value).to.equal(42);
+        expect(collaborator.doThat).to.have.been.calledWith('please');
     });
 
-    it("can lead to tough-to-troubleshoot failing tests when stubbing and mocking are mixed", () => {
-      fetch.withArgs("666").returns({ data: { value: 42 } });
-      const adapter = { getData: (fetch) => fetch("parameter-wants-coverage") };
-      try {
-        const answer = adapter.getData(fetch);
-        answer.data.value;
-        expect("should fail").to.equal("but no");
-      } catch (error) {
-        expect(error.toString()).to.equal(
-          `TypeError: Cannot read properties of undefined (reading 'data')`
-        );
-      }
+    it('can verify a non-event', function () {
+        var sut = {
+            api: (dependency) => {
+                dependency.doThat('please');
+            },
+            nop: () => {},
+        };
+        var collaborator = { doThat: sinon.spy() };
+        sut.nop();
+
+        expect(collaborator.doThat).not.to.have.been.called;
     });
 
-    it("welcomes mocking verification as a separate intention", () => {
-      const adapter = { getData: (fetch) => fetch("I-see-you") };
-      adapter.getData(fetch);
+    describe('stubbing', () => {
+        let fetch;
+        beforeEach(() => {
+            fetch = sinon.stub();
+        });
 
-      expect(fetch).to.have.been.calledWith("I-see-you");
+        it('offers pre-setting a returned value', () => {
+            fetch.returns({ data: { value: 42 } });
+            const adapter = {
+                getData: (fetch) => fetch('parameter-not-covered'),
+            };
+            const answer = adapter.getData(fetch);
+
+            expect(answer.data.value).to.equal(42);
+        });
+
+        it('can lead to tough-to-troubleshoot failing tests when stubbing and mocking are mixed', () => {
+            fetch.withArgs('666').returns({ data: { value: 42 } });
+            const adapter = {
+                getData: (fetch) => fetch('parameter-wants-coverage'),
+            };
+            try {
+                const answer = adapter.getData(fetch);
+                answer.data.value;
+                expect('should fail').to.equal('but no');
+            } catch (error) {
+                expect(error.toString()).to.equal(
+                    `TypeError: Cannot read properties of undefined (reading 'data')`
+                );
+            }
+        });
+
+        it('welcomes mocking verification as a separate intention', () => {
+            const adapter = { getData: (fetch) => fetch('I-see-you') };
+            adapter.getData(fetch);
+
+            expect(fetch).to.have.been.calledWith('I-see-you');
+        });
     });
-  });
 });

@@ -15,9 +15,12 @@ const isText = (buffer) => {
 const decodeLength = (buffer) => {
     const secondByte = buffer.readUInt8(1);
 
-    return secondByte - (isFirstBitSet(secondByte) ? FIRST_BIT_OF_BYTE_MASK : 0);
+    return (
+        secondByte - (isFirstBitSet(secondByte) ? FIRST_BIT_OF_BYTE_MASK : 0)
+    );
 };
-const extractMask = (buffer) => Buffer.from([2, 3, 4, 5].map(offset => buffer.readUInt8(offset)))
+const extractMask = (buffer) =>
+    Buffer.from([2, 3, 4, 5].map((offset) => buffer.readUInt8(offset)));
 const extractData = (buffer) => {
     const length = decodeLength(buffer);
     let data = Buffer.alloc(length);
@@ -29,7 +32,9 @@ const extractData = (buffer) => {
 const decode = (buffer) => {
     const data = extractData(buffer);
     const mask = extractMask(buffer);
-    const decoded = Buffer.from(Uint8Array.from(data, (byte, index) => byte ^ mask[index % 4]));
+    const decoded = Buffer.from(
+        Uint8Array.from(data, (byte, index) => byte ^ mask[index % 4])
+    );
 
     return decoded.toString();
 };
@@ -42,4 +47,12 @@ const encode = (text) => {
     return buffer;
 };
 
-module.exports = { isFrameFinal, isText, decodeLength, extractMask, extractData, decode, encode };
+module.exports = {
+    isFrameFinal,
+    isText,
+    decodeLength,
+    extractMask,
+    extractData,
+    decode,
+    encode,
+};

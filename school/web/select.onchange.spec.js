@@ -1,11 +1,10 @@
 var expect = require('chai').expect;
 require('chai').use(require('sinon-chai'));
-const jsdom = require("jsdom");
+const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
 let LocalServer = require('../support/local.server');
 
-describe('Triggering script via select onchange', function() {
-
+describe('Triggering script via select onchange', function () {
     var server;
     var index = `
         <html>
@@ -26,24 +25,23 @@ describe('Triggering script via select onchange', function() {
         document.querySelector("#continent").innerHTML = id;
     }`;
 
-    beforeEach(function(done) {
+    beforeEach(function (done) {
         server = new LocalServer({
             '/': index,
-            '/script.js': script
+            '/script.js': script,
         });
         server.start(done);
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
         server.stop(done);
     });
 
-    it('works', function(done) {
+    it('works', function (done) {
         JSDOM.fromURL('http://localhost:' + server.port, {
             runScripts: 'dangerously',
-            resources: 'usable'
-        })
-        .then((dom)=>{
+            resources: 'usable',
+        }).then((dom) => {
             expect(dom.window.document.title).to.equal('initial title');
             setTimeout(() => {
                 let window = dom.window;
@@ -55,9 +53,11 @@ describe('Triggering script via select onchange', function() {
                 change.initEvent('change', true, true);
                 select.dispatchEvent(change);
 
-                expect(window.document.querySelector('#continent').innerHTML).to.equal('canada');
-              
-                done();    
+                expect(
+                    window.document.querySelector('#continent').innerHTML
+                ).to.equal('canada');
+
+                done();
             }, 100);
         });
     });

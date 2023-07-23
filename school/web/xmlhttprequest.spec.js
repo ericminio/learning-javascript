@@ -3,31 +3,30 @@ const browser = new Browser();
 let LocalServer = require('../support/local.server');
 let expect = require('chai').expect;
 
-describe('XMLHttpRequest', function() {
-
+describe('XMLHttpRequest', function () {
     var server;
     var thirdParty;
 
-    beforeEach(function(done) {
-        thirdParty = new LocalServer(function(request, response) {
+    beforeEach(function (done) {
+        thirdParty = new LocalServer(function (request, response) {
             response.setHeader('Access-Control-Allow-Origin', '*');
             if (request.method == 'POST') {
-                var body = ''
-                request.on('data', (chunk)=>{
-                    body += chunk
-                })
-                request.on('end', ()=>{
+                var body = '';
+                request.on('data', (chunk) => {
+                    body += chunk;
+                });
+                request.on('end', () => {
                     response.write('pong: ' + body);
                     response.end();
-                })
-            }
-            else {
+                });
+            } else {
                 response.write('pong');
                 response.end();
             }
         });
-        thirdParty.start(function() {
-            var page = `
+        thirdParty.start(function () {
+            var page =
+                `
                 <html>
                     <head>
                         <script>
@@ -37,7 +36,9 @@ describe('XMLHttpRequest', function() {
                                     var label = document.getElementById('greetings');
                                     label.innerHTML = xhr.responseText;
                                 };
-                                xhr.open('GET', 'http://localhost:` + thirdParty.port + `/message');
+                                xhr.open('GET', 'http://localhost:` +
+                thirdParty.port +
+                `/message');
                                 xhr.send();
                             }
                             var goPost = function() {
@@ -46,7 +47,9 @@ describe('XMLHttpRequest', function() {
                                     var label = document.getElementById('greetings');
                                     label.innerHTML = xhr.responseText;
                                 };
-                                xhr.open('POST', 'http://localhost:` + thirdParty.port + `/message');
+                                xhr.open('POST', 'http://localhost:` +
+                thirdParty.port +
+                `/message');
                                 xhr.send(document.getElementById('value').value);
                             }
                         </script>
@@ -61,34 +64,36 @@ describe('XMLHttpRequest', function() {
                 </html>`;
             server = new LocalServer(page);
             server.start(done);
-        })
+        });
     });
-    afterEach(function(done) {
-        thirdParty.stop(()=>{
+    afterEach(function (done) {
+        thirdParty.stop(() => {
             server.stop(done);
-        })
+        });
     });
 
-    it('can GET data', (done)=>{
-        browser.visit('http://localhost:' + server.port)
-            .then(function() {
+    it('can GET data', (done) => {
+        browser
+            .visit('http://localhost:' + server.port)
+            .then(function () {
                 return browser.click('#goGet');
             })
-            .then(function() {
+            .then(function () {
                 browser.assert.text('#greetings', 'pong');
             })
             .then(done, done);
     });
 
-    it('can POST data', (done)=>{
-        browser.visit('http://localhost:' + server.port)
-            .then(function() {
+    it('can POST data', (done) => {
+        browser
+            .visit('http://localhost:' + server.port)
+            .then(function () {
                 return browser.fill('#value', 'hello');
             })
-            .then(function() {
+            .then(function () {
                 return browser.click('#goPost');
             })
-            .then(function() {
+            .then(function () {
                 browser.assert.text('#greetings', 'pong: hello');
             })
             .then(done, done);

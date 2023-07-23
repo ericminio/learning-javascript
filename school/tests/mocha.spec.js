@@ -64,7 +64,9 @@ describe('Mocha', function () {
         it('can expect resolved object', () => {
             return expect(
                 Promise.resolve({ value: 42 })
-            ).to.eventually.deep.equal({ value: 42 });
+            ).to.eventually.deep.equal({
+                value: 42,
+            });
         });
         it('can expect resolved object field', () => {
             return expect(

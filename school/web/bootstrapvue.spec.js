@@ -2,11 +2,10 @@ const Browser = require('zombie');
 var browser = new Browser();
 let LocalServer = require('../support/local.server');
 
-describe('Bootstrap-Vue', function() {
-
+describe('Bootstrap-Vue', function () {
     var server;
 
-    describe('b-table', ()=>{
+    describe('b-table', () => {
         var page = `
             <html>
                 <head>
@@ -33,20 +32,24 @@ describe('Bootstrap-Vue', function() {
                 </body>
             </html>`;
 
-        beforeEach(function(done) {
+        beforeEach(function (done) {
             server = new LocalServer(page);
             server.start(done);
         });
-        afterEach(function(done) {
+        afterEach(function (done) {
             server.stop(done);
         });
 
-        it('works', function(done) {
-            browser.visit('http://localhost:' + server.port)
-                .then(function() {
-                    browser.assert.text('table > tbody > tr:nth-child(2) > td:nth-child(3)', 'Shaw');
+        it('works', function (done) {
+            browser
+                .visit('http://localhost:' + server.port)
+                .then(function () {
+                    browser.assert.text(
+                        'table > tbody > tr:nth-child(2) > td:nth-child(3)',
+                        'Shaw'
+                    );
                 })
                 .then(done, done);
         });
-    })
+    });
 });

@@ -1,62 +1,64 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <title>Spiner</title>
 
-<head>
-    <title>Spiner</title>
+        <style>
+            .actions {
+                padding: 5px;
+            }
+            .zone {
+                border: 1px solid black;
+                min-height: 200px;
+                padding: 5px;
+            }
 
-    <style>
-        .actions {
-            padding: 5px;
-        }
-        .zone {
-            border: 1px solid black;
-            min-height: 200px;
-            padding: 5px;
-        }
+            @keyframes spin {
+                0% {
+                    transform: rotate(0deg);
+                }
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+            .spinner {
+                width: 30px;
+                height: 30px;
+                animation: spin 1s linear infinite;
+                background-repeat: no-repeat;
+                background-position: center;
+                background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30px' height='30px' viewBox='0 0 100 100'%3E%3Ccircle fill='black' cx='50' cy='10' r='3'/%3E%3Ccircle fill='black' cx='78' cy='22' r='5'/%3E%3Ccircle fill='black' cx='90' cy='50' r='9'/%3E%3C/svg%3E");
+            }
+            .spinner::before {
+                color: rgba(0, 0, 0, 0);
+                content: '.';
+            }
+        </style>
+        <script>
+            var show = function () {
+                document.getElementById('spinner').style.display = 'block';
+                document.getElementById('no-spinner').style.display = 'none';
+            };
+            var hide = function () {
+                document.getElementById('spinner').style.display = 'none';
+                document.getElementById('no-spinner').style.display = 'block';
+            };
+        </script>
+    </head>
 
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-        .spinner {
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30px' height='30px' viewBox='0 0 100 100'%3E%3Ccircle fill='black' cx='50' cy='10' r='3'/%3E%3Ccircle fill='black' cx='78' cy='22' r='5'/%3E%3Ccircle fill='black' cx='90' cy='50' r='9'/%3E%3C/svg%3E")
-        }
-        .spinner::before {
-          color: rgba(0, 0, 0, 0);
-          content: ".";
-        }
-    </style>
-    <script>
-        var show = function() {
-            document.getElementById('spinner').style.display = 'block';
-            document.getElementById('no-spinner').style.display = 'none';
-        }
-        var hide = function() {
-            document.getElementById('spinner').style.display = 'none';
-            document.getElementById('no-spinner').style.display = 'block';
-        }
-    </script>
-</head>
-
-<body>
-    <div class="actions">
-        <button onclick="show()">show spinner</button>
-        <button onclick="hide()">hide spinner</button>
-    </div>
-
-    <div class="zone">
-        <div id="no-spinner">
-            <div class="any">Hello World!</div>
-            <div class="any">Hello World!</div>
+    <body>
+        <div class="actions">
+            <button onclick="show()">show spinner</button>
+            <button onclick="hide()">hide spinner</button>
         </div>
 
-        <div id="spinner" class="spinner"></div>
-    </div>
-</body>
+        <div class="zone">
+            <div id="no-spinner">
+                <div class="any">Hello World!</div>
+                <div class="any">Hello World!</div>
+            </div>
 
+            <div id="spinner" class="spinner"></div>
+        </div>
+    </body>
 </html>

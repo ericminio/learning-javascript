@@ -2,8 +2,7 @@ const Browser = require('zombie');
 const browser = new Browser();
 let LocalServer = require('../support/local.server');
 
-describe('Angular v1', function() {
-
+describe('Angular v1', function () {
     var server;
     var page = `
         <html ng-app="testApp">
@@ -23,17 +22,18 @@ describe('Angular v1', function() {
         </html>
     `;
 
-    beforeEach(function(done) {
+    beforeEach(function (done) {
         server = new LocalServer(page);
         server.start(done);
     });
-    afterEach(function(done) {
+    afterEach(function (done) {
         server.stop(done);
     });
 
-    it('will eventually replace expressions in curly braces', function(done) {
-        browser.visit('http://localhost:' + server.port)
-            .then(function() {
+    it('will eventually replace expressions in curly braces', function (done) {
+        browser
+            .visit('http://localhost:' + server.port)
+            .then(function () {
                 browser.assert.text('#greetings', 'Welcome Home');
             })
             .then(done, done);

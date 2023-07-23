@@ -1,16 +1,16 @@
 const extractBody = (incoming) => {
     return new Promise((resolve, reject) => {
         let payload = '';
-        incoming.on('data', chunk => {
+        incoming.on('data', (chunk) => {
             payload += chunk;
         });
-        incoming.on('end', ()=>{
+        incoming.on('end', () => {
             resolve(payload);
         });
-        incoming.on('error', error => {
+        incoming.on('error', (error) => {
             reject(error);
-        })
+        });
     });
-}
+};
 
 module.exports = extractBody;
