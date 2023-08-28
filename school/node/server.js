@@ -6,9 +6,9 @@ const notImplemented = (_, response) => {
 };
 
 class Server {
-    constructor(port, handler) {
+    constructor(handler) {
         this.sockets = [];
-        this.port = port;
+        this.port = 5001;
         this.internal = http.createServer();
         this.internal.on('connection', (socket) => {
             this.sockets.push(socket);

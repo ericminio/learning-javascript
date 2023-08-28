@@ -4,12 +4,27 @@ const { Server } = require('./server');
 
 describe('server', () => {
     let server;
-    let port = 5001;
     let baseUrl;
+
+    describe('port', () => {
+        beforeEach(async () => {
+            server = new Server();
+            port = await server.start();
+            baseUrl = `http://localhost:${port}`;
+        });
+
+        afterEach(async () => {
+            await server.stop();
+        });
+
+        it('defaults to 5001', async () => {
+            assert.equal(baseUrl, 'http://localhost:5001');
+        });
+    });
 
     describe('the promise way', () => {
         beforeEach(async () => {
-            server = new Server(port);
+            server = new Server();
             port = await server.start();
             baseUrl = `http://localhost:${port}`;
         });
@@ -29,7 +44,7 @@ describe('server', () => {
         beforeEach(
             () =>
                 new Promise((resolve) => {
-                    server = new Server(port);
+                    server = new Server();
                     server.start((port) => {
                         baseUrl = `http://localhost:${port}`;
                         resolve();
