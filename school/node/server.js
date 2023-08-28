@@ -22,18 +22,37 @@ class Server {
     }
     start(done) {
         if (this.started) {
-            done(this.port);
+            if (done) {
+                done(this.port);
+            } else {
+                return Promise.resolve(this.port);
+            }
         } else {
             this.started = true;
-            this.internal.listen(this.port, () => done(this.port));
+            if (done) {
+                this.internal.listen(this.port, () => done(this.port));
+            } else {
+                return new Promise((resolve) => {
+                    this.internal.listen(this.port, () => resolve(this.port));
+                });
+            }
         }
     }
     stop(done) {
         this.sockets.forEach((socket) => socket.destroy());
-        this.internal.close(() => {
-            this.started = false;
-            done();
-        });
+        if (done) {
+            this.internal.close(() => {
+                this.started = false;
+                done();
+            });
+        } else {
+            return new Promise((resolve) => {
+                this.internal.close(() => {
+                    this.started = false;
+                    resolve();
+                });
+            });
+        }
     }
     use(handler) {
         this.internal.removeListener('request', this.handler);
