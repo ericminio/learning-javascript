@@ -1,6 +1,7 @@
 const http = require('http');
 
 const notImplemented = (request, response) => {
+    console.log('I see u');
     response.writeHead(501, { 'content-Type': 'text/plain' });
     response.end('NOT IMPLEMENTED');
 };

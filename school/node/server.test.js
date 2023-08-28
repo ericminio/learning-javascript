@@ -7,13 +7,19 @@ test('server', async (t) => {
     let port = 5001;
     let baseUrl;
 
-    await t.test('before', () => {
-        return new Promise((resolve, reject) => {
+    t.beforeEach(() => {
+        return new Promise((resolve) => {
             server = new Server(port);
             server.start((port) => {
                 baseUrl = `http://localhost:${port}`;
                 resolve();
             });
+        });
+    });
+
+    t.afterEach(async () => {
+        await new Promise((resolve) => {
+            server.stop(resolve);
         });
     });
 
@@ -28,12 +34,6 @@ test('server', async (t) => {
             let content = await answer.text();
 
             assert.equal(content, 'NOT IMPLEMENTED');
-        });
-    });
-
-    await t.test('after', async () => {
-        await new Promise((resolve) => {
-            server.stop(resolve);
         });
     });
 });
