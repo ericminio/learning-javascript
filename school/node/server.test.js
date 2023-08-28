@@ -2,28 +2,30 @@ const { describe, it, beforeEach, afterEach } = require('node:test');
 const { strict: assert } = require('node:assert');
 const { Server } = require('./server');
 
-describe('server', async () => {
+describe('server', () => {
     let server;
     let port = 5001;
     let baseUrl;
 
-    beforeEach(() => {
-        return new Promise((resolve) => {
-            server = new Server(port);
-            server.start((port) => {
-                baseUrl = `http://localhost:${port}`;
-                resolve();
-            });
-        });
-    });
+    beforeEach(
+        () =>
+            new Promise((resolve) => {
+                server = new Server(port);
+                server.start((port) => {
+                    baseUrl = `http://localhost:${port}`;
+                    resolve();
+                });
+            })
+    );
 
-    afterEach(async () => {
-        await new Promise((resolve) => {
-            server.stop(resolve);
-        });
-    });
+    afterEach(
+        () =>
+            new Promise((resolve) => {
+                server.stop(resolve);
+            })
+    );
 
-    describe('default handler', async () => {
+    describe('default handler', () => {
         it('is 501', async () => {
             let answer = await fetch(`${baseUrl}`);
 
