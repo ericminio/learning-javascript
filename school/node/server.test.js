@@ -1,4 +1,4 @@
-const { describe, it, before, after } = require('node:test');
+const { describe, it, beforeEach, afterEach } = require('node:test');
 const { strict: assert } = require('node:assert');
 const { Server } = require('./server');
 
@@ -7,7 +7,7 @@ describe('server', () => {
     let port = 5001;
     let baseUrl;
 
-    before(
+    beforeEach(
         () =>
             new Promise((resolve) => {
                 server = new Server(port);
@@ -18,7 +18,7 @@ describe('server', () => {
             })
     );
 
-    after(
+    afterEach(
         () =>
             new Promise((resolve) => {
                 server.stop(resolve);
@@ -39,19 +39,21 @@ describe('server', () => {
         });
     });
 
-    it('welcomes handler injection', async () => {
-        server.use((incoming, response) => {
-            const answer = `${incoming.method} ${incoming.url}`;
-            response.writeHead(200, {
-                'content-type': 'plain/text',
-                'content-length': answer.length,
+    describe('handler injection', () => {
+        it('replaces default handler', async (t) => {
+            server.use((incoming, response) => {
+                const answer = `${incoming.method} ${incoming.url}`;
+                response.writeHead(200, {
+                    'content-type': 'plain/text',
+                    'content-length': answer.length,
+                });
+                response.write(answer);
+                response.end();
             });
-            response.write(answer);
-            response.end();
-        });
-        let answer = await fetch(`${baseUrl}/ping`);
-        let content = await answer.text();
+            let answer = await fetch(`${baseUrl}/ping`);
+            let content = await answer.text();
 
-        assert.equal(content, 'GET /ping');
+            assert.equal(content, 'GET /ping');
+        });
     });
 });
