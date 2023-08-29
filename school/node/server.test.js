@@ -7,10 +7,16 @@ describe('server', () => {
     let baseUrl;
 
     describe('port', () => {
+        let secondServer;
         beforeEach(async () => {
             server = new Server();
             port = await server.start();
             baseUrl = `http://localhost:${port}`;
+        });
+        afterEach(async () => {
+            if (secondServer && secondServer.started) {
+                await secondServer.stop();
+            }
         });
 
         afterEach(async () => {
@@ -19,6 +25,16 @@ describe('server', () => {
 
         it('defaults to 5001', async () => {
             assert.equal(baseUrl, 'http://localhost:5001');
+        });
+
+        it('is the next available after default port', async () => {
+            secondServer = new Server();
+            const secondPort = await secondServer.start();
+            let answer = await fetch(`http://localhost:${secondPort}`);
+            let content = await answer.text();
+
+            assert.equal(content, 'NOT IMPLEMENTED');
+            assert.equal(secondPort, 5002);
         });
     });
 
