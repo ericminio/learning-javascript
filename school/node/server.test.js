@@ -36,6 +36,30 @@ describe('server', () => {
             assert.equal(content, 'NOT IMPLEMENTED');
             assert.equal(secondPort, 5002);
         });
+
+        it('can be forced', async () => {
+            secondServer = new Server(5005, (_, response) => {
+                const answer = 'port forced';
+                response.writeHead(200, {
+                    'content-type': 'plain/text',
+                    'content-length': answer.length,
+                });
+                response.end(answer);
+            });
+            await secondServer.start();
+            let answer = await fetch(`http://localhost:5005`);
+            let content = await answer.text();
+
+            assert.equal(content, 'port forced');
+        });
+
+        it('welcomes default handler', async () => {
+            secondServer = new Server(5005);
+            await secondServer.start();
+            let answer = await fetch(`http://localhost:5005`);
+
+            assert.equal(answer.status, 501);
+        });
     });
 
     describe('the promise way', () => {

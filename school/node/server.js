@@ -6,7 +6,13 @@ const notImplemented = (_, response) => {
 };
 
 class Server {
-    constructor(handler) {
+    constructor(maybePort, maybeHandler) {
+        if (Number.isNaN(maybePort)) {
+            this.handler = maybePort;
+        } else {
+            this.handler = maybeHandler || notImplemented;
+            this.port = maybePort;
+        }
         this.sockets = [];
         this.internal = http.createServer();
         this.internal.on('connection', (socket) => {
@@ -15,7 +21,6 @@ class Server {
                 this.sockets.splice(this.sockets.indexOf(socket), 1);
             });
         });
-        this.handler = handler || notImplemented;
         this.use(this.handler);
         this.started = false;
     }
@@ -29,10 +34,10 @@ class Server {
         } else {
             this.started = true;
             if (done) {
-                new PortFinder(this.internal).please(done);
+                new PortFinder(this.internal, this.port).please(done);
             } else {
                 return new Promise((resolve) => {
-                    new PortFinder(this.internal).please(resolve);
+                    new PortFinder(this.internal, this.port).please(resolve);
                 });
             }
         }
@@ -61,8 +66,8 @@ class Server {
 }
 
 class PortFinder {
-    constructor(server) {
-        this.port = 5001;
+    constructor(server, port) {
+        this.port = port || 5001;
         this.server = server;
     }
 

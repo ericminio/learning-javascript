@@ -25,7 +25,7 @@
         "npm": "9.5.1"
     },
     "scripts": {
-        "test": "mocha --exit $(find school -name '*.spec.js') && node --test",
+        "test": "node --test && mocha --exit $(find school -name '*.spec.js')",
         "prettier": "prettier . --write"
     },
     "prettier": {
