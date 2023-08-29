@@ -8,7 +8,6 @@ const notImplemented = (_, response) => {
 class Server {
     constructor(handler) {
         this.sockets = [];
-        this.port = 5001;
         this.internal = http.createServer();
         this.internal.on('connection', (socket) => {
             this.sockets.push(socket);
@@ -30,10 +29,10 @@ class Server {
         } else {
             this.started = true;
             if (done) {
-                this.internal.listen(this.port, () => done(this.port));
+                new PortFinder(this.internal).please(done);
             } else {
                 return new Promise((resolve) => {
-                    this.internal.listen(this.port, () => resolve(this.port));
+                    new PortFinder(this.internal).please(resolve);
                 });
             }
         }
@@ -58,6 +57,24 @@ class Server {
         this.internal.removeListener('request', this.handler);
         this.handler = handler;
         this.internal.on('request', this.handler);
+    }
+}
+
+class PortFinder {
+    constructor(server) {
+        this.port = 5001;
+        this.server = server;
+    }
+
+    please(callback) {
+        this.server.on('listening', () => {
+            callback(this.port);
+        });
+        this.server.on('error', () => {
+            this.port += 1;
+            this.server.listen(this.port);
+        });
+        this.server.listen(this.port);
     }
 }
 
