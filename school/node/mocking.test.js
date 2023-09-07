@@ -13,4 +13,10 @@ describe('mocking', () => {
         assert.strictEqual(sut.add.mock.calls.length, 1);
         assert.deepStrictEqual(sut.add.mock.calls[0].arguments, [1, 2]);
     });
+    it('offers implementation stubbing', (context) => {
+        context.mock.method(sut, 'add');
+        sut.add.mock.mockImplementation(() => 42);
+
+        assert.equal(sut.add(4, 2), 42);
+    });
 });
