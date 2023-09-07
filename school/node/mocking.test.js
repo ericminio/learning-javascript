@@ -19,4 +19,19 @@ describe('mocking', () => {
 
         assert.equal(sut.add(4, 2), 42);
     });
+
+    describe('function mocking', () => {
+        it('is available', (context) => {
+            const mocked = context.mock.fn(sut.add, () => 42);
+
+            assert.equal(mocked(4, 2), 42);
+        });
+        it('can be set for a number of calls', (context) => {
+            const mocked = context.mock.fn(sut.add, () => 42, { times: 2 });
+
+            assert.equal(mocked(4, 2), 42);
+            assert.equal(mocked(4, 2), 42);
+            assert.equal(mocked(4, 2), 6);
+        });
+    });
 });
