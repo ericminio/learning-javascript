@@ -20,7 +20,7 @@ describe('mocking', () => {
         assert.equal(sut.add(4, 2), 42);
     });
 
-    describe('function mocking', () => {
+    describe('function stubbing', () => {
         it('is available', (context) => {
             const mocked = context.mock.fn(sut.add, () => 42);
 
@@ -32,6 +32,17 @@ describe('mocking', () => {
             assert.equal(mocked(4, 2), 42);
             assert.equal(mocked(4, 2), 42);
             assert.equal(mocked(4, 2), 6);
+        });
+        it('can be postponed with a little help', (context) => {
+            context.callIndex = 0;
+            const mocked = context.mock.fn(sut.add, (a, b) => {
+                context.callIndex += 1;
+                return context.callIndex <= 2 ? sut.add(a, b) : 42;
+            });
+
+            assert.equal(mocked(4, 2), 6);
+            assert.equal(mocked(4, 2), 6);
+            assert.equal(mocked(4, 2), 42);
         });
     });
 });
