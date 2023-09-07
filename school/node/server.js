@@ -7,11 +7,12 @@ const notImplemented = (_, response) => {
 
 class Server {
     constructor(maybePort, maybeHandler) {
-        if (Number.isNaN(maybePort)) {
-            this.handler = maybePort;
-        } else {
-            this.handler = maybeHandler || notImplemented;
+        if (Number.isInteger(maybePort)) {
             this.port = maybePort;
+            this.handler = maybeHandler || notImplemented;
+        } else {
+            this.port = null;
+            this.handler = maybePort || notImplemented;
         }
         this.sockets = [];
         this.internal = http.createServer();
@@ -23,6 +24,7 @@ class Server {
         });
         this.use(this.handler);
         this.started = false;
+        this.portFinder = new PortFinder(this.internal, this.port);
     }
     start(done) {
         if (this.started) {
@@ -32,12 +34,11 @@ class Server {
                 return Promise.resolve(this.port);
             }
         } else {
-            this.started = true;
             if (done) {
-                new PortFinder(this.internal, this.port).please(done);
+                this.findPort(done);
             } else {
                 return new Promise((resolve) => {
-                    new PortFinder(this.internal, this.port).please(resolve);
+                    this.findPort(resolve);
                 });
             }
         }
@@ -45,16 +46,10 @@ class Server {
     stop(done) {
         this.sockets.forEach((socket) => socket.destroy());
         if (done) {
-            this.internal.close(() => {
-                this.started = false;
-                done();
-            });
+            this.close(done);
         } else {
             return new Promise((resolve) => {
-                this.internal.close(() => {
-                    this.started = false;
-                    resolve();
-                });
+                this.close(resolve);
             });
         }
     }
@@ -63,17 +58,33 @@ class Server {
         this.handler = handler;
         this.internal.on('request', this.handler);
     }
+    close(then) {
+        this.internal.close(() => {
+            this.started = false;
+            then();
+        });
+    }
+    findPort(then) {
+        this.portFinder.please((port) => {
+            this.started = true;
+            then(port);
+        });
+    }
 }
 
 class PortFinder {
     constructor(server, port) {
         this.port = port || 5001;
         this.server = server;
+        this.found = false;
     }
 
     please(callback) {
         this.server.on('listening', () => {
-            callback(this.port);
+            if (!this.found) {
+                this.found = true;
+                callback(this.port);
+            }
         });
         this.server.on('error', () => {
             this.port += 1;
