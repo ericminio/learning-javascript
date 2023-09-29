@@ -56,4 +56,31 @@ describe('Readable Stream', () => {
             'e',
         ]);
     });
+
+    it('can read a file one word at a time', async () => {
+        const fd = await open('./school/node/data/a-file.txt');
+        const stream = fd.createReadStream({ highWaterMark: 1 });
+        const received = await new Promise((resolve) => {
+            const buffer = [];
+            let word = '';
+            const keep = () => {
+                buffer.push(word);
+                word = '';
+            };
+            stream.on('data', (chunk) => {
+                if ([' ', '\n'].includes(chunk.toString())) {
+                    keep();
+                } else {
+                    word += chunk.toString();
+                }
+            });
+            stream.on('end', () => {
+                keep();
+            });
+            stream.on('close', () => {
+                resolve(buffer);
+            });
+        });
+        assert.deepStrictEqual(received, ['first', 'line', 'second', 'line']);
+    });
 });
