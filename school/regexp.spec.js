@@ -189,4 +189,13 @@ describe('Regexp', function () {
             expect('Helo'.match(regex)).to.deep.equal(['He', 'lo']);
         });
     });
+
+    describe('Regex combination', function () {
+        it('works', function () {
+            var digit = new RegExp('(\\d)');
+            var last = new RegExp('.*' + digit.source);
+
+            expect(last.exec('12')[1]).to.equal('2');
+        });
+    });
 });

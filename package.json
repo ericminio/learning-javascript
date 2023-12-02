@@ -20,10 +20,6 @@
         "sinon-chai": "latest",
         "zombie": "latest"
     },
-    "engines": {
-        "node": "18.16.0",
-        "npm": "9.5.1"
-    },
     "scripts": {
         "test-with-node": "node --test --experimental-test-coverage $(find school -name '*.test.js')",
         "test-with-mocha": "mocha --exit $(find school -name '*.spec.js')",
