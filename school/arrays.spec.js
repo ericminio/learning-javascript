@@ -25,13 +25,39 @@ describe('Arrays', function () {
             expect(array[0]).to.equal(two);
         });
 
-        it("'splice' offers insertion", function () {
+        it("'splice' offers replace when second parameter is set", function () {
             array.push(one);
             array.push(two);
             var bird = { value: 'bird' };
             array.splice(0, 1, bird);
 
             expect(array[0]).to.equal(bird);
+            expect(array[1]).to.equal(two);
+            expect(array.length).to.equal(2);
+        });
+
+        it("'splice' offers multi-replace", function () {
+            array.push(one);
+            array.push(two);
+            var fox = { value: 'fox' };
+            var cat = { value: 'cat' };
+            array.splice(0, 2, fox, cat);
+
+            expect(array[0]).to.equal(fox);
+            expect(array[1]).to.equal(cat);
+            expect(array.length).to.equal(2);
+        });
+
+        it("'splice' offers insertion when second parameter is zero", function () {
+            array.push(one);
+            array.push(two);
+            var bird = { value: 'bird' };
+            array.splice(0, 0, bird);
+
+            expect(array[0]).to.equal(bird);
+            expect(array[1]).to.equal(one);
+            expect(array[2]).to.equal(two);
+            expect(array.length).to.equal(3);
         });
 
         it("'splice' offers multi-insertion", function () {
@@ -39,10 +65,13 @@ describe('Arrays', function () {
             array.push(two);
             var fox = { value: 'fox' };
             var cat = { value: 'cat' };
-            array.splice(1, 2, fox, cat);
+            array.splice(1, 0, fox, cat);
 
+            expect(array[0]).to.equal(one);
             expect(array[1]).to.equal(fox);
             expect(array[2]).to.equal(cat);
+            expect(array[3]).to.equal(two);
+            expect(array.length).to.equal(4);
         });
     });
 
