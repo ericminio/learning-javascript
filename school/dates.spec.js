@@ -91,4 +91,19 @@ describe('Date', function () {
             expect(sunday.getTime()).to.equal(new Date(2015, 0, 18).getTime());
         });
     });
+
+    describe('ISO toString', () => {
+        it('is available', () => {
+            let today = new Date(2017, 7, 25);
+
+            expect(today.toISOString()).to.equal('2017-08-25T00:00:00.000Z');
+        });
+
+        it('can be parsed', () => {
+            const incoming = '2017-08-25T00:00:00.000Z';
+            const date = new Date(incoming);
+
+            expect(date.toISOString()).to.equal(incoming);
+        });
+    });
 });
