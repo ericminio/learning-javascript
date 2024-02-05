@@ -15,6 +15,14 @@ const parseChain = (incoming) => {
         if (!!left) {
             current.previous = left.id;
         }
+        const under = dots[id({ x: dot.x, y: dot.y + 1 })];
+        if (!!under) {
+            current.next = under.id;
+        }
+        const above = dots[id({ x: dot.x, y: dot.y - 1 })];
+        if (!!above) {
+            current.previous = above.id;
+        }
 
         chain[key] = current;
     });

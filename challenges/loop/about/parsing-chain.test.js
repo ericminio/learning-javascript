@@ -46,4 +46,30 @@ describe('parsing chain', () => {
             },
         });
     });
+    it('works with two rings in column', () => {
+        const incoming = `
+        .|.
+        .|.
+        `;
+        const chain = parseChain(incoming);
+
+        assert.deepStrictEqual(chain, {
+            '1x0': {
+                id: '1x0',
+                x: 1,
+                y: 0,
+                value: '|',
+                next: '1x1',
+                previous: undefined,
+            },
+            '1x1': {
+                id: '1x1',
+                x: 1,
+                y: 1,
+                value: '|',
+                next: undefined,
+                previous: '1x0',
+            },
+        });
+    });
 });
