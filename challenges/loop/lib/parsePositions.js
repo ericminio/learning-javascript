@@ -8,7 +8,9 @@ const parsePositions = (incoming) => {
         const row = rows[y];
         for (let x = 0; x < row.length; x++) {
             if (row[x] !== '.') {
-                dots[id({ x, y })] = {
+                const key = id({ x, y });
+                dots[key] = {
+                    id: key,
                     x,
                     y,
                     value: row[x],

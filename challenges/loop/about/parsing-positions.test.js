@@ -11,8 +11,8 @@ describe('parsing positions', () => {
         const dots = parsePositions(incoming);
 
         assert.deepStrictEqual(dots, {
-            '1x0': { x: 1, y: 0, value: 'a' },
-            '2x0': { x: 2, y: 0, value: 'b' },
+            '1x0': { id: '1x0', x: 1, y: 0, value: 'a' },
+            '2x0': { id: '2x0', x: 2, y: 0, value: 'b' },
         });
     });
 });
