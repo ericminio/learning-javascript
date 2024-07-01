@@ -61,23 +61,33 @@ describe('sql.js', () => {
         const SQL = await initSqlJs();
         const db = new SQL.Database();
         db.exec(
-            'create table products(name text, created datetime default current_timestamp);'
+            'create table products(id integer, name text, created datetime default current_timestamp);'
         );
         db.exec(
-            `insert into products(name, created) values ("mouse", "${(1)
+            `insert into products(id, name, created) values (0, "mouse", "${(1)
                 .day()
                 .ago()}");`
         );
         db.exec(
-            `insert into products(name, created) values ("keyboard", "${(3)
+            `insert into products(id, name, created) values (1, "keyboard", "${(3)
                 .days()
                 .ago()}");`
         );
         const result = db.exec(
-            'select name from products order by created desc'
+            'select id, name from products order by created desc'
         );
-        const [{ _, values }] = result;
 
-        expect(values).to.deep.equal([['mouse'], ['keyboard']]);
+        const [{ columns, values }] = result;
+        const rows = values.map((array) =>
+            array.reduce((total, acc, index) => {
+                total[columns[index]] = acc;
+                return total;
+            }, {})
+        );
+
+        expect(rows).to.deep.equal([
+            { id: 0, name: 'mouse' },
+            { id: 1, name: 'keyboard' },
+        ]);
     });
 });
