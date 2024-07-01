@@ -1,7 +1,6 @@
 const { expect } = require('chai');
 
 describe('prime factors', () => {
-
     it('starts simple', () => {
         expect(primeFactorsOf(2)).to.deep.equal([2]);
     });
@@ -29,4 +28,4 @@ const primeFactorsOf = (number) => {
     }
 
     return factors;
-}
+};

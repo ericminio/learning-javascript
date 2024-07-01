@@ -15,7 +15,12 @@
         </style>
     </head>
     <body>
-        <textarea id="data" rows="15" cols="100" style="border: 1px solid black">
+        <textarea
+            id="data"
+            rows="15"
+            cols="100"
+            style="border: 1px solid black"
+        >
 {
     "data": [
         { "day":1, "value":"A", "label":"one"   },
@@ -24,7 +29,13 @@
     ]
 }
         </textarea>
-        <button type="button" id="render" onclick="render(document, 'data', 'grid')">render now</button>
+        <button
+            type="button"
+            id="render"
+            onclick="render(document, 'data', 'grid')"
+        >
+            render now
+        </button>
 
         <table id="grid" width="100%">
             <thead>
@@ -36,8 +47,7 @@
                     <th>Friday</th>
                 </tr>
             </thead>
-            <tbody>
-            </tbody>
+            <tbody></tbody>
         </table>
     </body>
 </html>

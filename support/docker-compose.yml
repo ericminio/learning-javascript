@@ -9,6 +9,7 @@ services:
             - ../package.json:/root/code/package.json
             - ../package-lock.json:/root/code/package-lock.json
             - ../.nvmrc:/root/code/.nvmrc
+            - ../.prettierignore:/root/code/.prettierignore
             - ../school:/root/code/school
             - ../challenges:/root/code/challenges
             - ./run.sh:/root/code/run.sh

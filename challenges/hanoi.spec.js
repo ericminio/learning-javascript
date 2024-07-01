@@ -1,7 +1,6 @@
 const { expect } = require('chai');
 
-describe('the Hanoi puzzle', ()=> {
-
+describe('the Hanoi puzzle', () => {
     let puzzle;
     let firstTower;
     let secondTower;
@@ -12,106 +11,83 @@ describe('the Hanoi puzzle', ()=> {
         secondTower = puzzle.getTowers()[1];
         player = new Player(puzzle);
     });
-    it('is about 3 towers', ()=> {
+    it('is about 3 towers', () => {
         expect(puzzle.getTowers().length).to.equal(3);
-        puzzle.getTowers().forEach(o => {
+        puzzle.getTowers().forEach((o) => {
             expect(o instanceof Tower).to.equal(true);
-        })
+        });
     });
-    it('is about pilling up rings on tower', () => {        
-        puzzle.put(new Ring({ size:5 }), secondTower);
-        puzzle.put(new Ring({ size:3 }), secondTower);
+    it('is about pilling up rings on tower', () => {
+        puzzle.put(new Ring({ size: 5 }), secondTower);
+        puzzle.put(new Ring({ size: 3 }), secondTower);
 
-        expect(skyline(puzzle)).to.deep.equal([
-            [],
-            [5, 3],
-            []
-        ]);
-    });    
+        expect(skyline(puzzle)).to.deep.equal([[], [5, 3], []]);
+    });
     it('only allows pilling up rings in descending order', () => {
-        puzzle.put(new Ring({ size:3 }), secondTower);
+        puzzle.put(new Ring({ size: 3 }), secondTower);
 
-        expect(() => puzzle.put(new Ring({ size:7 }), secondTower))
-            .to.throw(/^cannot put ring 7 on top of ring 3$/);
+        expect(() => puzzle.put(new Ring({ size: 7 }), secondTower)).to.throw(
+            /^cannot put ring 7 on top of ring 3$/
+        );
     });
     it('is about moving the rings from one tower to the next one', () => {
-        puzzle.put(new Ring({ size:3 }), firstTower);
-        player.move({ from:0, to:1 });
-        
-        expect(skyline(puzzle)).to.deep.equal([
-            [],
-            [3],
-            []
-        ]);
+        puzzle.put(new Ring({ size: 3 }), firstTower);
+        player.move({ from: 0, to: 1 });
+
+        expect(skyline(puzzle)).to.deep.equal([[], [3], []]);
     });
     it('cancels an illegal move', () => {
-        puzzle.put(new Ring({ size:3 }), firstTower);
-        puzzle.put(new Ring({ size:1 }), secondTower);            
-        
-        expect(() => player.move({ from:0, to:1 }))
-            .to.throw(/^cannot put ring 3 on top of ring 1$/);
-        expect(skyline(puzzle)).to.deep.equal([
-            [3],
-            [1],
-            []
-        ]);
+        puzzle.put(new Ring({ size: 3 }), firstTower);
+        puzzle.put(new Ring({ size: 1 }), secondTower);
+
+        expect(() => player.move({ from: 0, to: 1 })).to.throw(
+            /^cannot put ring 3 on top of ring 1$/
+        );
+        expect(skyline(puzzle)).to.deep.equal([[3], [1], []]);
     });
     it('is easy to solve with 2 rings', () => {
-        puzzle.put(new Ring({ size:2 }), firstTower);
-        puzzle.put(new Ring({ size:1 }), firstTower);
-        player.play({ from:0, to:2 });
+        puzzle.put(new Ring({ size: 2 }), firstTower);
+        puzzle.put(new Ring({ size: 1 }), firstTower);
+        player.play({ from: 0, to: 2 });
 
-        expect(skyline(puzzle)).to.deep.equal([
-            [],
-            [],
-            [2, 1]
-        ]);
+        expect(skyline(puzzle)).to.deep.equal([[], [], [2, 1]]);
     });
     it('is obvious to solve with 1 ring', () => {
-        puzzle.put(new Ring({ size:1 }), firstTower);
-        let moveCount = player.play({ from:0, to:2 });
+        puzzle.put(new Ring({ size: 1 }), firstTower);
+        let moveCount = player.play({ from: 0, to: 2 });
 
         expect(moveCount).to.equal(1);
-        expect(skyline(puzzle)).to.deep.equal([
-            [],
-            [],
-            [1]
-        ]);
+        expect(skyline(puzzle)).to.deep.equal([[], [], [1]]);
     });
     it('requires to catch the generic to stay simple with more rings', () => {
-        puzzle.put(new Ring({ size:5 }), firstTower);
-        puzzle.put(new Ring({ size:4 }), firstTower);
-        puzzle.put(new Ring({ size:3 }), firstTower);
-        puzzle.put(new Ring({ size:2 }), firstTower);
-        puzzle.put(new Ring({ size:1 }), firstTower);
-        player.play({ from:0, to:2 });
+        puzzle.put(new Ring({ size: 5 }), firstTower);
+        puzzle.put(new Ring({ size: 4 }), firstTower);
+        puzzle.put(new Ring({ size: 3 }), firstTower);
+        puzzle.put(new Ring({ size: 2 }), firstTower);
+        puzzle.put(new Ring({ size: 1 }), firstTower);
+        player.play({ from: 0, to: 2 });
 
-        expect(skyline(puzzle)).to.deep.equal([
-            [],
-            [],
-            [5, 4, 3, 2, 1]
-        ]);
+        expect(skyline(puzzle)).to.deep.equal([[], [], [5, 4, 3, 2, 1]]);
     });
 });
-describe('third tower', () => {    
-
+describe('third tower', () => {
     let player;
     beforeEach(() => {
         player = new Player();
     });
     it('is needed to move 2 rings', () => {
-        expect(player.thirdTower({ from:0, to:2 })).to.equal(1);
+        expect(player.thirdTower({ from: 0, to: 2 })).to.equal(1);
     });
     it('is the tower that is not in the spec', () => {
-        expect(player.thirdTower({ from:2, to:1 })).to.equal(0);
+        expect(player.thirdTower({ from: 2, to: 1 })).to.equal(0);
     });
 });
 const skyline = (puzzle) => {
     return puzzle.getTowers().reduce((all, tower) => {
-        all.push(tower.getRings().map(r => r.getSize()))
+        all.push(tower.getRings().map((r) => r.getSize()));
         return all;
     }, []);
-}
+};
 class Player {
     constructor(puzzle) {
         this.hanoi = puzzle;
@@ -124,23 +100,29 @@ class Player {
     }
     moveRings(spec) {
         if (spec.ringCount == 1) {
-            this.move({ from:spec.from, to:spec.to });
-        }
-        else {
-            this.moveRings({ ringCount:spec.ringCount-1, from:spec.from, to:this.thirdTower(spec) });
-            this.move({ from:spec.from, to:spec.to });
-            this.moveRings({ ringCount:spec.ringCount-1, from:this.thirdTower(spec), to:spec.to });
+            this.move({ from: spec.from, to: spec.to });
+        } else {
+            this.moveRings({
+                ringCount: spec.ringCount - 1,
+                from: spec.from,
+                to: this.thirdTower(spec),
+            });
+            this.move({ from: spec.from, to: spec.to });
+            this.moveRings({
+                ringCount: spec.ringCount - 1,
+                from: this.thirdTower(spec),
+                to: spec.to,
+            });
         }
     }
     move(spec) {
-        this.moveCount ++;
+        this.moveCount++;
         let from = this.hanoi.getTowers()[spec.from];
         let to = this.hanoi.getTowers()[spec.to];
         let ring = from.getRings().pop();
         try {
             this.hanoi.put(ring, to);
-        }
-        catch(error) {
+        } catch (error) {
             this.hanoi.put(ring, from);
             throw error;
         }
@@ -162,13 +144,12 @@ class Hanoi {
         tower.push(ring);
     }
     checkMove(ring, tower) {
-        if (! this.isLegalMove(ring, tower)) {
+        if (!this.isLegalMove(ring, tower)) {
             throw `cannot put ring ${ring.getSize()} on top of ring ${tower.getRingSize()}`;
-        }        
+        }
     }
     isLegalMove(ring, tower) {
-        return tower.isEmpty()
-            || ring.isSmallerThan(tower.getRing());
+        return tower.isEmpty() || ring.isSmallerThan(tower.getRing());
     }
     getRingCount(index) {
         return this.towers[index].getRings().length;
