@@ -1,6 +1,21 @@
 const { expect } = require('chai');
 const initSqlJs = require('sql.js');
+
 require('./dates.js');
+
+const rows = (result) => {
+    if (result.length === 0) {
+        return [];
+    }
+    const [{ columns, values }] = result;
+    const rows = values.map((array) =>
+        array.reduce((total, acc, index) => {
+            total[columns[index]] = acc;
+            return total;
+        }, {})
+    );
+    return rows;
+};
 
 describe('sql.js', () => {
     it('can create a table and insert data', async () => {
@@ -66,26 +81,25 @@ describe('sql.js', () => {
         db.exec(
             `insert into products(id, name, created) values (0, "mouse", "${(1)
                 .day()
-                .ago()}");`
+                .ago()
+                .toISOString()}");`
         );
         db.exec(
             `insert into products(id, name, created) values (1, "keyboard", "${(3)
                 .days()
-                .ago()}");`
-        );
-        const result = db.exec(
-            'select id, name from products order by created desc'
+                .ago()
+                .toISOString()}");`
         );
 
-        const [{ columns, values }] = result;
-        const rows = values.map((array) =>
-            array.reduce((total, acc, index) => {
-                total[columns[index]] = acc;
-                return total;
-            }, {})
-        );
+        expect(
+            rows(db.exec('select id, name from products where id = 66 '))
+        ).to.deep.equal([]);
 
-        expect(rows).to.deep.equal([
+        expect(
+            rows(
+                db.exec('select id, name from products order by created desc ')
+            )
+        ).to.deep.equal([
             { id: 0, name: 'mouse' },
             { id: 1, name: 'keyboard' },
         ]);
