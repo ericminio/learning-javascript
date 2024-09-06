@@ -16,8 +16,8 @@ jobs:
             - name: build
               run: |
                   cd support
-                  docker-compose build ubuntu
+                  docker compose build ubuntu
             - name: tests
               run: |
                   cd support
-                  docker-compose run --rm ubuntu ./run.sh
+                  docker compose run --rm ubuntu ./run.sh
