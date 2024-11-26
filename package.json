@@ -20,6 +20,9 @@
         "sinon-chai": "latest",
         "zombie": "latest"
     },
+    "resolutions": {
+        "canvas": "Automattic/node-canvas#master"
+    },
     "scripts": {
         "test-with-node": "node --test --experimental-test-coverage $(find school -name '*.test.js')",
         "test-with-mocha": "mocha --exit $(find school -name '*.spec.js')",
