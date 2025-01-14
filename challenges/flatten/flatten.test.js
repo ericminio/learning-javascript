@@ -9,7 +9,7 @@ const sut = {
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i];
             const key = line.substring(0, line.indexOf(sut.separator));
-            const count = key.search(/\S/) / 2;            
+            const count = key.search(/\S/) / 2;
             const value = line
                 .substring(line.indexOf(sut.separator) + sut.separator.length)
                 .trim();
