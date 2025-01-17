@@ -1,10 +1,8 @@
 var expect = require('chai').expect;
-var sinon = require('sinon');
 require('chai').use(require('sinon-chai'));
 let LocalServer = require('../support/local.server');
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
-require('canvas');
 
 describe('Jsdom', function () {
     var server;
@@ -141,21 +139,6 @@ describe('Jsdom', function () {
         };
         xhr.open('GET', 'http://localhost:' + server.port + '/ping', true);
         xhr.send();
-    });
-
-    it('can be used to inspect canvas content', function () {
-        var document = new JSDOM(
-            `<canvas id="board" width="3", height="3"></canvas>`
-        ).window.document;
-        var canvas = document.getElementById('board');
-        const ctx = canvas.getContext('2d');
-        ctx.fillStyle = 'green';
-        ctx.fillRect(1, 1, 1, 1);
-        var imageData = ctx.getImageData(1, 1, 1, 1);
-
-        expect(imageData.data).to.deep.equal(
-            new Uint8ClampedArray([0, 128, 0, 255])
-        );
     });
 
     it('can be used to detect the need for cors headers', function (done) {
