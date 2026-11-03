@@ -15,7 +15,7 @@ describe('rendering', () => {
         const matrix = generateQRCodeMatrix('version 1');
         const rendered = render(matrix);
         const bottomRight = rendered[1][1];
-        assert.strictEqual(bottomRight, ' ');
+        assert.strictEqual(bottomRight, '.');
     });
 });
 
@@ -23,6 +23,6 @@ describe('rendering example', () => {
     it('renders the entire matrix', () => {
         const matrix = generateQRCodeMatrix('version 1');
         const rendered = render(matrix);
-        console.log(rendered.map((row) => row.join('')).join('\n'));
+        console.log(rendered.map((row) => row.join(' ')).join('\n'));
     });
 });
