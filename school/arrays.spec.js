@@ -18,7 +18,7 @@ describe('Arrays', function () {
             expect(array[1]).to.equal(two);
         });
 
-        it("'unshift' adds at the beggining", function () {
+        it("'unshift' adds at the beginning", function () {
             array.unshift(one);
             array.unshift(two);
 
@@ -284,6 +284,57 @@ describe('Arrays', function () {
 
                 expect(set).to.deep.equal([1, 2, 3]);
             });
+        });
+    });
+
+    describe('removing duplicates', function () {
+        it('can be done with a Set', function () {
+            let set = new Set([1, 2, 2, 3]);
+            expect(Array.from(set)).to.deep.equal([1, 2, 3]);
+        });
+
+        it('can be done with filter', function () {
+            let array = [1, 2, 2, 3];
+            let result = array.filter(
+                (value, index) => array.indexOf(value) === index
+            );
+            expect(result).to.deep.equal([1, 2, 3]);
+        });
+
+        it('can be done with reduce', function () {
+            let array = [1, 2, 2, 3];
+            let result = array.reduce((acc, value) => {
+                if (!acc.includes(value)) {
+                    acc.push(value);
+                }
+                return acc;
+            }, []);
+            expect(result).to.deep.equal([1, 2, 3]);
+        });
+
+        it('can be done with a Map', function () {
+            let array = [1, 2, 2, 3];
+            let map = new Map();
+            array.forEach((value) => map.set(value, true));
+            expect(Array.from(map.keys())).to.deep.equal([1, 2, 3]);
+        });
+
+        it('can work with objects', function () {
+            let array = [
+                { id: 1, name: 'Alice' },
+                { id: 2, name: 'Bob' },
+                { id: 1, name: 'Alice' },
+            ];
+            let result = array.reduce((acc, current) => {
+                if (!acc.some((item) => item.id === current.id)) {
+                    acc.push(current);
+                }
+                return acc;
+            }, []);
+            expect(result).to.deep.equal([
+                { id: 1, name: 'Alice' },
+                { id: 2, name: 'Bob' },
+            ]);
         });
     });
 });
