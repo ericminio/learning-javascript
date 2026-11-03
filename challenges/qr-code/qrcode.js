@@ -16,6 +16,7 @@ export const sizes = {
 export const generateQRCodeMatrix = (version) => {
     const matrix = init(version);
     addPositionPatterns(version, matrix);
+    addTimingPatterns(version, matrix);
     return matrix;
 };
 
@@ -38,6 +39,21 @@ const addPositionPatterns = (version, matrix) => {
         sizes[version].total - positionPattern.length,
         0,
         positionPattern,
+        matrix
+    );
+};
+
+const addTimingPatterns = (version, matrix) => {
+    const total = sizes[version].total;
+    const positionPatternSize = sizes[version].positionPattern().length;
+    const line = Array.from(
+        { length: total - 2 * positionPatternSize },
+        (_, i) => (i % 2 === 0 ? 0 : 1)
+    );
+    setValuesStartingAtPosition(
+        positionPatternSize - 1,
+        positionPatternSize,
+        [line],
         matrix
     );
 };

@@ -44,6 +44,13 @@ describe('qr code', () => {
                 assert.deepEqual(square, sizes['version 1'].positionPattern());
             });
         });
+        describe('timing patterns', () => {
+            it('includes one horizontal timing pattern', () => {
+                const matrix = generateQRCodeMatrix('version 1');
+                const line = extract(6, 7, 7, 1, matrix)[0];
+                assert.deepEqual(line, [0, 1, 0, 1, 0, 1, 0]);
+            });
+        });
     });
 });
 
