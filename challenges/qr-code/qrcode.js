@@ -56,6 +56,13 @@ const addTimingPatterns = (version, matrix) => {
         [line],
         matrix
     );
+    const column = line.map((v) => [v]);
+    setValuesStartingAtPosition(
+        positionPatternSize,
+        positionPatternSize - 1,
+        column,
+        matrix
+    );
 };
 
 const setValuesStartingAtPosition = (row, column, values, matrix) => {

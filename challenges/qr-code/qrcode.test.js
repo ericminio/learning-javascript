@@ -50,6 +50,11 @@ describe('qr code', () => {
                 const line = extract(6, 7, 7, 1, matrix)[0];
                 assert.deepEqual(line, [0, 1, 0, 1, 0, 1, 0]);
             });
+            it('includes one vertical timing pattern', () => {
+                const matrix = generateQRCodeMatrix('version 1');
+                const line = extract(7, 6, 1, 7, matrix).map((row) => row[0]);
+                assert.deepEqual(line, [0, 1, 0, 1, 0, 1, 0]);
+            });
         });
     });
 });
