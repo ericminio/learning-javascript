@@ -47,14 +47,14 @@ describe('qr code', () => {
     });
 });
 
-const extract = (x, y, width, height, matrix) => {
+const extract = (column, row, width, height, matrix) => {
     const result = [];
-    for (let i = y; i < y + height; i++) {
-        const row = [];
-        for (let j = x; j < x + width; j++) {
-            row.push(matrix[i][j]);
+    for (let r = row; r < row + height; r++) {
+        const currentRow = [];
+        for (let c = column; c < column + width; c++) {
+            currentRow.push(matrix[r][c]);
         }
-        result.push(row);
+        result.push(currentRow);
     }
     return result;
 };

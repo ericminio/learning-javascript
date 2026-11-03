@@ -42,10 +42,10 @@ const addPositionPatterns = (version, matrix) => {
     );
 };
 
-const setValuesStartingAtPosition = (x, y, values, matrix) => {
-    for (let i = 0; i < values.length; i++) {
-        for (let j = 0; j < values[i].length; j++) {
-            matrix[y + i][x + j] = values[i][j];
+const setValuesStartingAtPosition = (column, row, values, matrix) => {
+    for (let r = 0; r < values.length; r++) {
+        for (let c = 0; c < values[r].length; c++) {
+            matrix[row + r][column + c] = values[r][c];
         }
     }
 };
