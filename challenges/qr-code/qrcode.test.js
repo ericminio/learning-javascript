@@ -1,7 +1,7 @@
 const { describe, it } = require('node:test');
 const { strict: assert } = require('node:assert');
 
-const { generateQRCodeMatrix, positionPatternForVersion } = require('./qrcode');
+const { generateQRCodeMatrix, sizes } = require('./qrcode');
 
 describe('qr code', () => {
     it('is ready', () => {
@@ -16,7 +16,7 @@ describe('qr code', () => {
             assert.strictEqual(matrix[0].length, 21);
         });
         it('uses a 7x7 position pattern', () => {
-            const pattern = positionPatternForVersion('version 1');
+            const pattern = sizes['version 1'].positionPattern();
             assert.deepEqual(pattern, [
                 [1, 1, 1, 1, 1, 1, 1],
                 [1, 0, 0, 0, 0, 0, 1],
@@ -28,29 +28,20 @@ describe('qr code', () => {
             ]);
         });
         describe('fixed patterns', () => {
-            it('contains a 1:1:3:1:1 position pattern top-left', () => {
+            it('contains a position pattern top-left', () => {
                 const matrix = generateQRCodeMatrix('version 1');
                 const square = extract(0, 0, 7, 7, matrix);
-                assert.deepEqual(
-                    square,
-                    positionPatternForVersion('version 1')
-                );
+                assert.deepEqual(square, sizes['version 1'].positionPattern());
             });
-            it('contains a 1:1:3:1:1 position pattern top-right', () => {
+            it('contains a position pattern top-right', () => {
                 const matrix = generateQRCodeMatrix('version 1');
                 const square = extract(14, 0, 7, 7, matrix);
-                assert.deepEqual(
-                    square,
-                    positionPatternForVersion('version 1')
-                );
+                assert.deepEqual(square, sizes['version 1'].positionPattern());
             });
-            it('contains a 1:1:3:1:1 position pattern bottom-left', () => {
+            it('contains a position pattern bottom-left', () => {
                 const matrix = generateQRCodeMatrix('version 1');
                 const square = extract(0, 14, 7, 7, matrix);
-                assert.deepEqual(
-                    square,
-                    positionPatternForVersion('version 1')
-                );
+                assert.deepEqual(square, sizes['version 1'].positionPattern());
             });
         });
     });

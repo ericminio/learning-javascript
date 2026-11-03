@@ -1,21 +1,36 @@
-export const positionPatternForVersion = (version) => {
-    return [
-        [1, 1, 1, 1, 1, 1, 1],
-        [1, 0, 0, 0, 0, 0, 1],
-        [1, 0, 1, 1, 1, 0, 1],
-        [1, 0, 1, 1, 1, 0, 1],
-        [1, 0, 1, 1, 1, 0, 1],
-        [1, 0, 0, 0, 0, 0, 1],
-        [1, 1, 1, 1, 1, 1, 1],
-    ];
+export const sizes = {
+    'version 1': {
+        total: 21,
+        positionPattern: () => [
+            [1, 1, 1, 1, 1, 1, 1],
+            [1, 0, 0, 0, 0, 0, 1],
+            [1, 0, 1, 1, 1, 0, 1],
+            [1, 0, 1, 1, 1, 0, 1],
+            [1, 0, 1, 1, 1, 0, 1],
+            [1, 0, 0, 0, 0, 0, 1],
+            [1, 1, 1, 1, 1, 1, 1],
+        ],
+    },
 };
 
 export const generateQRCodeMatrix = (version) => {
-    const matrix = Array.from({ length: 21 }, () => Array(21).fill(0));
-    const positionPattern = positionPatternForVersion(version);
+    const matrix = Array.from({ length: sizes[version].total }, () =>
+        Array(sizes[version].total).fill(0)
+    );
+    const positionPattern = sizes[version].positionPattern();
     setValuesStartingAtPosition(0, 0, positionPattern, matrix);
-    setValuesStartingAtPosition(14, 0, positionPattern, matrix);
-    setValuesStartingAtPosition(0, 14, positionPattern, matrix);
+    setValuesStartingAtPosition(
+        sizes[version].total - positionPattern.length,
+        0,
+        positionPattern,
+        matrix
+    );
+    setValuesStartingAtPosition(
+        0,
+        sizes[version].total - positionPattern.length,
+        positionPattern,
+        matrix
+    );
     return matrix;
 };
 
