@@ -35,19 +35,19 @@ describe('qr code', () => {
             });
             it('contains a position pattern top-right', () => {
                 const matrix = generateQRCodeMatrix('version 1');
-                const square = extract(14, 0, 7, 7, matrix);
+                const square = extract(0, 14, 7, 7, matrix);
                 assert.deepEqual(square, sizes['version 1'].positionPattern());
             });
             it('contains a position pattern bottom-left', () => {
                 const matrix = generateQRCodeMatrix('version 1');
-                const square = extract(0, 14, 7, 7, matrix);
+                const square = extract(14, 0, 7, 7, matrix);
                 assert.deepEqual(square, sizes['version 1'].positionPattern());
             });
         });
     });
 });
 
-const extract = (column, row, width, height, matrix) => {
+const extract = (row, column, width, height, matrix) => {
     const result = [];
     for (let r = row; r < row + height; r++) {
         const currentRow = [];
