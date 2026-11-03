@@ -2,6 +2,7 @@ const { describe, it } = require('node:test');
 const { strict: assert } = require('node:assert');
 
 const { generateQRCodeMatrix, sizes } = require('./qrcode');
+const { render } = require('./render');
 
 describe('qr code', () => {
     it('is ready', () => {
