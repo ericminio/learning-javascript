@@ -14,19 +14,15 @@ export const sizes = {
 };
 
 export const generateQRCodeMatrix = (version) => {
-    const matrix = Array.from({ length: sizes[version].total }, () =>
-        Array(sizes[version].total).fill(0)
-    );
+    const matrix = init(version);
     addPositionPatterns(version, matrix);
     return matrix;
 };
 
-const setValuesStartingAtPosition = (x, y, values, matrix) => {
-    for (let i = 0; i < values.length; i++) {
-        for (let j = 0; j < values[i].length; j++) {
-            matrix[y + i][x + j] = values[i][j];
-        }
-    }
+const init = (version) => {
+    return Array.from({ length: sizes[version].total }, () =>
+        Array(sizes[version].total).fill(0)
+    );
 };
 
 const addPositionPatterns = (version, matrix) => {
@@ -44,4 +40,12 @@ const addPositionPatterns = (version, matrix) => {
         positionPattern,
         matrix
     );
+};
+
+const setValuesStartingAtPosition = (x, y, values, matrix) => {
+    for (let i = 0; i < values.length; i++) {
+        for (let j = 0; j < values[i].length; j++) {
+            matrix[y + i][x + j] = values[i][j];
+        }
+    }
 };
