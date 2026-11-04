@@ -17,6 +17,32 @@ export const generateQRCodeMatrix = (version) => {
     const matrix = init(version);
     addPositionPatterns(version, matrix);
     addTimingPatterns(version, matrix);
+    const byteMode = [
+        { value: 0, row: 20, column: 20 },
+        { value: 1, row: 20, column: 19 },
+        { value: 0, row: 19, column: 20 },
+        { value: 0, row: 19, column: 19 },
+    ];
+    const masked = byteMode.map(({ value, row, column }) => ({
+        value: (row + column) % 2 === 0 ? 1 - value : value,
+        row,
+        column,
+    }));
+    const values = [
+        [
+            masked.find(({ row, column }) => row === 19 && column === 19)
+                ?.value,
+            masked.find(({ row, column }) => row === 19 && column === 20)
+                ?.value,
+        ],
+        [
+            masked.find(({ row, column }) => row === 20 && column === 19)
+                ?.value,
+            masked.find(({ row, column }) => row === 20 && column === 20)
+                ?.value,
+        ],
+    ];
+    setValuesStartingAtPosition(19, 19, values, matrix);
     return matrix;
 };
 

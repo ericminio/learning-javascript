@@ -57,6 +57,16 @@ describe('qr code', () => {
                 assert.deepEqual(line, [0, 1, 0, 1, 0, 1, 0]);
             });
         });
+        describe('encoded data', () => {
+            it('starts with byte encoding mode', () => {
+                const matrix = generateQRCodeMatrix('version 1', 'Hi');
+                const encodingMode = extract(19, 19, 2, 2, matrix);
+                assert.deepEqual(encodingMode, [
+                    [1, 0],
+                    [1, 1],
+                ]);
+            });
+        });
     });
 });
 
