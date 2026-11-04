@@ -67,6 +67,7 @@ const addPositionPatterns = (version, matrix) => {
         positionPattern,
         matrix
     );
+    matrix[sizes[version].total - 8][8] = 1;
 };
 
 const addTimingPatterns = (version, matrix) => {

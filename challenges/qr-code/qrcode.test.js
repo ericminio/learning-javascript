@@ -44,6 +44,11 @@ describe('qr code', () => {
                 const square = extract(14, 0, 7, 7, matrix);
                 assert.deepEqual(square, sizes['version 1'].positionPattern());
             });
+            it('includes the dark module', () => {
+                const matrix = generateQRCodeMatrix('version 1');
+                const darkModule = matrix[13][8];
+                assert.strictEqual(darkModule, 1);
+            });
         });
         describe('timing patterns', () => {
             it('includes one horizontal timing pattern', () => {
