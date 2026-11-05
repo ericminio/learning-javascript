@@ -1,7 +1,7 @@
 const { describe, it } = require('node:test');
 const { strict: assert } = require('node:assert');
 
-const { generateQRCodeMatrix, positionPattern } = require('./qrcode');
+const { generateQRCodeMatrix, mask, positionPattern } = require('./qrcode');
 
 describe('qr code', () => {
     it('is ready', () => {
@@ -61,14 +61,45 @@ describe('qr code', () => {
                 assert.deepEqual(line, [0, 1, 0, 1, 0, 1, 0]);
             });
         });
-        describe('encoded data', () => {
-            it('starts with byte encoding mode', () => {
-                const matrix = generateQRCodeMatrix({ version: 1, text: 'Hi' });
-                const encodingMode = extract(19, 19, 2, 2, matrix);
+        describe('encoded data with mask 0', () => {
+            it('starts with byte encoding mode (4)', () => {
+                const matrix = generateQRCodeMatrix({ version: 1 });
+                const encodingMode = extractWithRowColumnInfo(
+                    19,
+                    19,
+                    2,
+                    2,
+                    matrix
+                );
                 assert.deepEqual(encodingMode, [
-                    [1, 0],
-                    [1, 1],
+                    [
+                        { row: 19, column: 19, value: 1 },
+                        { row: 19, column: 20, value: 0 },
+                    ],
+                    [
+                        { row: 20, column: 19, value: 1 },
+                        { row: 20, column: 20, value: 1 },
+                    ],
                 ]);
+                const maskedValue = encodingMode.flat().reverse();
+                assert.deepEqual(maskedValue, [
+                    { row: 20, column: 20, value: 1 },
+                    { row: 20, column: 19, value: 1 },
+                    { row: 19, column: 20, value: 0 },
+                    { row: 19, column: 19, value: 1 },
+                ]);
+                const unmaskedValue = mask(maskedValue);
+                assert.deepEqual(unmaskedValue, [
+                    { row: 20, column: 20, value: 0 },
+                    { row: 20, column: 19, value: 1 },
+                    { row: 19, column: 20, value: 0 },
+                    { row: 19, column: 19, value: 0 },
+                ]);
+                const binaryValue = unmaskedValue
+                    .map(({ value }) => value)
+                    .join('');
+                const integerValue = parseInt(binaryValue, 2);
+                assert.equal(integerValue, 4);
             });
         });
     });
@@ -80,6 +111,18 @@ const extract = (row, column, width, height, matrix) => {
         const currentRow = [];
         for (let c = column; c < column + width; c++) {
             currentRow.push(matrix[r][c]);
+        }
+        result.push(currentRow);
+    }
+    return result;
+};
+
+const extractWithRowColumnInfo = (row, column, width, height, matrix) => {
+    const result = [];
+    for (let r = row; r < row + height; r++) {
+        const currentRow = [];
+        for (let c = column; c < column + width; c++) {
+            currentRow.push({ row: r, column: c, value: matrix[r][c] });
         }
         result.push(currentRow);
     }

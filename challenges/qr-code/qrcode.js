@@ -8,6 +8,12 @@ export const positionPattern = [
     [1, 1, 1, 1, 1, 1, 1],
 ];
 const size = (v) => 17 + 4 * v;
+export const mask = (cells) =>
+    cells.map(({ value, row, column }) => ({
+        value: (row + column) % 2 === 0 ? 1 - value : value,
+        row,
+        column,
+    }));
 
 export const generateQRCodeMatrix = ({ version }) => {
     const matrix = init({ version });
@@ -19,11 +25,7 @@ export const generateQRCodeMatrix = ({ version }) => {
         { value: 0, row: 19, column: 20 },
         { value: 0, row: 19, column: 19 },
     ];
-    const masked = byteMode.map(({ value, row, column }) => ({
-        value: (row + column) % 2 === 0 ? 1 - value : value,
-        row,
-        column,
-    }));
+    const masked = mask(byteMode);
     const values = [
         [
             masked.find(({ row, column }) => row === 19 && column === 19)
