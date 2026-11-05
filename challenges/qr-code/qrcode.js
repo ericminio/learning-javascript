@@ -7,17 +7,12 @@ export const positionPattern = [
     [1, 0, 0, 0, 0, 0, 1],
     [1, 1, 1, 1, 1, 1, 1],
 ];
+const size = (v) => 17 + 4 * v;
 
-export const sizes = {
-    'version 1': {
-        total: 21,
-    },
-};
-
-export const generateQRCodeMatrix = (version) => {
-    const matrix = init(version);
-    addPositionPatterns(version, matrix);
-    addTimingPatterns(version, matrix);
+export const generateQRCodeMatrix = ({ version }) => {
+    const matrix = init({ version });
+    addPositionPatterns({ version, matrix });
+    addTimingPatterns({ version, matrix });
     const byteMode = [
         { value: 0, row: 20, column: 20 },
         { value: 1, row: 20, column: 19 },
@@ -47,31 +42,31 @@ export const generateQRCodeMatrix = (version) => {
     return matrix;
 };
 
-const init = (version) => {
-    return Array.from({ length: sizes[version].total }, () =>
-        Array(sizes[version].total).fill(0)
+const init = ({ version }) => {
+    return Array.from({ length: size(version) }, () =>
+        Array(size(version)).fill(0)
     );
 };
 
-const addPositionPatterns = (version, matrix) => {
+const addPositionPatterns = ({ version, matrix }) => {
     setValuesStartingAtPosition(0, 0, positionPattern, matrix);
     setValuesStartingAtPosition(
         0,
-        sizes[version].total - positionPattern.length,
+        size(version) - positionPattern.length,
         positionPattern,
         matrix
     );
     setValuesStartingAtPosition(
-        sizes[version].total - positionPattern.length,
+        size(version) - positionPattern.length,
         0,
         positionPattern,
         matrix
     );
-    setDarkModule(version, matrix);
+    setDarkModule({ version, matrix });
 };
 
-const addTimingPatterns = (version, matrix) => {
-    const total = sizes[version].total;
+const addTimingPatterns = ({ version, matrix }) => {
+    const total = size(version);
     const positionPatternSize = positionPattern.length;
     const line = Array.from(
         { length: total - 2 * positionPatternSize },
@@ -99,6 +94,6 @@ const setValuesStartingAtPosition = (row, column, values, matrix) => {
         }
     }
 };
-const setDarkModule = (version, matrix) => {
-    matrix[sizes[version].total - 8][8] = 1;
+const setDarkModule = ({ version, matrix }) => {
+    matrix[size(version) - 8][8] = 1;
 };

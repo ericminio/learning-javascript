@@ -1,8 +1,7 @@
 const { describe, it } = require('node:test');
 const { strict: assert } = require('node:assert');
 
-const { generateQRCodeMatrix, sizes, positionPattern } = require('./qrcode');
-const { render } = require('./render');
+const { generateQRCodeMatrix, positionPattern } = require('./qrcode');
 
 describe('qr code', () => {
     it('is ready', () => {
@@ -12,7 +11,7 @@ describe('qr code', () => {
 
     describe('version 1', () => {
         it('uses a 21x21 matrix', () => {
-            const matrix = generateQRCodeMatrix('version 1');
+            const matrix = generateQRCodeMatrix({ version: 1 });
             assert.strictEqual(matrix.length, 21);
             assert.strictEqual(matrix[0].length, 21);
         });
@@ -30,41 +29,41 @@ describe('qr code', () => {
         });
         describe('fixed patterns', () => {
             it('contains a position pattern top-left', () => {
-                const matrix = generateQRCodeMatrix('version 1');
+                const matrix = generateQRCodeMatrix({ version: 1 });
                 const square = extract(0, 0, 7, 7, matrix);
                 assert.deepEqual(square, positionPattern);
             });
             it('contains a position pattern top-right', () => {
-                const matrix = generateQRCodeMatrix('version 1');
+                const matrix = generateQRCodeMatrix({ version: 1 });
                 const square = extract(0, 14, 7, 7, matrix);
                 assert.deepEqual(square, positionPattern);
             });
             it('contains a position pattern bottom-left', () => {
-                const matrix = generateQRCodeMatrix('version 1');
+                const matrix = generateQRCodeMatrix({ version: 1 });
                 const square = extract(14, 0, 7, 7, matrix);
                 assert.deepEqual(square, positionPattern);
             });
             it('includes the dark module', () => {
-                const matrix = generateQRCodeMatrix('version 1');
+                const matrix = generateQRCodeMatrix({ version: 1 });
                 const darkModule = matrix[13][8];
                 assert.strictEqual(darkModule, 1);
             });
         });
         describe('timing patterns', () => {
             it('includes one horizontal timing pattern', () => {
-                const matrix = generateQRCodeMatrix('version 1');
+                const matrix = generateQRCodeMatrix({ version: 1 });
                 const line = extract(6, 7, 7, 1, matrix)[0];
                 assert.deepEqual(line, [0, 1, 0, 1, 0, 1, 0]);
             });
             it('includes one vertical timing pattern', () => {
-                const matrix = generateQRCodeMatrix('version 1');
+                const matrix = generateQRCodeMatrix({ version: 1 });
                 const line = extract(7, 6, 1, 7, matrix).map((row) => row[0]);
                 assert.deepEqual(line, [0, 1, 0, 1, 0, 1, 0]);
             });
         });
         describe('encoded data', () => {
             it('starts with byte encoding mode', () => {
-                const matrix = generateQRCodeMatrix('version 1', 'Hi');
+                const matrix = generateQRCodeMatrix({ version: 1, text: 'Hi' });
                 const encodingMode = extract(19, 19, 2, 2, matrix);
                 assert.deepEqual(encodingMode, [
                     [1, 0],
