@@ -45,8 +45,8 @@ describe('qr code', () => {
             });
             it('includes the dark module', () => {
                 const matrix = generateQRCodeMatrix({ version: 1 });
-                const darkModule = matrix[13][8];
-                assert.strictEqual(darkModule, 1);
+                const darkModule = matrix[13][8].value;
+                assert.equal(darkModule, 1);
             });
         });
         describe('timing patterns', () => {
@@ -116,7 +116,7 @@ const extractWithRowColumnInfo = (row, column, width, height, matrix) => {
     for (let r = row; r < row + height; r++) {
         const currentRow = [];
         for (let c = column; c < column + width; c++) {
-            currentRow.push({ row: r, column: c, value: matrix[r][c] });
+            currentRow.push(matrix[r][c]);
         }
         result.push(currentRow);
     }

@@ -8,9 +8,11 @@ export const positionPattern = [
     [1, 1, 1, 1, 1, 1, 1],
 ];
 const size = (v) => 17 + 4 * v;
+const masks = [({ row, column }) => (row + column) % 2 === 0];
+
 export const mask = (cells) =>
     cells.map(({ value, row, column }) => ({
-        value: (row + column) % 2 === 0 ? 1 - value : value,
+        value: masks[0]({ row, column }) ? 1 - value : value,
         row,
         column,
     }));
@@ -45,9 +47,15 @@ export const generateQRCodeMatrix = ({ version }) => {
 };
 
 const init = ({ version }) => {
-    return Array.from({ length: size(version) }, () =>
+    const matrix = Array.from({ length: size(version) }, () =>
         Array(size(version)).fill(0)
     );
+    for (let r = 0; r < size(version); r++) {
+        for (let c = 0; c < size(version); c++) {
+            matrix[r][c] = { row: r, column: c, value: 0 };
+        }
+    }
+    return matrix;
 };
 
 const addPositionPatterns = ({ version, matrix }) => {
@@ -92,10 +100,18 @@ const addTimingPatterns = ({ version, matrix }) => {
 const setValuesStartingAtPosition = (row, column, values, matrix) => {
     for (let r = 0; r < values.length; r++) {
         for (let c = 0; c < values[r].length; c++) {
-            matrix[row + r][column + c] = values[r][c];
+            matrix[row + r][column + c] = {
+                row: row + r,
+                column: column + c,
+                value: values[r][c],
+            };
         }
     }
 };
 const setDarkModule = ({ version, matrix }) => {
-    matrix[size(version) - 8][8] = 1;
+    matrix[size(version) - 8][8] = {
+        row: size(version) - 8,
+        column: 8,
+        value: 1,
+    };
 };
