@@ -64,14 +64,14 @@ describe('qr code', () => {
         describe('encoded data with mask 0', () => {
             it('starts with byte encoding mode (4)', () => {
                 const matrix = generateQRCodeMatrix({ version: 1 });
-                const encodingMode = extractWithRowColumnInfo(
+                const maskedEncodingMode = extractWithRowColumnInfo(
                     19,
                     19,
                     2,
                     2,
                     matrix
                 );
-                assert.deepEqual(encodingMode, [
+                assert.deepEqual(maskedEncodingMode, [
                     [
                         { row: 19, column: 19, value: 1 },
                         { row: 19, column: 20, value: 0 },
@@ -81,7 +81,7 @@ describe('qr code', () => {
                         { row: 20, column: 20, value: 1 },
                     ],
                 ]);
-                const maskedValue = encodingMode.flat().reverse();
+                const maskedValue = maskedEncodingMode.flat().reverse();
                 assert.deepEqual(maskedValue, [
                     { row: 20, column: 20, value: 1 },
                     { row: 20, column: 19, value: 1 },
