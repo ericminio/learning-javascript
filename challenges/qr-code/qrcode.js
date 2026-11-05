@@ -1,15 +1,16 @@
+export const positionPattern = [
+    [1, 1, 1, 1, 1, 1, 1],
+    [1, 0, 0, 0, 0, 0, 1],
+    [1, 0, 1, 1, 1, 0, 1],
+    [1, 0, 1, 1, 1, 0, 1],
+    [1, 0, 1, 1, 1, 0, 1],
+    [1, 0, 0, 0, 0, 0, 1],
+    [1, 1, 1, 1, 1, 1, 1],
+];
+
 export const sizes = {
     'version 1': {
         total: 21,
-        positionPattern: () => [
-            [1, 1, 1, 1, 1, 1, 1],
-            [1, 0, 0, 0, 0, 0, 1],
-            [1, 0, 1, 1, 1, 0, 1],
-            [1, 0, 1, 1, 1, 0, 1],
-            [1, 0, 1, 1, 1, 0, 1],
-            [1, 0, 0, 0, 0, 0, 1],
-            [1, 1, 1, 1, 1, 1, 1],
-        ],
     },
 };
 
@@ -53,7 +54,6 @@ const init = (version) => {
 };
 
 const addPositionPatterns = (version, matrix) => {
-    const positionPattern = sizes[version].positionPattern();
     setValuesStartingAtPosition(0, 0, positionPattern, matrix);
     setValuesStartingAtPosition(
         0,
@@ -72,7 +72,7 @@ const addPositionPatterns = (version, matrix) => {
 
 const addTimingPatterns = (version, matrix) => {
     const total = sizes[version].total;
-    const positionPatternSize = sizes[version].positionPattern().length;
+    const positionPatternSize = positionPattern.length;
     const line = Array.from(
         { length: total - 2 * positionPatternSize },
         (_, i) => (i % 2 === 0 ? 0 : 1)

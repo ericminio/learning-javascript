@@ -1,7 +1,7 @@
 const { describe, it } = require('node:test');
 const { strict: assert } = require('node:assert');
 
-const { generateQRCodeMatrix, sizes } = require('./qrcode');
+const { generateQRCodeMatrix, sizes, positionPattern } = require('./qrcode');
 const { render } = require('./render');
 
 describe('qr code', () => {
@@ -17,7 +17,7 @@ describe('qr code', () => {
             assert.strictEqual(matrix[0].length, 21);
         });
         it('uses a 7x7 position pattern', () => {
-            const pattern = sizes['version 1'].positionPattern();
+            const pattern = positionPattern;
             assert.deepEqual(pattern, [
                 [1, 1, 1, 1, 1, 1, 1],
                 [1, 0, 0, 0, 0, 0, 1],
@@ -32,17 +32,17 @@ describe('qr code', () => {
             it('contains a position pattern top-left', () => {
                 const matrix = generateQRCodeMatrix('version 1');
                 const square = extract(0, 0, 7, 7, matrix);
-                assert.deepEqual(square, sizes['version 1'].positionPattern());
+                assert.deepEqual(square, positionPattern);
             });
             it('contains a position pattern top-right', () => {
                 const matrix = generateQRCodeMatrix('version 1');
                 const square = extract(0, 14, 7, 7, matrix);
-                assert.deepEqual(square, sizes['version 1'].positionPattern());
+                assert.deepEqual(square, positionPattern);
             });
             it('contains a position pattern bottom-left', () => {
                 const matrix = generateQRCodeMatrix('version 1');
                 const square = extract(14, 0, 7, 7, matrix);
-                assert.deepEqual(square, sizes['version 1'].positionPattern());
+                assert.deepEqual(square, positionPattern);
             });
             it('includes the dark module', () => {
                 const matrix = generateQRCodeMatrix('version 1');
