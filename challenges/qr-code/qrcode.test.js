@@ -73,6 +73,20 @@ describe('qr code', () => {
                 );
                 assert.deepEqual(parseData(maskedEncodingMode), [0, 1, 0, 0]);
             });
+            it('continues with the length of the data', () => {
+                const matrix = generateQRCodeMatrix({ version: 1, text: 'Hi' });
+                const maskedLength = extractWithRowColumnInfo(
+                    15,
+                    19,
+                    2,
+                    4,
+                    matrix
+                );
+                assert.deepEqual(
+                    parseData(maskedLength),
+                    [0, 0, 0, 0, 0, 0, 1, 0]
+                );
+            });
         });
     });
 });

@@ -18,7 +18,7 @@ export const mask = (cells) =>
     }));
 
 export const generateQRCodeMatrix = ({ version }) => {
-    const data = [0, 1, 0, 0];
+    const data = [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0];
 
     const matrix = init({ version });
     addPositionPatterns({ version, matrix });
@@ -42,6 +42,14 @@ export const computeDataPath = (matrix) => {
         { row: 20, column: 19 },
         { row: 19, column: 20 },
         { row: 19, column: 19 },
+        { row: 18, column: 20 },
+        { row: 18, column: 19 },
+        { row: 17, column: 20 },
+        { row: 17, column: 19 },
+        { row: 16, column: 20 },
+        { row: 16, column: 19 },
+        { row: 15, column: 20 },
+        { row: 15, column: 19 },
     ];
 };
 
