@@ -62,7 +62,7 @@ describe('qr code', () => {
             });
         });
         describe('encoded data with mask 0', () => {
-            it('starts with byte encoding mode (4)', () => {
+            it('starts with byte encoding mode (0100)', () => {
                 const matrix = generateQRCodeMatrix({ version: 1 });
                 const maskedEncodingMode = extractWithRowColumnInfo(
                     19,
@@ -71,35 +71,7 @@ describe('qr code', () => {
                     2,
                     matrix
                 );
-                assert.deepEqual(maskedEncodingMode, [
-                    [
-                        { row: 19, column: 19, value: 1 },
-                        { row: 19, column: 20, value: 0 },
-                    ],
-                    [
-                        { row: 20, column: 19, value: 1 },
-                        { row: 20, column: 20, value: 1 },
-                    ],
-                ]);
-                const maskedValue = maskedEncodingMode.flat().reverse();
-                assert.deepEqual(maskedValue, [
-                    { row: 20, column: 20, value: 1 },
-                    { row: 20, column: 19, value: 1 },
-                    { row: 19, column: 20, value: 0 },
-                    { row: 19, column: 19, value: 1 },
-                ]);
-                const unmaskedValue = mask(maskedValue);
-                assert.deepEqual(unmaskedValue, [
-                    { row: 20, column: 20, value: 0 },
-                    { row: 20, column: 19, value: 1 },
-                    { row: 19, column: 20, value: 0 },
-                    { row: 19, column: 19, value: 0 },
-                ]);
-                const binaryValue = unmaskedValue
-                    .map(({ value }) => value)
-                    .join('');
-                const integerValue = parseInt(binaryValue, 2);
-                assert.equal(integerValue, 4);
+                assert.deepEqual(parseData(maskedEncodingMode), [0, 1, 0, 0]);
             });
         });
     });
@@ -121,4 +93,10 @@ const extractWithRowColumnInfo = (row, column, width, height, matrix) => {
         result.push(currentRow);
     }
     return result;
+};
+
+const parseData = (masked) => {
+    const flattened = masked.flat().reverse();
+    const unmasked = mask(flattened);
+    return unmasked.map(({ value }) => value);
 };
