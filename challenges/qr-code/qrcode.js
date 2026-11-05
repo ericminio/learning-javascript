@@ -18,32 +18,31 @@ export const mask = (cells) =>
     }));
 
 export const generateQRCodeMatrix = ({ version }) => {
+    const data = [0, 1, 0, 0];
+
     const matrix = init({ version });
     addPositionPatterns({ version, matrix });
     addTimingPatterns({ version, matrix });
-    const byteMode = [
-        { value: 0, row: 20, column: 20 },
-        { value: 1, row: 20, column: 19 },
-        { value: 0, row: 19, column: 20 },
-        { value: 0, row: 19, column: 19 },
-    ];
-    const masked = mask(byteMode);
-    const values = [
-        [
-            masked.find(({ row, column }) => row === 19 && column === 19)
-                ?.value,
-            masked.find(({ row, column }) => row === 19 && column === 20)
-                ?.value,
-        ],
-        [
-            masked.find(({ row, column }) => row === 20 && column === 19)
-                ?.value,
-            masked.find(({ row, column }) => row === 20 && column === 20)
-                ?.value,
-        ],
-    ];
-    setValuesStartingAtPosition(19, 19, values, matrix);
+    const zygZag = computeDataPath(matrix);
+    const positionedData = [];
+    for (let i = 0; i < data.length; i++) {
+        const { row, column } = zygZag[i];
+        positionedData.push({ row, column, value: data[i] });
+    }
+    const maskedData = mask(positionedData);
+    for (const { row, column, value } of maskedData) {
+        matrix[row][column].value = value;
+    }
     return matrix;
+};
+
+export const computeDataPath = (matrix) => {
+    return [
+        { row: 20, column: 20 },
+        { row: 20, column: 19 },
+        { row: 19, column: 20 },
+        { row: 19, column: 19 },
+    ];
 };
 
 const init = ({ version }) => {
