@@ -10,13 +10,6 @@ export const positionPattern = [
 const size = (v) => 17 + 4 * v;
 const masks = [({ row, column }) => (row + column) % 2 === 0];
 
-export const mask = (cells) =>
-    cells.map(({ value, row, column }) => ({
-        value: masks[0]({ row, column }) ? 1 - value : value,
-        row,
-        column,
-    }));
-
 export const generateQRCodeMatrix = ({ version, text }) => {
     const data = modeAndLengthOfText(text);
 
@@ -36,21 +29,6 @@ export const generateQRCodeMatrix = ({ version, text }) => {
     return matrix;
 };
 
-const modeAndLengthOfText = (text) => {
-    const mode = [0, 1, 0, 0];
-    const length = text ? text.length : 0;
-    return mode.concat([
-        (length >> 7) & 1,
-        (length >> 6) & 1,
-        (length >> 5) & 1,
-        (length >> 4) & 1,
-        (length >> 3) & 1,
-        (length >> 2) & 1,
-        (length >> 1) & 1,
-        length & 1,
-    ]);
-};
-
 export const computeDataPath = (matrix) => {
     return [
         { row: 20, column: 20 },
@@ -66,6 +44,28 @@ export const computeDataPath = (matrix) => {
         { row: 15, column: 20 },
         { row: 15, column: 19 },
     ];
+};
+
+export const mask = (cells) =>
+    cells.map(({ value, row, column }) => ({
+        value: masks[0]({ row, column }) ? 1 - value : value,
+        row,
+        column,
+    }));
+
+const modeAndLengthOfText = (text) => {
+    const mode = [0, 1, 0, 0];
+    const length = text ? text.length : 0;
+    return mode.concat([
+        (length >> 7) & 1,
+        (length >> 6) & 1,
+        (length >> 5) & 1,
+        (length >> 4) & 1,
+        (length >> 3) & 1,
+        (length >> 2) & 1,
+        (length >> 1) & 1,
+        length & 1,
+    ]);
 };
 
 const init = ({ version }) => {
