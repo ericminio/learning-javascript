@@ -67,7 +67,7 @@ const addPositionPatterns = (version, matrix) => {
         positionPattern,
         matrix
     );
-    matrix[sizes[version].total - 8][8] = 1;
+    setDarkModule(version, matrix);
 };
 
 const addTimingPatterns = (version, matrix) => {
@@ -98,4 +98,7 @@ const setValuesStartingAtPosition = (row, column, values, matrix) => {
             matrix[row + r][column + c] = values[r][c];
         }
     }
+};
+const setDarkModule = (version, matrix) => {
+    matrix[sizes[version].total - 8][8] = 1;
 };
