@@ -106,15 +106,9 @@ describe('qr code', () => {
 });
 
 const extract = (row, column, width, height, matrix) => {
-    const result = [];
-    for (let r = row; r < row + height; r++) {
-        const currentRow = [];
-        for (let c = column; c < column + width; c++) {
-            currentRow.push(matrix[r][c]);
-        }
-        result.push(currentRow);
-    }
-    return result;
+    return extractWithRowColumnInfo(row, column, width, height, matrix).map(
+        (r) => r.map((c) => c.value)
+    );
 };
 
 const extractWithRowColumnInfo = (row, column, width, height, matrix) => {
