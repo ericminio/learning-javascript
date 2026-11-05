@@ -97,21 +97,14 @@ const addTimingPatterns = ({ version, matrix }) => {
     );
 };
 
+const setDarkModule = ({ version, matrix }) => {
+    setValuesStartingAtPosition(size(version) - 8, 8, [[1]], matrix);
+};
+
 const setValuesStartingAtPosition = (row, column, values, matrix) => {
     for (let r = 0; r < values.length; r++) {
         for (let c = 0; c < values[r].length; c++) {
-            matrix[row + r][column + c] = {
-                row: row + r,
-                column: column + c,
-                value: values[r][c],
-            };
+            matrix[row + r][column + c].value = values[r][c];
         }
     }
-};
-const setDarkModule = ({ version, matrix }) => {
-    matrix[size(version) - 8][8] = {
-        row: size(version) - 8,
-        column: 8,
-        value: 1,
-    };
 };
