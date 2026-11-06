@@ -30,17 +30,14 @@ export const generateQRCodeMatrix = ({ version, text }) => {
 };
 
 export const computeDataPath = (matrix) => {
-    let maxRow = -1;
-    let maxColumn = -1;
-    for (let r = 0; r < matrix.length; r++) {
-        for (let c = 0; c < matrix[r].length; c++) {
-            const { row, column } = matrix[r][c];
-            if (row > maxRow) maxRow = row;
-            if (column > maxColumn) maxColumn = column;
-        }
-    }
+    let maxRow = matrix
+        .flat()
+        .reduce((max, cell) => Math.max(max, cell.row), -1);
+    let maxColumn = matrix
+        .flat()
+        .reduce((max, cell) => Math.max(max, cell.column), -1);
     const path = [];
-    for (let c = maxColumn; c >= 0; c -= 2) {
+    for (let c = maxColumn; c >= 1; c -= 2) {
         const up = ((maxColumn - c) / 2) % 2 === 0;
         let move = {
             start: up ? maxRow : 0,
@@ -54,6 +51,22 @@ export const computeDataPath = (matrix) => {
         ) {
             if (!matrix[r][c].locked) path.push({ row: r, column: c });
             if (!matrix[r][c - 1].locked) path.push({ row: r, column: c - 1 });
+        }
+    }
+    if (maxColumn % 4 == 0) {
+        const c = 0;
+        const up = ((maxColumn - c) / 2) % 2 === 0;
+        let move = {
+            start: up ? maxRow : 0,
+            stop: up ? 0 : maxRow,
+            direction: up ? -1 : 1,
+        };
+        for (
+            let r = move.start;
+            r != move.stop + move.direction;
+            r += move.direction
+        ) {
+            if (!matrix[r][c].locked) path.push({ row: r, column: c });
         }
     }
     return path;

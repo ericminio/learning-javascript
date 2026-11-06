@@ -121,4 +121,23 @@ describe('data path', () => {
         ]);
         assert.deepStrictEqual(path[6], { row: 1, column: 1 });
     });
+    it('the first column is always alone and going up (because 4 * v + 17 is odd)', () => {
+        const path = computeDataPath([
+            [
+                { row: 0, column: 0 },
+                { row: 0, column: 1 },
+                { row: 0, column: 2 },
+                { row: 0, column: 3 },
+                { row: 0, column: 4 },
+            ],
+            [
+                { row: 1, column: 0 },
+                { row: 1, column: 1 },
+                { row: 1, column: 2 },
+                { row: 1, column: 3 },
+                { row: 1, column: 4 },
+            ],
+        ]);
+        assert.deepStrictEqual(path[path.length - 2], { row: 1, column: 0 });
+    });
 });
