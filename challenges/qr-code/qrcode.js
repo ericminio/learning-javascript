@@ -12,7 +12,7 @@ const masks = [({ row, column }) => (row + column) % 2 === 0];
 
 export const generateQRCodeMatrix = ({ version, text }) => {
     let data = modeAndLengthOfText(text);
-    if (text) data = data.concat(binaryText(text));
+    if (text) data = data.concat(binaryText(text)).concat([0, 0, 0, 0]);
 
     const matrix = init({ version });
     addPositionPatterns({ version, matrix });

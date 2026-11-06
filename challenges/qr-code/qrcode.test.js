@@ -156,6 +156,12 @@ describe('qr code', () => {
                 const maskedChar = extractFollowingPath(12, 16, matrix);
                 assert.deepEqual(parseData(maskedChar), expected);
             });
+            it('then adds termination bits', () => {
+                const matrix = generateQRCodeMatrix({ version: 1, text: 'Hi' });
+                const maskedEncodingMode = extractFollowingPath(28, 4, matrix);
+                console.log(maskedEncodingMode);
+                assert.deepEqual(parseData(maskedEncodingMode), [0, 0, 0, 0]);
+            });
         });
     });
 });
