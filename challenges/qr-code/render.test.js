@@ -25,6 +25,13 @@ describe('rendering example', () => {
         const rendered = render(matrix);
         console.log(rendered.map((row) => row.join(' ')).join('\n'));
     });
+    it('discloses locked modules', () => {
+        const matrix = generateQRCodeMatrix({ version: 1 });
+        const rendered = matrix.map((row) =>
+            row.map((cell) => (cell.locked === true ? 'L' : '.'))
+        );
+        console.log(rendered.map((row) => row.join(' ')).join('\n'));
+    });
     it('discloses data path', () => {
         const matrix = generateQRCodeMatrix({ version: 1 });
         const path = computeDataPath(matrix);

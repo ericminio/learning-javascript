@@ -16,6 +16,7 @@ export const generateQRCodeMatrix = ({ version, text }) => {
     const matrix = init({ version });
     addPositionPatterns({ version, matrix });
     addTimingPatterns({ version, matrix });
+    setLockedModules({ version, matrix });
     const zygZag = computeDataPath(matrix);
     const positionedData = [];
     for (let i = 0; i < data.length; i++) {
@@ -41,7 +42,7 @@ export const computeDataPath = (matrix) => {
         if (c == 6) {
             c = 5;
         }
-        const up = ((maxColumn - c) / 2) % 2 === 0;
+        const up = columnGoesUp(c, maxColumn);
         let move = {
             start: up ? maxRow : 0,
             stop: up ? 0 : maxRow,
@@ -57,6 +58,13 @@ export const computeDataPath = (matrix) => {
         }
     }
     return path;
+};
+
+export const columnGoesUp = (c, maxColumn) => {
+    if (c < 6 && maxColumn >= 20) {
+        return c == 3;
+    }
+    return ((maxColumn - c) / 2) % 2 === 0;
 };
 
 export const mask = (cells) =>
@@ -141,6 +149,33 @@ const setValuesStartingAtPosition = (row, column, values, matrix) => {
         for (let c = 0; c < values[r].length; c++) {
             matrix[row + r][column + c].value = values[r][c];
             matrix[row + r][column + c].locked = true;
+        }
+    }
+};
+
+const setLockedModules = ({ version, matrix }) => {
+    for (let r = 0; r < 9; r++) {
+        for (let c = 0; c < 9; c++) {
+            if (r < 7 && c < 7) continue;
+            if (matrix[r][c]) {
+                matrix[r][c].locked = true;
+            }
+        }
+    }
+    for (let r = 0; r < 9; r++) {
+        for (let c = 0; c < 9; c++) {
+            if (c == 8) continue;
+            if (matrix[r][size(version) - 1 - c]) {
+                matrix[r][size(version) - 1 - c].locked = true;
+            }
+        }
+    }
+    for (let r = 0; r < 9; r++) {
+        for (let c = 0; c < 9; c++) {
+            if (r == 8) continue;
+            if (matrix[size(version) - 1 - r][c]) {
+                matrix[size(version) - 1 - r][c].locked = true;
+            }
         }
     }
 };

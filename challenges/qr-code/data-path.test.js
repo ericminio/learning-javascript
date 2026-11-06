@@ -1,7 +1,25 @@
 const { describe, it } = require('node:test');
 const { strict: assert } = require('node:assert');
 
-const { computeDataPath } = require('./qrcode');
+const { columnGoesUp, computeDataPath } = require('./qrcode');
+
+describe('column direction', () => {
+    it('returns true for columns divisible by 4', () => {
+        assert.equal(columnGoesUp(20, 20), true);
+        assert.equal(columnGoesUp(16, 20), true);
+        assert.equal(columnGoesUp(12, 20), true);
+    });
+    it('returns false for columns not divisible by 4', () => {
+        assert.equal(columnGoesUp(18, 20), false);
+        assert.equal(columnGoesUp(14, 20), false);
+        assert.equal(columnGoesUp(10, 20), false);
+    });
+    it('accommodate ignoring column 6', () => {
+        assert.equal(columnGoesUp(5, 20), false);
+        assert.equal(columnGoesUp(3, 20), true);
+        assert.equal(columnGoesUp(1, 20), false);
+    });
+});
 
 describe('data path', () => {
     it('starts with bottom-right corner', () => {
@@ -121,7 +139,7 @@ describe('data path', () => {
         ]);
         assert.deepStrictEqual(path[6], { row: 1, column: 1 });
     });
-    it('locked column 7 is ignored', () => {
+    it('column index 6 is ignored (btw it is locked but this is not the point)', () => {
         const path = computeDataPath([
             [
                 { row: 0, column: 0 },

@@ -65,6 +65,61 @@ describe('qr code', () => {
                 assert.deepEqual(line, [0, 1, 0, 1, 0, 1, 0]);
             });
         });
+        describe('locked modules', () => {
+            it('locks the position patterns', () => {
+                const matrix = generateQRCodeMatrix({ version: 1 });
+                for (let r = 0; r < 7; r++) {
+                    for (let c = 0; c < 7; c++) {
+                        assert.strictEqual(matrix[r][c].locked, true);
+                        assert.strictEqual(matrix[r][14 + c].locked, true);
+                        assert.strictEqual(matrix[14 + r][c].locked, true);
+                    }
+                }
+            });
+            it('locks 2 bands of modules around the top-left position pattern', () => {
+                const matrix = generateQRCodeMatrix({ version: 1 });
+                for (let r = 0; r < 9; r++) {
+                    for (let c = 0; c < 9; c++) {
+                        assert.strictEqual(matrix[r][c].locked, true);
+                    }
+                }
+            });
+            it('locks 1 column left and 2 rows below the top-right position pattern', () => {
+                const matrix = generateQRCodeMatrix({ version: 1 });
+                for (let r = 0; r < 9; r++) {
+                    for (let c = 0; c < 9; c++) {
+                        if (c == 8) continue;
+                        assert.strictEqual(matrix[r][20 - c].locked, true);
+                    }
+                }
+            });
+            it('locks 1 row above and 2 columns right of the bottom-left position pattern', () => {
+                const matrix = generateQRCodeMatrix({ version: 1 });
+                for (let r = 0; r < 9; r++) {
+                    for (let c = 0; c < 9; c++) {
+                        if (r == 8) continue;
+                        assert.strictEqual(matrix[20 - r][c].locked, true);
+                    }
+                }
+            });
+            it('locks the timing patterns', () => {
+                const matrix = generateQRCodeMatrix({ version: 1 });
+                for (let r = 6; r < 7; r++) {
+                    for (let c = 7; c < 14; c++) {
+                        assert.strictEqual(matrix[r][c].locked, true);
+                    }
+                }
+                for (let r = 7; r < 14; r++) {
+                    for (let c = 6; c < 7; c++) {
+                        assert.strictEqual(matrix[r][c].locked, true);
+                    }
+                }
+            });
+            it('locks the dark module', () => {
+                const matrix = generateQRCodeMatrix({ version: 1 });
+                assert.strictEqual(matrix[13][8].locked, true);
+            });
+        });
         describe('encoded data with mask 0', () => {
             it('starts with byte encoding mode (0100)', () => {
                 const matrix = generateQRCodeMatrix({ version: 1 });
