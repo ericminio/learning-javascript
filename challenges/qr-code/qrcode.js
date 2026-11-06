@@ -53,8 +53,7 @@ export const computeDataPath = (matrix) => {
             r += move.direction
         ) {
             if (!matrix[r][c].locked) path.push({ row: r, column: c });
-            if (matrix[r][c - 1] && !matrix[r][c - 1].locked)
-                path.push({ row: r, column: c - 1 });
+            if (!matrix[r][c - 1].locked) path.push({ row: r, column: c - 1 });
         }
     }
     return path;
