@@ -11,7 +11,8 @@ const size = (v) => 17 + 4 * v;
 const masks = [({ row, column }) => (row + column) % 2 === 0];
 
 export const generateQRCodeMatrix = ({ version, text }) => {
-    const data = modeAndLengthOfText(text);
+    let data = modeAndLengthOfText(text);
+    if (text) data = data.concat(binaryText(text));
 
     const matrix = init({ version });
     addPositionPatterns({ version, matrix });
@@ -28,6 +29,17 @@ export const generateQRCodeMatrix = ({ version, text }) => {
         matrix[row][column].value = value;
     }
     return matrix;
+};
+
+const binaryText = (text) => {
+    const result = [];
+    for (let i = 0; i < text.length; i++) {
+        const char = text.charCodeAt(i);
+        for (let j = 7; j >= 0; j--) {
+            result.push((char >> j) & 1);
+        }
+    }
+    return result;
 };
 
 export const computeDataPath = (matrix) => {

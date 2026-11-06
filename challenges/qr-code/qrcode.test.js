@@ -139,6 +139,23 @@ describe('qr code', () => {
                     [0, 0, 0, 0, 0, 0, 1, 0]
                 );
             });
+            it('continues with the text', () => {
+                const text = 'Hi';
+                const expected = [];
+                for (let i = 0; i < text.length; i++) {
+                    const char = text.charCodeAt(i);
+                    const asBinary = char.toString(2).padStart(8, '0');
+                    const asArray = asBinary.split('').map(Number);
+                    expected.push(...asArray);
+                }
+                assert.deepEqual(
+                    expected,
+                    [0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1]
+                );
+                const matrix = generateQRCodeMatrix({ version: 1, text: 'Hi' });
+                const maskedChar = extractFollowingPath(12, 16, matrix);
+                assert.deepEqual(parseData(maskedChar), expected);
+            });
         });
     });
 });
