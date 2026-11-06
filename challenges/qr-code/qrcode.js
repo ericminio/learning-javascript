@@ -38,30 +38,24 @@ export const computeDataPath = (matrix) => {
         .reduce((max, cell) => Math.max(max, cell.column), -1);
     const path = [];
     for (let c = maxColumn; c >= 1; c -= 2) {
-        path.push(...columnPath(c, maxRow, maxColumn, matrix));
-    }
-    if (maxColumn % 4 == 0) {
-        path.push(...columnPath(0, maxRow, maxColumn, matrix));
-    }
-    return path;
-};
-
-const columnPath = (c, maxRow, maxColumn, matrix) => {
-    const up = ((maxColumn - c) / 2) % 2 === 0;
-    let move = {
-        start: up ? maxRow : 0,
-        stop: up ? 0 : maxRow,
-        direction: up ? -1 : 1,
-    };
-    const path = [];
-    for (
-        let r = move.start;
-        r != move.stop + move.direction;
-        r += move.direction
-    ) {
-        if (!matrix[r][c].locked) path.push({ row: r, column: c });
-        if (matrix[r][c - 1] && !matrix[r][c - 1].locked)
-            path.push({ row: r, column: c - 1 });
+        if (c == 6) {
+            c = 5;
+        }
+        const up = ((maxColumn - c) / 2) % 2 === 0;
+        let move = {
+            start: up ? maxRow : 0,
+            stop: up ? 0 : maxRow,
+            direction: up ? -1 : 1,
+        };
+        for (
+            let r = move.start;
+            r != move.stop + move.direction;
+            r += move.direction
+        ) {
+            if (!matrix[r][c].locked) path.push({ row: r, column: c });
+            if (matrix[r][c - 1] && !matrix[r][c - 1].locked)
+                path.push({ row: r, column: c - 1 });
+        }
     }
     return path;
 };

@@ -121,7 +121,7 @@ describe('data path', () => {
         ]);
         assert.deepStrictEqual(path[6], { row: 1, column: 1 });
     });
-    it('the first column is always alone and going up (because 4 * v + 17 is odd)', () => {
+    it('locked column 7 is ignored', () => {
         const path = computeDataPath([
             [
                 { row: 0, column: 0 },
@@ -129,6 +129,10 @@ describe('data path', () => {
                 { row: 0, column: 2 },
                 { row: 0, column: 3 },
                 { row: 0, column: 4 },
+                { row: 0, column: 5 },
+                { row: 0, column: 6, locked: true },
+                { row: 0, column: 7 },
+                { row: 0, column: 8 },
             ],
             [
                 { row: 1, column: 0 },
@@ -136,8 +140,13 @@ describe('data path', () => {
                 { row: 1, column: 2 },
                 { row: 1, column: 3 },
                 { row: 1, column: 4 },
+                { row: 1, column: 5 },
+                { row: 1, column: 6, locked: true },
+                { row: 1, column: 7 },
+                { row: 1, column: 8 },
             ],
         ]);
-        assert.deepStrictEqual(path[path.length - 2], { row: 1, column: 0 });
+        assert.deepStrictEqual(path[4], { row: 0, column: 5 });
+        assert.deepStrictEqual(path[5], { row: 0, column: 4 });
     });
 });
