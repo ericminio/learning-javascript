@@ -147,6 +147,7 @@ const setValuesStartingAtPosition = (row, column, values, matrix) => {
     for (let r = 0; r < values.length; r++) {
         for (let c = 0; c < values[r].length; c++) {
             matrix[row + r][column + c].value = values[r][c];
+            matrix[row + r][column + c].locked = true;
         }
     }
 };

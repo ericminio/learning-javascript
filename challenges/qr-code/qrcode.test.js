@@ -44,8 +44,13 @@ describe('qr code', () => {
             });
             it('includes the dark module', () => {
                 const matrix = generateQRCodeMatrix({ version: 1 });
-                const darkModule = matrix[13][8].value;
-                assert.equal(darkModule, 1);
+                const darkModule = matrix[13][8];
+                assert.deepEqual(darkModule, {
+                    row: 13,
+                    column: 8,
+                    value: 1,
+                    locked: true,
+                });
             });
         });
         describe('timing patterns', () => {
