@@ -30,20 +30,22 @@ export const generateQRCodeMatrix = ({ version, text }) => {
 };
 
 export const computeDataPath = (matrix) => {
-    return [
-        { row: 20, column: 20 },
-        { row: 20, column: 19 },
-        { row: 19, column: 20 },
-        { row: 19, column: 19 },
-        { row: 18, column: 20 },
-        { row: 18, column: 19 },
-        { row: 17, column: 20 },
-        { row: 17, column: 19 },
-        { row: 16, column: 20 },
-        { row: 16, column: 19 },
-        { row: 15, column: 20 },
-        { row: 15, column: 19 },
-    ];
+    let maxRow = -1;
+    let maxColumn = -1;
+    for (let r = 0; r < matrix.length; r++) {
+        for (let c = 0; c < matrix[r].length; c++) {
+            const { row, column } = matrix[r][c];
+            if (row > maxRow) maxRow = row;
+            if (column > maxColumn) maxColumn = column;
+        }
+    }
+    const path = [];
+    let c = maxColumn;
+    for (let r = maxRow; r >= 0; r--) {
+        if (!matrix[r][c].locked) path.push({ row: r, column: c });
+        if (!matrix[r][c - 1].locked) path.push({ row: r, column: c - 1 });
+    }
+    return path;
 };
 
 export const mask = (cells) =>

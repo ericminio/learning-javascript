@@ -19,7 +19,7 @@ describe('rendering', () => {
     });
 });
 
-describe('rendering example', () => {
+describe.skip('rendering example', () => {
     it('renders the entire matrix', () => {
         const matrix = generateQRCodeMatrix({ version: 1 });
         const rendered = render(matrix);

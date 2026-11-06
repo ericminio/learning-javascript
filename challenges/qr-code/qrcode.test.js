@@ -5,7 +5,6 @@ const { generateQRCodeMatrix, mask, positionPattern } = require('./qrcode');
 
 describe('qr code', () => {
     it('is ready', () => {
-        console.log(Array.from({ length: 3 }, () => Array(3).fill(0)));
         assert.strictEqual(1 + 1, 2);
     });
 
