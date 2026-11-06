@@ -1,7 +1,12 @@
 const { describe, it } = require('node:test');
 const { strict: assert } = require('node:assert');
 
-const { generateQRCodeMatrix, mask, positionPattern } = require('./qrcode');
+const {
+    generateQRCodeMatrix,
+    mask,
+    positionPattern,
+    computeDataPath,
+} = require('./qrcode');
 
 describe('qr code', () => {
     it('is ready', () => {
@@ -123,24 +128,12 @@ describe('qr code', () => {
         describe('encoded data with mask 0', () => {
             it('starts with byte encoding mode (0100)', () => {
                 const matrix = generateQRCodeMatrix({ version: 1 });
-                const maskedEncodingMode = extractWithRowColumnInfo(
-                    19,
-                    19,
-                    2,
-                    2,
-                    matrix
-                );
+                const maskedEncodingMode = extractFollowingPath(0, 4, matrix);
                 assert.deepEqual(parseData(maskedEncodingMode), [0, 1, 0, 0]);
             });
             it('continues with the length of the data', () => {
                 const matrix = generateQRCodeMatrix({ version: 1, text: 'Hi' });
-                const maskedLength = extractWithRowColumnInfo(
-                    15,
-                    19,
-                    2,
-                    4,
-                    matrix
-                );
+                const maskedLength = extractFollowingPath(4, 8, matrix);
                 assert.deepEqual(
                     parseData(maskedLength),
                     [0, 0, 0, 0, 0, 0, 1, 0]
@@ -169,7 +162,14 @@ const extractWithRowColumnInfo = (row, column, width, height, matrix) => {
 };
 
 const parseData = (masked) => {
-    const flattened = masked.flat().reverse();
-    const unmasked = mask(flattened);
+    const unmasked = mask(masked);
     return unmasked.map(({ value }) => value);
+};
+
+const extractFollowingPath = (start, length, matrix) => {
+    const path = computeDataPath(matrix);
+    const cells = path
+        .slice(start, start + length)
+        .map(({ row, column }) => matrix[row][column]);
+    return cells;
 };
