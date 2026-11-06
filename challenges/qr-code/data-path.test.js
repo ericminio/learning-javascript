@@ -70,4 +70,55 @@ describe('data path', () => {
         ]);
         assert.deepStrictEqual(path[0], { row: 0, column: 0 });
     });
+    it('continues on previous column', () => {
+        const path = computeDataPath([
+            [
+                { row: 0, column: 0 },
+                { row: 0, column: 1 },
+                { row: 0, column: 2 },
+                { row: 0, column: 3 },
+            ],
+            [
+                { row: 1, column: 0 },
+                { row: 1, column: 1 },
+                { row: 1, column: 2 },
+                { row: 1, column: 3 },
+            ],
+        ]);
+        assert.deepStrictEqual(path[4], { row: 0, column: 1 });
+    });
+    it('continues on previous column with immediate left', () => {
+        const path = computeDataPath([
+            [
+                { row: 0, column: 0 },
+                { row: 0, column: 1 },
+                { row: 0, column: 2 },
+                { row: 0, column: 3 },
+            ],
+            [
+                { row: 1, column: 0 },
+                { row: 1, column: 1 },
+                { row: 1, column: 2 },
+                { row: 1, column: 3 },
+            ],
+        ]);
+        assert.deepStrictEqual(path[5], { row: 0, column: 0 });
+    });
+    it('continues down right on previous column', () => {
+        const path = computeDataPath([
+            [
+                { row: 0, column: 0 },
+                { row: 0, column: 1 },
+                { row: 0, column: 2 },
+                { row: 0, column: 3 },
+            ],
+            [
+                { row: 1, column: 0 },
+                { row: 1, column: 1 },
+                { row: 1, column: 2 },
+                { row: 1, column: 3 },
+            ],
+        ]);
+        assert.deepStrictEqual(path[6], { row: 1, column: 1 });
+    });
 });

@@ -40,10 +40,21 @@ export const computeDataPath = (matrix) => {
         }
     }
     const path = [];
-    let c = maxColumn;
-    for (let r = maxRow; r >= 0; r--) {
-        if (!matrix[r][c].locked) path.push({ row: r, column: c });
-        if (!matrix[r][c - 1].locked) path.push({ row: r, column: c - 1 });
+    for (let c = maxColumn; c >= 0; c -= 2) {
+        const up = ((maxColumn - c) / 2) % 2 === 0;
+        let move = {
+            start: up ? maxRow : 0,
+            stop: up ? 0 : maxRow,
+            direction: up ? -1 : 1,
+        };
+        for (
+            let r = move.start;
+            r != move.stop + move.direction;
+            r += move.direction
+        ) {
+            if (!matrix[r][c].locked) path.push({ row: r, column: c });
+            if (!matrix[r][c - 1].locked) path.push({ row: r, column: c - 1 });
+        }
     }
     return path;
 };
