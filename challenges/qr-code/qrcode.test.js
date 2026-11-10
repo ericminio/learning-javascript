@@ -163,7 +163,7 @@ describe('qr code', () => {
                 assert.deepEqual(parseData(maskedEncodingMode), [0, 0, 0, 0]);
             });
             it('has maximum room available', () => {
-                const matrix = generateQRCodeMatrix({ version: 1, text: 'Hi' });
+                const matrix = generateQRCodeMatrix({ version: 1 });
                 const path = computeDataPath(matrix);
                 assert.equal(path.length, 26 * 8);
             });
