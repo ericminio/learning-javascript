@@ -21,7 +21,7 @@ describe('rendering', () => {
 
 describe('rendering example', () => {
     it('renders the entire matrix', () => {
-        const matrix = generateQRCodeMatrix({ version: 1 });
+        const matrix = generateQRCodeMatrix({ version: 1, text: 'Hi' });
         const rendered = render(matrix);
         console.log(rendered.map((row) => row.join(' ')).join('\n'));
     });
